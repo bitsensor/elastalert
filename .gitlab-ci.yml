@@ -1,0 +1,36 @@
+image: bitsensor/nvm
+
+before_script:
+  - source ~/.bashrc
+  - nvm install "$(cat .node-version)"
+  - npm config set //registry.npmjs.org/:_authToken=$NPM_TOKEN
+  - npm install
+
+stages:
+#  - test
+  - build
+  - deploy
+
+#test:
+#  stage: test
+#  script:
+#    - npm test
+
+build:
+  stage: build
+  script:
+    - npm run build
+  artifacts:
+    paths:
+      - lib/
+
+deploy:
+  stage: deploy
+  script:
+    - scripts/update-authors.sh
+    - npm publish --access public
+  only:
+    - master
+  artifacts:
+      paths:
+        - lib/

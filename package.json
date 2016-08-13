@@ -1,6 +1,6 @@
 {
   "name": "@bitsensor/elastalert",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Server that manages an ElastAlert installation. Can be used standalone or as module in another application. Exposes REST API.",
   "license": "MIT",
   "author": {
@@ -16,13 +16,14 @@
     "lib": "./lib",
     "test": "./test"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@bitsensor/elastalert-lib": "~0.0.2"
+  },
   "devDependencies": {
     "babel-cli": "^6.11.4",
     "babel-preset-es2015": "^6.13.2"
   },
   "scripts": {
-    "build": "babel src -d lib",
-    "prepublish": "npm run build"
+    "build": "babel src -d lib"
   }
 }
