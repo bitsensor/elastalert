@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://git.bitsensor.io/common/elastalert-lib.git"
+    "url": "git+https://git.bitsensor.io/back-end/elastalert.git"
   },
   "directories": {
     "lib": "./lib",
