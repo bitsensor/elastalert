@@ -5,4 +5,4 @@ function startServer(server) {
 }
 
 let server = new ElastalertServer();
-startServer(server)
+startServer(server);
