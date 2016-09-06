@@ -1,7 +1,4 @@
-import RouteLogger from 'src/routes/route_logger';
 import {Status} from '../../common/status';
-
-let logger = new RouteLogger('/status');
 
 export default function statusHandler(request, result) {
   /**

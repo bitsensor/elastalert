@@ -1,7 +1,3 @@
-import RouteLogger from 'src/routes/route_logger';
-
-let logger = new RouteLogger('/status/control');
-
 export default function controlHandler(request, result) {
   /**
    * @type {ElastalertServer}

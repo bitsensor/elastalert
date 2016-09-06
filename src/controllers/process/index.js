@@ -51,7 +51,7 @@ export default class ProcessController {
     });
 
     // Set listeners for ElastAlert exit
-    this._process.on('exit', (code, signal) => {
+    this._process.on('exit', (code) => {
       if (code === 0) {
         logger.info('ElastAlert exited with code ' + code);
         this._status = Status.IDLE;
@@ -81,7 +81,7 @@ export default class ProcessController {
       this._process.kill('SIGINT');
     } else {
       // Do not do anything if ElastAlert is not running
-      logger.info('ElastAlert is not running')
+      logger.info('ElastAlert is not running');
     }
   }
 }

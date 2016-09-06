@@ -1,4 +1,4 @@
-import ElastalertServer from './elastalert_server'
+import ElastalertServer from './elastalert_server';
 
 function startServer(server) {
   server.start();

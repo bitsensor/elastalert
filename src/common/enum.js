@@ -8,4 +8,4 @@ export default function Enum(a) {
       (o, k)=>(o[k] = a[k], o), v=>i[v]
     )
   );
-};
+}

@@ -2,7 +2,7 @@ import express from 'express';
 import Logger from './common/logger';
 import config from './common/config';
 import setupRouter from './routes/route_setup';
-import ProcessController from "./controllers/process/index";
+import ProcessController from './controllers/process/index';
 
 let logger = new Logger('Server');
 
@@ -29,7 +29,7 @@ export default class ElastalertServer {
 
   get express() {
     return this._express;
-  };
+  }
 
   get processController() {
     return this._processController;
