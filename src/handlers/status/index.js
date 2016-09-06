@@ -8,8 +8,6 @@ export default function statusHandler(request, result) {
   var status = server.processController.status;
 
   result.send({
-    path: '/status',
-    method: 'GET',
     status: Status(status)
   });
 }
