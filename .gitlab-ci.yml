@@ -7,14 +7,9 @@ before_script:
   - npm install
 
 stages:
-#  - test
   - build
+  - test
   - deploy
-
-#test:
-#  stage: test
-#  script:
-#    - npm test
 
 build:
   stage: build
@@ -23,6 +18,22 @@ build:
   artifacts:
     paths:
       - lib/
+      - node_modules/
+
+test:
+  stage: test
+  script:
+    - npm test
+  artifacts:
+    paths:
+      - lib/
+      - node_modules/
+
+lint:
+  stage: test
+  script:
+    - eslint .
+  allow_failure: true
 
 deploy:
   stage: deploy
