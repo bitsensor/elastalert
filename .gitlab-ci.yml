@@ -2,7 +2,7 @@ image: bitsensor/nvm
 
 before_script:
   - source ~/.bashrc
-  - nvm install "$(cat .node-version)"
+  - nvm install "$(cat .nvmrc)"
   - npm config set //registry.npmjs.org/:_authToken=$NPM_TOKEN
   - npm install
 
