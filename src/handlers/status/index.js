@@ -1,13 +1,13 @@
-import RouteLogger from 'src/routes/route_logger';
-
-let logger = new RouteLogger('/status');
+import {Status} from '../../common/status';
 
 export default function statusHandler(request, result) {
-  result.send({
-    path: '/status',
-    method: 'GET',
-    status: 'statusHandler'
-  });
+  /**
+   * @type {ElastalertServer}
+   */
+  var server = request.app.get('server');
+  var status = server.processController.status;
 
-  logger.sendSuccessful();
+  result.send({
+    status: Status(status)
+  });
 }

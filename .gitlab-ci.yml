@@ -5,14 +5,9 @@ before_script:
   - npm install
 
 stages:
-#  - test
   - build
+  - test
   - deploy
-
-#test:
-#  stage: test
-#  script:
-#    - npm test
 
 build:
   image: bitsensor/nvm
@@ -22,6 +17,22 @@ build:
   artifacts:
     paths:
       - lib/
+      - node_modules/
+
+test:
+  stage: test
+  script:
+    - npm test
+  artifacts:
+    paths:
+      - lib/
+      - node_modules/
+
+lint:
+  stage: test
+  script:
+    - ./node_modules/.bin/eslint .
+  allow_failure: true
 
 deploy:npm:
   image: bitsensor/nvm
