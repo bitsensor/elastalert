@@ -20,6 +20,7 @@ build:
       - node_modules/
 
 test:
+  image: bitsensor/nvm
   stage: test
   script:
     - npm test
@@ -29,6 +30,7 @@ test:
       - node_modules/
 
 lint:
+  image: bitsensor/nvm
   stage: test
   script:
     - ./node_modules/.bin/eslint .
