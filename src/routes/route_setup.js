@@ -14,7 +14,7 @@ export default function setupRouter(express) {
             lodash.cloneDeep(route), {
               method: method,
               handler: route.handler[index]
-        }));
+            }));
       });
     } else {
       _setupRoute(route);
@@ -24,6 +24,6 @@ export default function setupRouter(express) {
   function _setupRoute(route) {
     let methodFunctionName = route.method.toLowerCase();
     express[methodFunctionName]('/' + route.path, route.handler);
-    logger.info('Listening for ' + route.method + ' request on /' + route.path + '.')
+    logger.info('Listening for ' + route.method + ' request on /' + route.path + '.');
   }
 }
