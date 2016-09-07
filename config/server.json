@@ -1,5 +1,5 @@
 {
   "appName": "elastalert-server",
   "port": 3030,
-  "elastAlertPath": "/opt/elastalert"
+  "elastalertPath": "/opt/elastalert"
 }
