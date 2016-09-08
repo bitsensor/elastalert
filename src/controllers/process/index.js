@@ -1,6 +1,4 @@
 import {spawn} from 'child_process';
-import fs from 'fs';
-import path from 'path';
 import config from 'src/common/config';
 import Logger from 'src/common/logger';
 import {Status} from 'src/common/status';
