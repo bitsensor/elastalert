@@ -8,7 +8,7 @@ let logger = new Logger('ProcessController');
 export default class ProcessController {
 
   constructor() {
-    this._elastAlertPath = config.get('elastAlertPath');
+    this._elastalertPath = config.get('elastalertPath');
     this._status = Status.IDLE;
 
     /**
@@ -36,7 +36,7 @@ export default class ProcessController {
     logger.info('Starting ElastAlert');
     this._status = Status.STARTING;
     this._process = spawn('python', ['elastalert/elastalert.py'], {
-      cwd: this._elastAlertPath
+      cwd: this._elastalertPath
     });
 
     logger.info('Started Elastalert (PID: ' + this._process.pid + ')');
