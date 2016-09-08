@@ -6,6 +6,9 @@
 *.iml
 .idea/
 
+## Ignore custom config file
+config/config.json
+
 ## File-based project format:
 *.iws
 
