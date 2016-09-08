@@ -1,23 +1,7 @@
-import Joi from 'joi';
-import jsonServerConfig from 'config/server';
-import schema from './schema';
-import resolvePath from 'object-resolve-path';
+import ServerConfig from './server_config';
 
-class ServerConfig {
-  constructor() {
-    /**
-     * Validate the JSON config
-     */
-    try {
-      this._jsonConfig = Joi.validate(jsonServerConfig, schema).value;
-    } catch (e) {
-      console.error('The config in \'config/server.json\' is not a valid config configuration. Error: ', e);
-    }
-  }
+let config = new ServerConfig();
+console.log('doing loading config');
+config.load();
 
-  get(value) {
-    return resolvePath(this._jsonConfig, value);
-  }
-}
-
-export default new ServerConfig();
+export default config;

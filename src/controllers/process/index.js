@@ -1,7 +1,9 @@
-import config from './../../common/config';
 import {spawn} from 'child_process';
-import Logger from './../../common/logger';
-import {Status} from '../../common/status';
+import fs from 'fs';
+import path from 'path';
+import config from 'src/common/config';
+import Logger from 'src/common/logger';
+import {Status} from 'src/common/status';
 
 let logger = new Logger('ProcessController');
 
@@ -39,7 +41,7 @@ export default class ProcessController {
       cwd: this._elastalertPath
     });
 
-    logger.info('Started Elastalert (PID: ' + this._process.pid + ')');
+    logger.info(`Started Elastalert (PID: ${this._process.pid})`);
     this._status = Status.READY;
 
     // Redirect stdin/stderr to logger

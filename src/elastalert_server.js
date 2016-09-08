@@ -10,10 +10,7 @@ export default class ElastalertServer {
   constructor() {
     this._express = express();
     this._runningTimeouts = [];
-
-    this._setupRouter();
-
-    this._processController = new ProcessController();
+    this._processController = null;
 
     // Set listener on process exit (SIGINT == ^C)
     process.on('SIGINT', () => {
@@ -36,20 +33,27 @@ export default class ElastalertServer {
   }
 
   start() {
-    try {
-      this._runningServer = this.express.listen(config.get('port'), this._serverController);
-      logger.info('Server listening on port ' + config.get('port'));
-      this._express.set('server', this);
+    const self = this;
 
-      this._processController.start();
-    } catch (e) {
-      logger.warn('Starting server failed with error:', e);
-    }
+    // Start the server when the config is loaded
+    config.ready(function () {
+      try {
+        self._setupRouter();
+        self._runningServer = self.express.listen(config.get('port'), self._serverController);
+        self._express.set('server', self);
+
+        self._processController = new ProcessController();
+        self._processController.start();
+        logger.info('Server listening on port ' + config.get('port'));
+      } catch (error) {
+        logger.error('Starting server failed with error:', error);
+      }
+    });
   }
 
   stop() {
     this._processController.stop();
-    this._runningServer.close();
+    this._runningServer ? this._runningServer.close() : null;
     this._runningTimeouts.forEach((timeout) => clearTimeout(timeout));
   }
 
@@ -57,7 +61,7 @@ export default class ElastalertServer {
     setupRouter(this._express);
   }
 
-  static _serverController() {
+  _serverController() {
     logger.info('Server started');
   }
 }
