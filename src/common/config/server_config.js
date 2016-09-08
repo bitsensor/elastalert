@@ -7,8 +7,10 @@ import Logger from '../logger';
 
 // Config file relative from project root
 const configFile = 'config/config.json';
+const devConfigFile = 'config/config.dev.json';
 
 const configPath = path.join(process.cwd(), configFile);
+const devConfigPath = path.join(process.cwd(), devConfigFile);
 const logger = new Logger('Config');
 
 export default class ServerConfig {
@@ -49,26 +51,50 @@ export default class ServerConfig {
     //TODO: Watch config file for changes and reload
     const self = this;
     return new Promise(function (resolve) {
-      self._hasConfig().then(function (configFound) {
-        if (configFound) {
-          self._readConfig()
-            .then(function (config) {
-              self._validate(config);
-              resolve();
-            })
-            .catch(function () {
-              // Validating with an empty object will cause the default config to return
-              self._validate({});
-              resolve();
-            });
-        } else {
-          self._validate({});
-          resolve();
-        }
+      self._getConfig().then(function (config) {
+        self._validate(config);
+        resolve();
       });
     }).then(function () {
       self._waitList.forEach(function (callback) {
         callback();
+      });
+    });
+  }
+
+  _getConfig() {
+    const self = this;
+
+    return new Promise(function (resolve) {
+      self._fileExists(devConfigPath).then(function (devConfigFound) {
+
+        // If a dev config was found read it, otherwise check for normal config
+        if (devConfigFound) {
+          self._readFile(devConfigPath)
+            .then(function (config) {
+              resolve(config);
+            })
+            .catch(function () {
+              resolve({});
+            });
+        } else {
+          logger.info('Proceeding to look for normal config file.');
+          self._fileExists(configPath).then(function (configFound) {
+            if (configFound) {
+              self._readFile(configPath)
+                .then(function (config) {
+                  resolve(config);
+                })
+                .catch(function () {
+                  resolve({});
+                });
+            } else {
+              logger.info('Using default config.');
+              // If no config was found, return empty object to load defaults
+              resolve({});
+            }
+          });
+        }
       });
     });
   }
@@ -79,24 +105,24 @@ export default class ServerConfig {
    * @returns {Promise} Promise returning true if the file was found and false otherwise.
    * @private
    */
-  _hasConfig() {
+  _fileExists(filePath) {
     return new Promise(function (resolve) {
       // Check if the config file exists and has reading permissions
       try {
-        fs.access(configPath, fs.F_OK | fs.R_OK, function (error) {
+        fs.access(filePath, fs.F_OK | fs.R_OK, function (error) {
           if (error) {
-            if (error.errno ===  -2) {
-              logger.info(`No ${path.basename(configPath)} file was found in ${configPath}. Using default configuration.`);
+            if (error.errno === -2) {
+              logger.info(`No ${path.basename(filePath)} file was found in ${filePath}.`);
             } else {
-              logger.warn(`${configPath} can't be read because of reading permission problems. Falling back to default configuration.`);
+              logger.warn(`${filePath} can't be read because of reading permission problems. Falling back to default configuration.`);
             }
             resolve(false);
           } else {
-            logger.info(`A config file was found in ${configPath}. Using that config.`);
+            logger.info(`A config file was found in ${filePath}. Using that config.`);
             resolve(true);
           }
         });
-      } catch(error) {
+      } catch (error) {
         logger.error('Error getting access information with fs using `fs.access`. Error:', error);
       }
     });
@@ -108,11 +134,11 @@ export default class ServerConfig {
    * @returns {Promise} Promise returning the config if successfully read. Rejects if reading the config failed.
    * @private
    */
-  _readConfig() {
+  _readFile(file) {
     return new Promise(function (resolve, reject) {
-      fs.readFile(configPath, 'utf8', function (error, config) {
+      fs.readFile(file, 'utf8', function (error, config) {
         if (error) {
-          logger.warn(`Unable to read config file in (${configPath}). Using default configuration. Error: `, error);
+          logger.warn(`Unable to read config file in (${file}). Using default configuration. Error: `, error);
           reject();
         } else {
           resolve(config);
