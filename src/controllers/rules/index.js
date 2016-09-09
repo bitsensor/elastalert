@@ -6,7 +6,15 @@ export default class RulesController {
   }
 
   getRules(path) {
-
+    return new Promise(function (resolve, reject) {
+      this._fileSystemController.readDirectory(path)
+        .then(function (directoryIndex) {
+          resolve(directoryIndex);
+        })
+        .catch(function (error) {
+          reject(error);
+        });
+    });
   }
 
   rule(id) {
