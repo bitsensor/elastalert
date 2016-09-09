@@ -9,7 +9,15 @@ export default class FileSystemController {
 
   }
 
-  createDirecotory(path, fileName) {
+  createDirectory(path, directoryName) {
+
+  }
+
+  deleteDirectory(path) {
+
+  }
+
+  fileExists(path) {
 
   }
 
@@ -22,6 +30,10 @@ export default class FileSystemController {
   }
 
   writeFile(path, content) {
+
+  }
+
+  deleteFile(path) {
 
   }
 }
