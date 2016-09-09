@@ -2,7 +2,8 @@ import express from 'express';
 import Logger from './common/logger';
 import config from './common/config';
 import setupRouter from './routes/route_setup';
-import ProcessController from './controllers/process/index';
+import ProcessController from './controllers/process';
+import RulesController from './controllers/rules';
 
 let logger = new Logger('Server');
 
@@ -11,6 +12,7 @@ export default class ElastalertServer {
     this._express = express();
     this._runningTimeouts = [];
     this._processController = null;
+    this._rulesController = null;
 
     // Set listener on process exit (SIGINT == ^C)
     process.on('SIGINT', () => {
@@ -32,6 +34,10 @@ export default class ElastalertServer {
     return this._processController;
   }
 
+  get rulesController() {
+    return this._rulesController;
+  }
+
   start() {
     const self = this;
 
@@ -44,6 +50,8 @@ export default class ElastalertServer {
 
         self._processController = new ProcessController();
         self._processController.start();
+
+        self._rulesController = new RulesController();
         logger.info('Server listening on port ' + config.get('port'));
       } catch (error) {
         logger.error('Starting server failed with error:', error);
