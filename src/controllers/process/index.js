@@ -1,4 +1,4 @@
-import {spawn} from 'child_process';
+import {spawn, spawnSync} from 'child_process';
 import config from 'src/common/config';
 import Logger from 'src/common/logger';
 import {Status} from 'src/common/status';
@@ -35,6 +35,29 @@ export default class ProcessController {
     // Start ElastAlert from the directory specified in the config
     logger.info('Starting ElastAlert');
     this._status = Status.STARTING;
+
+    // Create ElastAlert index if it doesn't exist yet
+    logger.info('Creating index');
+    var indexCreate = spawnSync('python', ['elastalert/create_index.py', '--index', 'elastalert_status', '--old-index', ''], {
+      cwd: this._elastalertPath
+    });
+
+    // Redirect stdin/stderr to logger
+    if (indexCreate.stdout.toString() !== '') {
+      logger.info(indexCreate.stdout.toString());
+    }
+    if (indexCreate.stderr.toString() !== '') {
+      logger.error(indexCreate.stderr.toString());
+    }
+
+    // Set listeners for index create exit
+    if (indexCreate.status === 0) {
+      logger.info(`Index create exited with code ${indexCreate.status}`);
+    } else {
+      logger.error(`Index create exited with code ${indexCreate.status}`);
+      logger.warn('ElastAlert will start but might not be able to save its data!');
+    }
+
     this._process = spawn('python', ['elastalert/elastalert.py'], {
       cwd: this._elastalertPath
     });
@@ -53,10 +76,10 @@ export default class ProcessController {
     // Set listeners for ElastAlert exit
     this._process.on('exit', (code) => {
       if (code === 0) {
-        logger.info('ElastAlert exited with code ' + code);
+        logger.info(`ElastAlert exited with code ${code}`);
         this._status = Status.IDLE;
       } else {
-        logger.error('ElastAlert exited with code ' + code);
+        logger.error(`ElastAlert exited with code ${code}`);
         this._status = Status.ERROR;
       }
       this._process = null;
@@ -64,7 +87,7 @@ export default class ProcessController {
 
     // Set listener for ElastAlert error
     this._process.on('error', (err) => {
-      logger.error('ElastAlert error: ' + err.toString());
+      logger.error(`ElastAlert error: ${err.toString()}`);
       this._status = Status.ERROR;
       this._process = null;
     });
@@ -76,7 +99,7 @@ export default class ProcessController {
   stop() {
     if (this._process !== null) {
       // Stop ElastAlert
-      logger.info('Stopping ElastAlert (PID: ' + this._process.pid + ')');
+      logger.info(`Stopping ElastAlert (PID: ${this._process.pid})`);
       this._status = Status.CLOSING;
       this._process.kill('SIGINT');
     } else {

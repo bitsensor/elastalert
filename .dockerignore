@@ -1,0 +1,7 @@
+.editorconfig
+.gitlab-ci.yml
+.gitignore
+*.iml
+.idea/
+.git/
+config/
