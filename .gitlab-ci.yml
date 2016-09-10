@@ -1,9 +1,3 @@
-before_script:
-  - source ~/.bashrc
-  - nvm install "$(cat .node-version)"
-  - npm config set //registry.npmjs.org/:_authToken=$NPM_TOKEN
-  - npm install
-
 stages:
   - build
   - test
@@ -13,6 +7,10 @@ build:
   image: bitsensor/nvm
   stage: build
   script:
+    - source ~/.bashrc
+    - nvm install "$(cat .node-version)"
+    - npm config set //registry.npmjs.org/:_authToken=$NPM_TOKEN
+    - npm install
     - npm run build
   artifacts:
     paths:
@@ -23,6 +21,10 @@ test:
   image: bitsensor/nvm
   stage: test
   script:
+    - source ~/.bashrc
+    - nvm install "$(cat .node-version)"
+    - npm config set //registry.npmjs.org/:_authToken=$NPM_TOKEN
+    - npm install
     - npm test
   artifacts:
     paths:
@@ -33,6 +35,10 @@ lint:
   image: bitsensor/nvm
   stage: test
   script:
+    - source ~/.bashrc
+    - nvm install "$(cat .node-version)"
+    - npm config set //registry.npmjs.org/:_authToken=$NPM_TOKEN
+    - npm install
     - ./node_modules/.bin/eslint .
   allow_failure: true
 
@@ -40,6 +46,10 @@ deploy:npm:
   image: bitsensor/nvm
   stage: deploy
   script:
+    - source ~/.bashrc
+    - nvm install "$(cat .node-version)"
+    - npm config set //registry.npmjs.org/:_authToken=$NPM_TOKEN
+    - npm install
     - scripts/update-authors.sh
     - npm publish --access public
   only:
