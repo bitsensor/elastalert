@@ -85,11 +85,16 @@ export default class RulesController {
     const self = this;
     return new Promise(function (resolve, reject) {
       self._fileSystemController.fileExists(joinPath(self.rulesFolder, id))
-        .then(function (exists, access) {
+        .then(function (exists) {
           if (!exists) {
             reject();
           } else {
-            resolve(access);
+            //TODO: Get real permissions
+            //resolve(permissions);
+            resolve({
+              read: true,
+              write: true
+            });
           }
         })
         .catch(function (error) {
