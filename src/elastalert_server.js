@@ -52,6 +52,7 @@ export default class ElastalertServer {
         self._processController.start();
 
         self._rulesController = new RulesController();
+
         logger.info('Server listening on port ' + config.get('port'));
       } catch (error) {
         logger.error('Starting server failed with error:', error);

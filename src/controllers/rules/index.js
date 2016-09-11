@@ -1,7 +1,12 @@
-import {joinPath} from 'path';
+import {join as joinPath, normalize as normalizePath, extname as pathExtension} from 'path';
+import mkdirp from 'mkdirp';
 import FileSystemController from './file_system';
 import config from 'src/common/config';
-import {RuleNotFoundError, RuleNotReadableError, RuleNotWritableError} from 'src/common/errors/rule_request_errors';
+import Logger from 'src/common/logger';
+import {RuleNotFoundError, RuleNotReadableError, RuleNotWritableError,
+  RulesFolderNotFoundError, RulesRootFolderNotCreatableError} from 'src/common/errors/rule_request_errors';
+
+let logger = new Logger('RulesController');
 
 export default class RulesController {
   constructor() {
@@ -11,13 +16,38 @@ export default class RulesController {
 
   getRules(path) {
     const self = this;
+    const fullPath = joinPath(self.rulesFolder, path);
     return new Promise(function (resolve, reject) {
-      self._fileSystemController.readDirectory(joinPath(self.rulesFolder, path))
+      self._fileSystemController.readDirectory(fullPath)
         .then(function (directoryIndex) {
+
+          directoryIndex.rules = directoryIndex.files.filter(function (fileName) {
+            return pathExtension(fileName).toLowerCase() === '.yaml';
+          }).map(function (fileName) {
+            return fileName.slice(0, -5);
+          });
+
+          delete directoryIndex.files;
           resolve(directoryIndex);
         })
         .catch(function (error) {
-          reject(error);
+
+          // Check if the requested folder is the rules root folder
+          if (normalizePath(self.rulesFolder) === fullPath) {
+
+            // Try to create the root folder
+            mkdirp(fullPath, function (error) {
+              if (error) {
+                reject(new RulesRootFolderNotCreatableError());
+                logger.warn(`The rules root folder (${fullPath}) couldn't be found nor could it be created by the file system.`);
+              } else {
+                resolve([]);
+              }
+            });
+          } else {
+            logger.warn(`The requested folder (${fullPath}) couldn't be found / read by the server. Error:`, error);
+            reject(new RulesFolderNotFoundError(path));
+          }
         });
     });
   }

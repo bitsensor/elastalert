@@ -16,6 +16,7 @@ export default function rulesHandler(request, result) {
       logger.sendSuccessful();
     })
     .catch(function (error) {
+      console.log('Rejected in handler with', error);
       if (error.code) {
         result.status(error.code).send(error);
       } else {

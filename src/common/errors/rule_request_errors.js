@@ -17,3 +17,27 @@ export class RuleNotWritableError extends RequestError {
     super('ruleNotWritable', `The requested rule with id: '${ruleID}' isn't writable by the file system.`, 403);
   }
 }
+
+export class RulesFolderNotFoundError extends RequestError {
+  constructor(path) {
+    super('rulesFolderNotFound', `The requested folder with path: '${path}' couldn't be found.`, 404);
+  }
+}
+
+export class RulesFolderNotReadableError extends RequestError {
+  constructor(path) {
+    super('rulesFolderNotReadable', `The requested folder with path: '${path}' isn't readable by the file system.`, 403);
+  }
+}
+
+export class RulesFolderNotWritableError extends RequestError {
+  constructor(path) {
+    super('rulesFolderNotWritable', `The requested folder with path: '${path}' isn't writable by the file system.`, 403);
+  }
+}
+
+export class RulesRootFolderNotCreatableError extends RequestError {
+  constructor() {
+    super('rulesRootFolderNotCreatable', 'The rules folder wasn\'t found and couldn\'t be created by the file system.', 403);
+  }
+}
