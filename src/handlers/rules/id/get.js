@@ -1,14 +1,27 @@
 import RouteLogger from 'src/routes/route_logger';
+import {sendRequestError} from 'src/common/errors/utils';
 
 let logger = new RouteLogger('/rules/:id');
 
 export default function ruleGetHandler(request, result) {
-  result.send({
-    path: '/rules/:id',
-    method: 'GET',
-    status: 'ruleGetHandler',
-    id: request.params.id
-  });
+  /**
+   * @type {ElastalertServer}
+   */
+  let server = request.app.get('server');
 
-  logger.sendSuccessful();
+  server.rulesController.rule(request.params.id)
+    .then(function (rule) {
+      rule.get()
+        .then(function (rule) {
+          result.send(rule);
+          logger.sendSuccessful();
+        })
+        .catch(function (error) {
+          sendRequestError(request, error);
+          logger.sendFailed(error);
+        });
+    })
+    .catch(function (error) {
+      sendRequestError(request, error);
+    });
 }

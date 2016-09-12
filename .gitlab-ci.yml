@@ -1,36 +1,95 @@
-image: bitsensor/nvm
-
-before_script:
-  - source ~/.bashrc
-  - nvm install "$(cat .node-version)"
-  - npm config set //registry.npmjs.org/:_authToken=$NPM_TOKEN
-  - npm install
-
 stages:
-#  - test
   - build
+  - test
   - deploy
 
-#test:
-#  stage: test
-#  script:
-#    - npm test
-
 build:
+  image: bitsensor/nvm
   stage: build
   script:
+    - source ~/.bashrc
+    - nvm install "$(cat .node-version)"
+    - npm config set //registry.npmjs.org/:_authToken=$NPM_TOKEN
+    - npm install
     - npm run build
   artifacts:
     paths:
       - lib/
+      - node_modules/
 
-deploy:
+test:
+  image: bitsensor/nvm
+  stage: test
+  script:
+    - source ~/.bashrc
+    - nvm install "$(cat .node-version)"
+    - npm config set //registry.npmjs.org/:_authToken=$NPM_TOKEN
+    - npm install
+    - npm test
+  artifacts:
+    paths:
+      - lib/
+      - node_modules/
+
+lint:
+  image: bitsensor/nvm
+  stage: test
+  script:
+    - source ~/.bashrc
+    - nvm install "$(cat .node-version)"
+    - npm config set //registry.npmjs.org/:_authToken=$NPM_TOKEN
+    - npm install
+    - ./node_modules/.bin/eslint .
+  allow_failure: true
+
+deploy:npm:
+  image: bitsensor/nvm
   stage: deploy
   script:
+    - source ~/.bashrc
+    - nvm install "$(cat .node-version)"
+    - npm config set //registry.npmjs.org/:_authToken=$NPM_TOKEN
+    - npm install
     - scripts/update-authors.sh
     - npm publish --access public
   only:
-    - master
+    - tags
   artifacts:
       paths:
         - lib/
+
+deploy:docker:
+  tags:
+    - docker
+  stage: deploy
+  script:
+    - docker info
+    - docker login -u $BITSENSOR_USERNAME -p $BITSENSOR_PASSWORD docker.bitsensor.io
+    - docker build -t elastalert .
+    - docker tag elastalert docker.bitsensor.io/elastalert:latest
+    - docker tag elastalert docker.bitsensor.io/elastalert:$(git describe --abbrev=0)
+    - docker push docker.bitsensor.io/elastalert:latest
+    - docker push docker.bitsensor.io/elastalert:$(git describe --abbrev=0)
+  artifacts:
+    paths:
+      - lib/
+      - node_modules/
+  only:
+    - tags
+
+deploy:docker:snapshot:
+  tags:
+    - docker
+  stage: deploy
+  script:
+    - docker info
+    - docker login -u $BITSENSOR_USERNAME -p $BITSENSOR_PASSWORD docker.bitsensor.io
+    - docker build -t elastalert .
+    - docker tag elastalert docker.bitsensor.io/elastalert:snapshot
+    - docker push docker.bitsensor.io/elastalert:snapshot
+  artifacts:
+    paths:
+      - lib/
+      - node_modules/
+  only:
+    - develop
