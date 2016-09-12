@@ -1,9 +1,1 @@
-{
-  "appName": "elastalert-server",
-  "port": 3030,
-  "elastalertPath": "/opt/elastalert",
-  "rulesPath": {
-    "relative": true,
-    "path": "/rules"
-  }
-}
+{}
