@@ -1,3 +1,3 @@
-export function sendRequestErorr(request, error) {
-  request.status(error.code || 500).send(error);
+export function sendRequestError(result, error) {
+  result.status(error.code || 500).send(error);
 }
