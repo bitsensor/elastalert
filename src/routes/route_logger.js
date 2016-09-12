@@ -12,6 +12,6 @@ export default class RouteLogger extends Logger {
   }
 
   sendFailed(error) {
-    this.error('Request for \'' + this._handler + '\' failed with error: \n\n' + error);
+    this.error('Request for \'' + this._handler + '\' failed with error: \n\n', error);
   }
 }

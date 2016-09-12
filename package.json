@@ -24,6 +24,7 @@
     "express": "^4.14.0",
     "joi": "^9.0.4",
     "lodash": "^4.15.0",
+    "mkdirp": "^0.5.1",
     "object-resolve-path": "^1.1.1"
   },
   "devDependencies": {
