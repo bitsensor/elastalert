@@ -41,13 +41,13 @@ export default class FileSystemController {
     });
   }
 
-  createDirectory(path, directoryName) {
+  /*createDirectory(path, directoryName) {
 
-  }
+  }*/
 
-  deleteDirectory(path) {
+  /*deleteDirectory(path) {
 
-  }
+  }*/
 
   fileExists(path) {
     return new Promise(function (resolve, reject) {
@@ -61,9 +61,9 @@ export default class FileSystemController {
     });
   }
 
-  createFile(path, fileName, content = '') {
+  /*createFile(path, fileName, content = '') {
 
-  }
+  }*/
 
   readFile(path) {
     return new Promise(function (resolve, reject) {
