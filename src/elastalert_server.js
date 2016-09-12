@@ -58,7 +58,6 @@ export default class ElastalertServer {
         //TODO: This is making sure a dummy rule is available to run elastalert with. Should be fixed in ElastAlert repository.
         self._fileSystemController.readFile(path.join(__dirname, '../docker/rules/dummy.yaml'))
           .then(function (content) {
-            console.log('writing to', path.join(config.get('elastalertPath'), config.get('rulesPath').path, 'dummy.yaml'));
             self._fileSystemController.writeFile(path.join(config.get('elastalertPath'), config.get('rulesPath').path, 'dummy.yaml'), content)
               .then(function () {
                 self._processController = new ProcessController();
