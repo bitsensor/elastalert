@@ -1,10 +1,12 @@
 import express from 'express';
+import path from 'path';
 import bodyParser from 'body-parser';
 import Logger from './common/logger';
 import config from './common/config';
 import setupRouter from './routes/route_setup';
 import ProcessController from './controllers/process';
 import RulesController from './controllers/rules';
+import FileSystemController from './controllers/rules/file_system';
 
 let logger = new Logger('Server');
 
@@ -51,8 +53,24 @@ export default class ElastalertServer {
         self._runningServer = self.express.listen(config.get('port'), self._serverController);
         self._express.set('server', self);
 
-        self._processController = new ProcessController();
-        self._processController.start();
+        self._fileSystemController = new FileSystemController();
+
+        //TODO: This is making sure a dummy rule is available to run elastalert with. Should be fixed in ElastAlert repository.
+        self._fileSystemController.readFile(path.join(__dirname, '../docker/rules/dummy.yaml'))
+          .then(function (content) {
+            console.log('writing to', path.join(config.get('elastalertPath'), config.get('rulesPath').path, 'dummy.yaml'));
+            self._fileSystemController.writeFile(path.join(config.get('elastalertPath'), config.get('rulesPath').path, 'dummy.yaml'), content)
+              .then(function () {
+                self._processController = new ProcessController();
+                self._processController.start();
+              })
+              .catch(function (error) {
+                logger.error('Writing to dummy.yaml failed with error', error);
+              });
+          })
+          .catch(function (error) {
+            logger.error('Reading dummy.yaml failed with error', error);
+          });
 
         self._rulesController = new RulesController();
 
