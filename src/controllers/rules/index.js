@@ -81,15 +81,10 @@ export default class RulesController {
     });
   }
 
-  createRule(id, content) {
-    return this._editRule(id, content);
-  }
-
   _findRule(id) {
-    let fileName = id + '.yaml';
     const self = this;
     return new Promise(function (resolve, reject) {
-      self._fileSystemController.fileExists(joinPath(self.rulesFolder, fileName))
+      self._fileSystemController.fileExists(joinPath(self.rulesFolder, id))
         .then(function (exists) {
           if (!exists) {
             reject();
@@ -109,17 +104,17 @@ export default class RulesController {
   }
 
   _getRule(id) {
-    const path = joinPath(this.rulesFolder, id + '.yaml');
+    const path = joinPath(this.rulesFolder, id);
     return this._fileSystemController.readFile(path);
   }
 
   _editRule(id, body) {
-    const path = joinPath(this.rulesFolder, id + '.yaml');
+    const path = joinPath(this.rulesFolder, id);
     return this._fileSystemController.writeFile(path, body);
   }
 
   _deleteRule(id) {
-    const path = joinPath(this.rulesFolder, id + '.yaml');
+    const path = joinPath(this.rulesFolder, id);
     return this._fileSystemController.deleteFile(path);
   }
 

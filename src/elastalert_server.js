@@ -1,5 +1,4 @@
 import express from 'express';
-import bodyParser from 'body-parser';
 import Logger from './common/logger';
 import config from './common/config';
 import setupRouter from './routes/route_setup';
@@ -45,8 +44,6 @@ export default class ElastalertServer {
     // Start the server when the config is loaded
     config.ready(function () {
       try {
-        self._express.use(bodyParser.json());
-        self._express.use(bodyParser.urlencoded({ extended: true }));
         self._setupRouter();
         self._runningServer = self.express.listen(config.get('port'), self._serverController);
         self._express.set('server', self);
