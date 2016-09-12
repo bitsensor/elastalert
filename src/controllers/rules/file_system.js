@@ -73,11 +73,15 @@ export default class FileSystemController {
     });
   }
 
-  writeFile(path, content) {
+  writeFile(path, content = '') {
     return new Promise(function (resolve, reject) {
-      fs.writeFile(path, content, function (error) {
-        error ? reject(error) : resolve();
-      });
+      try {
+        fs.writeFile(path, content, function (error) {
+          error ? reject(error) : resolve();
+        });
+      } catch (error) {
+        console.log(error);
+      }
     });
   }
 

@@ -7,21 +7,44 @@ export default function rulePostHandler(request, result) {
   /**
    * @type {ElastalertServer}
    */
+  console.log('body', request.body);
   let server = request.app.get('server');
+  let body = request.body ? request.body.yaml : undefined;
+
+  console.log('body', request.body);
 
   server.rulesController.rule(request.params.id)
     .then(function (rule) {
-      rule.edit(request.body.yaml)
-        .then(function (rule) {
-          result.send(rule);
+      rule.edit(body)
+        .then(function () {
+          result.send({
+            created: true,
+            id: request.params.id
+          });
           logger.sendSuccessful();
         })
         .catch(function (error) {
-          sendRequestError(request, error);
+          sendRequestError(result, error);
           logger.sendFailed(error);
         });
     })
     .catch(function (error) {
-      sendRequestError(request, error);
+      if (error.type === 'ruleNotFound') {
+        server.rulesController.createRule(request.params.id, body)
+          .then(function () {
+            logger.sendSuccessful();
+            result.send({
+              created: true,
+              id: request.params.id
+            });
+          })
+          .catch(function (error) {
+            logger.sendFailed(error);
+            sendRequestError(result, error);
+          });
+      } else {
+        logger.sendFailed(error);
+        sendRequestError(result, error);
+      }
     });
 }

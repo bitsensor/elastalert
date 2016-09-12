@@ -14,7 +14,10 @@ export default function ruleDeleteHandler(request, result) {
       rule.delete()
         .then(function (rule) {
           result.send(rule);
-          logger.sendSuccessful();
+          logger.sendSuccessful({
+            deleted: true,
+            id: request.params.id
+          });
         })
         .catch(function (error) {
           sendRequestError(request, error);
