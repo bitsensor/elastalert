@@ -5,5 +5,9 @@
   "rulesPath": {
     "relative": true,
     "path": "/rules"
+  },
+  "dataPath": {
+    "relative": true,
+    "path": "/server_data"
   }
 }

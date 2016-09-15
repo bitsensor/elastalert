@@ -20,11 +20,12 @@ export default function ruleDeleteHandler(request, result) {
           });
         })
         .catch(function (error) {
-          sendRequestError(request, error);
           logger.sendFailed(error);
+          sendRequestError(result, error);
         });
     })
     .catch(function (error) {
-      sendRequestError(request, error);
+      logger.sendFailed(error);
+      sendRequestError(result, error);
     });
 }

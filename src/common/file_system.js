@@ -1,12 +1,12 @@
 import fs from 'fs';
 import {join as joinPath} from 'path';
+import mkdirp from 'mkdirp';
 
-export default class FileSystemController {
-  constructor() {
-
-  }
+export default class FileSystem {
+  constructor() {}
 
   readDirectory(path) {
+    const self = this;
     return new Promise(function (resolve, reject) {
       try {
         fs.readdir(path, function (error, elements) {
@@ -14,10 +14,7 @@ export default class FileSystemController {
             reject(error);
           } else {
             let statCount = 0;
-            let directoryIndex = {
-              directories: [],
-              files: []
-            };
+            let directoryIndex = self.getEmptyDirectoryIndex();
 
             elements.forEach(function (element) {
               fs.stat(joinPath(path, element), function (error, stats) {
@@ -41,29 +38,37 @@ export default class FileSystemController {
     });
   }
 
-  /*createDirectory(path, directoryName) {
+  directoryExists(path) {
+    return this._exists(path);
+  }
 
-  }*/
+  createDirectoryIfNotExists(pathToFolder) {
+    let self = this;
+
+    return new Promise(function (resolve, reject) {
+      self.directoryExists(pathToFolder).then(function (exists) {
+        if (!exists) {
+          mkdirp(pathToFolder, function (error) {
+            if (error) {
+              reject(error);
+            } else {
+              resolve();
+            }
+          });
+        } else {
+          resolve();
+        }
+      });
+    });
+  }
 
   /*deleteDirectory(path) {
 
   }*/
 
   fileExists(path) {
-    return new Promise(function (resolve, reject) {
-      try {
-        fs.access(path, fs.F_OK, function (error) {
-          error ? resolve(false) : resolve(true);
-        });
-      } catch (error) {
-        reject(error);
-      }
-    });
+    return this._exists(path);
   }
-
-  /*createFile(path, fileName, content = '') {
-
-  }*/
 
   readFile(path) {
     return new Promise(function (resolve, reject) {
@@ -81,6 +86,7 @@ export default class FileSystemController {
         });
       } catch (error) {
         console.log(error);
+        reject(error);
       }
     });
   }
@@ -90,6 +96,25 @@ export default class FileSystemController {
       fs.unlink(path, function (error) {
         error ? reject(error) : resolve();
       });
+    });
+  }
+
+  getEmptyDirectoryIndex() {
+    return {
+      directories: [],
+      files: []
+    };
+  }
+
+  _exists(path) {
+    return new Promise(function (resolve, reject) {
+      try {
+        fs.access(path, fs.F_OK, function (error) {
+          error ? resolve(false) : resolve(true);
+        });
+      } catch (error) {
+        reject(error);
+      }
     });
   }
 }

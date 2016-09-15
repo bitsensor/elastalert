@@ -26,7 +26,8 @@
     "joi": "^9.0.4",
     "lodash": "^4.15.0",
     "mkdirp": "^0.5.1",
-    "object-resolve-path": "^1.1.1"
+    "object-resolve-path": "^1.1.1",
+    "randomstring": "^1.1.5"
   },
   "devDependencies": {
     "babel-cli": "^6.11.4",

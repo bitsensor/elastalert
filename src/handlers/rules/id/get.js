@@ -17,11 +17,12 @@ export default function ruleGetHandler(request, result) {
           logger.sendSuccessful();
         })
         .catch(function (error) {
-          sendRequestError(request, error);
           logger.sendFailed(error);
+          sendRequestError(result, error);
         });
     })
     .catch(function (error) {
-      sendRequestError(request, error);
+      logger.sendFailed(error);
+      sendRequestError(result, error);
     });
 }

@@ -1,4 +1,5 @@
 import RouteLogger from 'src/routes/route_logger';
+import sendRequestError from 'src/common/errors/utils';
 
 let logger = new RouteLogger('/rules');
 
@@ -16,11 +17,6 @@ export default function rulesHandler(request, result) {
       logger.sendSuccessful();
     })
     .catch(function (error) {
-      if (error.code) {
-        result.status(error.code).send(error);
-      } else {
-        result.status(500).send(error);
-      }
-      logger.sendFailed(error);
+      sendRequestError(error);
     });
 }

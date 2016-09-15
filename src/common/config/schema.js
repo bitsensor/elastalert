@@ -8,7 +8,11 @@ const schema = Joi.object().keys({
   'rulesPath': Joi.object().keys({
     'relative': Joi.boolean().default(true),
     'path': Joi.string().default('/rules')
-  })
-});
+  }).default(),
+  'dataPath': Joi.object().keys({
+    'relative': Joi.boolean().default(true),
+    'path': Joi.string().default('/server_data')
+  }).default()
+}).default();
 
 export default schema;

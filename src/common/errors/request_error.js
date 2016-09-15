@@ -1,7 +1,11 @@
 export default class RequestError {
-  constructor(type, message = '', code = 500) {
-    this.type = type;
+  constructor(errorType, message = '', statusCode = 500, data) {
+    this.error = errorType;
     this.message = message;
-    this.code = code;
+    this.statusCode = statusCode;
+
+    if (typeof data !== 'undefined') {
+      this.data = data;
+    }
   }
 }
