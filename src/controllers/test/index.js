@@ -3,7 +3,7 @@ import FileSystem from 'src/common/file_system';
 import config from 'src/common/config';
 import path from 'path';
 import randomstring from 'randomstring';
-import {spawnSync} from 'child_process';
+import {spawn} from 'child_process';
 
 let logger = new Logger('TestController');
 let fileSystem = new FileSystem();
@@ -39,35 +39,47 @@ export default class TestController {
           }
 
           switch (options.testType) {
-            case 'schemaOnly': processOptions.push('--schema-only'); break;
-            case 'countOnly': processOptions.push('--count-only'); break;
+            case 'schemaOnly':
+              processOptions.push('--schema-only');
+              break;
+            case 'countOnly':
+              processOptions.push('--count-only');
+              break;
           }
 
-          let testProcess = spawnSync('elastalert-test-rule', processOptions, {
-            cwd: self._elastalertPath
-          });
+          try {
+            let testProcess = spawn('elastalert-test-rule', processOptions, {
+              cwd: self._elastalertPath
+            });
 
-          testProcess.stdout.on('data', function (data) {
-            stdoutLines.push(data.toString());
-            logger.info(data.toString());
-          });
+            testProcess.stdout.on('data', function (data) {
+              stdoutLines.push(data.toString());
+            });
 
-          testProcess.stderr.on('data', function (data) {
-            stderrLines.push(data.toString());
-            logger.error(data.toString());
-          });
+            testProcess.stderr.on('data', function (data) {
+              stderrLines.push(data.toString());
+            });
 
-          testProcess.on('exit', function (statusCode) {
-            console.log('Test exited');
-            if (statusCode === 0) {
-              resolve(stdoutLines.join('\n'));
-            } else {
-              reject(stderrLines.join('\n'));
-            }
-          });
+            testProcess.on('exit', function (statusCode) {
+              if (statusCode === 0) {
+                resolve(stdoutLines.join('\n'));
+              } else {
+                reject(stderrLines.join('\n'));
+                logger.error(stderrLines.join('\n'));
+              }
+
+              fileSystem.deleteFile(tempFilePath)
+                .catch(function (error) {
+                  logger.error(`Failed to delete temporary test file ${tempFilePath} with error:`, error);
+                });
+            });
+          } catch (error) {
+            logger.error(`Failed to start test on ${tempFilePath} with error:`, error);
+            reject(error);
+          }
         })
         .catch(function (error) {
-          logger.error(`Failed to write file ${tempFileName} to ${self.testFolder} with error`, error);
+          logger.error(`Failed to write file ${tempFileName} to ${self.testFolder} with error:`, error);
           reject(error);
         });
     });
