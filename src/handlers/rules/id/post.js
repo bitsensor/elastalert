@@ -7,11 +7,8 @@ export default function rulePostHandler(request, result) {
   /**
    * @type {ElastalertServer}
    */
-  console.log('body', request.body);
   let server = request.app.get('server');
   let body = request.body ? request.body.yaml : undefined;
-
-  console.log('body', request.body);
 
   server.rulesController.rule(request.params.id)
     .then(function (rule) {
@@ -24,8 +21,8 @@ export default function rulePostHandler(request, result) {
           logger.sendSuccessful();
         })
         .catch(function (error) {
-          sendRequestError(result, error);
           logger.sendFailed(error);
+          sendRequestError(result, error);
         });
     })
     .catch(function (error) {

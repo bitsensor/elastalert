@@ -6,6 +6,7 @@ import rulesHandler from '../handlers/rules';
 import ruleGetHandler from '../handlers/rules/id/get';
 import rulePostHandler from '../handlers/rules/id/post';
 import ruleDeleteHandler from '../handlers/rules/id/delete';
+import testPostHandler from '../handlers/test/post';
 import configGetHandler from '../handlers/config/get';
 import configPostHandler from '../handlers/config/post';
 
@@ -46,6 +47,10 @@ let routes = [
     path: 'rules/:id',
     method: ['GET', 'POST', 'DELETE'],
     handler: [ruleGetHandler, rulePostHandler, ruleDeleteHandler]
+  }, {
+    path: 'test',
+    method: 'POST',
+    handler: testPostHandler
   }, {
     path: 'config',
     method: ['GET', 'POST'],

@@ -1,0 +1,54 @@
+import RouteLogger from 'src/routes/route_logger';
+import {sendRequestError} from 'src/common/errors/utils';
+import {BodyNotSendError, RuleNotSendError, OptionsInvalidError} from 'src/common/errors/test_request_errors';
+import Joi from 'joi';
+
+let logger = new RouteLogger('/test', 'POST');
+
+const optionsSchema = Joi.object().keys({
+  testType: Joi.string().valid('all', 'schemaOnly', 'countOnly').default('all'),
+  days: Joi.number().min(1).default(1),
+  alert: Joi.boolean().default(false)
+}).default();
+
+function analyzeRequest(request) {
+  if (!request.body) {
+    return new BodyNotSendError();
+  }
+
+  if (!request.body.rule) {
+    return new RuleNotSendError();
+  }
+
+  const validationResult = Joi.validate(request.body.options, optionsSchema);
+
+  if (validationResult.error) {
+    return new OptionsInvalidError(validationResult.error);
+  }
+
+  let body = request.body;
+  body.options = validationResult.value;
+
+  return body;
+}
+
+export default function testPostHandler(request, result) {
+  /**
+   * @type {ElastalertServer}
+   */
+  let server = request.app.get('server');
+  let body = analyzeRequest(request);
+
+  if (body.error) {
+    logger.sendFailed(body.error);
+    sendRequestError(result, body.error);
+  }
+
+  server.testController.testRule(body.rule, body.options)
+    .then(function (consoleOutput) {
+      result.send(consoleOutput);
+    })
+    .catch(function (consoleOutput) {
+      result.status(500).send(consoleOutput);
+    });
+}
