@@ -1,7 +1,6 @@
 import express from 'express';
 import path from 'path';
 import bodyParser from 'body-parser';
-import mkdirp from 'mkdirp';
 import Logger from './common/logger';
 import config from './common/config';
 import FileSystem from './common/file_system';
