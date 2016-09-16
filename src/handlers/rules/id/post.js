@@ -26,7 +26,7 @@ export default function rulePostHandler(request, result) {
         });
     })
     .catch(function (error) {
-      if (error.type === 'ruleNotFound') {
+      if (error.error === 'ruleNotFound') {
         server.rulesController.createRule(request.params.id, body)
           .then(function () {
             logger.sendSuccessful();

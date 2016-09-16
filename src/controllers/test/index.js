@@ -31,6 +31,7 @@ export default class TestController {
           let stdoutLines = [];
           let stderrLines = [];
 
+          processOptions.push('elastalert/test_rule.py');
           processOptions.push(tempFilePath);
           processOptions.push('--days', options.days);
 
@@ -48,7 +49,7 @@ export default class TestController {
           }
 
           try {
-            let testProcess = spawn('elastalert-test-rule', processOptions, {
+            let testProcess = spawn('python', processOptions, {
               cwd: self._elastalertPath
             });
 
