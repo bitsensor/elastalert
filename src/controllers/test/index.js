@@ -31,9 +31,7 @@ export default class TestController {
           let stdoutLines = [];
           let stderrLines = [];
 
-          processOptions.push('elastalert/test_rule.py');
-          processOptions.push(tempFilePath);
-          processOptions.push('--days', options.days);
+          processOptions.push('-m', 'elastalert.test_rule', '--config', 'config.yaml', tempFilePath, '--days', options.days);
 
           if (options.alert) {
             processOptions.push('--alert');
