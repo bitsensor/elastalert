@@ -51,7 +51,7 @@ This server exposes the following REST API's:
 - **POST `/test`**
   This allows you to test a rule. The body send should be:
   
-    ```json
+    ```javascript
     {
       // Required
       "rule": "[[ The full yaml rule config ]]",
