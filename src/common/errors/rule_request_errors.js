@@ -1,4 +1,4 @@
-import RequestError from 'src/common/errors/request_error';
+import RequestError from './request_error';
 
 export class RuleNotFoundError extends RequestError {
   constructor(ruleID) {
