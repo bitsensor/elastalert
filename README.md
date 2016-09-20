@@ -36,25 +36,23 @@ You can use the following config options:
   // The path to the root ElastAlert folder. It's the folder that contains the `setup.py` script and the `config.yaml.example` file.
   "elastalertPath": "/opt/elastalert",
   
-  /* The path to the rules folder containing all the rules. If the folder is empty a dummy file will be created to allow ElastAlert to start.
-   * - relative:
-   *   Whether to use a path relative to the `elastalertPath` folder.
-   * - path:
-   *   The path to the rules folder.
-   */
+  // The path to the rules folder containing all the rules. If the folder is empty a dummy file will be created to allow ElastAlert to start.
   "rulesPath": {
+  
+    // Whether to use a path relative to the `elastalertPath` folder.
     "relative": true,
+    
+    // The path to the rules folder. 
     "path": "/rules"
   },
   
-  /* The path to a folder that the server can use to store data and temporary files.
-   * - relative:
-   *   Whether to use a path relative to the `elastalertPath` folder.
-   * - path:
-   *   The path to the data folder.
-   */
+  // The path to a folder that the server can use to store data and temporary files.
   "dataPath": {
+  
+    // Whether to use a path relative to the `elastalertPath` folder.
     "relative": true,
+    
+    // The path to the data folder.
     "path": "/server_data"
   }
 }
@@ -91,10 +89,10 @@ This server exposes the following REST API's:
   
     ```javascript
     {
-      // Required
-      "rule": "[[ The full yaml rule config ]]",
+      // Required - The full yaml rule config.
+      "rule": "...",
       
-      // Optional
+      // Optional - The options to use for testing the rule.
       "options": {
       
         // Can be either "all", "schemaOnly" or "countOnly". "all" will give the full console output. "schemaOnly" will only validate the yaml config. "countOnly" will only find the number of matching documents and list available fields.
