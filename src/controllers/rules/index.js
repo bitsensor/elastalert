@@ -4,7 +4,7 @@ import FileSystem from '../../common/file_system';
 import config from '../../common/config';
 import Logger from '../../common/logger';
 import {RuleNotFoundError, RuleNotReadableError, RuleNotWritableError,
-  RulesFolderNotFoundError, RulesRootFolderNotCreatableError} from 'src/common/errors/rule_request_errors';
+  RulesFolderNotFoundError, RulesRootFolderNotCreatableError} from '../../common/errors/rule_request_errors';
 
 let logger = new Logger('RulesController');
 
