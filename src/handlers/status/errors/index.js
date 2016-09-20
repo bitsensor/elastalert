@@ -1,4 +1,4 @@
-import RouteLogger from 'src/routes/route_logger';
+import RouteLogger from '../../../routes/route_logger';
 
 let logger = new RouteLogger('/status/errors');
 

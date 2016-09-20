@@ -1,8 +1,8 @@
 import {join as joinPath, normalize as normalizePath, extname as pathExtension} from 'path';
 import mkdirp from 'mkdirp';
-import FileSystem from 'src/common/file_system';
-import config from 'src/common/config';
-import Logger from 'src/common/logger';
+import FileSystem from '../../common/file_system';
+import config from '../../common/config';
+import Logger from '../../common/logger';
 import {RuleNotFoundError, RuleNotReadableError, RuleNotWritableError,
   RulesFolderNotFoundError, RulesRootFolderNotCreatableError} from 'src/common/errors/rule_request_errors';
 
