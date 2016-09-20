@@ -21,7 +21,43 @@ If you want to build the server and run the build version:
 You can then start the build by running `node lib/index.js`.
 
 ## Config
-In `config/config.example.json` you'll find the default config. The full config can be found in our [CONFIG.md](https://git.bitsensor.io/back-end/elastalert/blob/master/CONFIG.md).
+In `config/config.example.json` you'll find the default config. You can make a `config.json` file in the same folder that overrides the default config. When forking this repository it is recommended to remove `config.json` from the `.gitignore` file. For local testing purposes you can then use a `config.dev.json` file which overrides `config.json`.
+
+You can use the following config options:
+
+```javascript
+{
+  // The name of the app / server, used by the logging framework.
+  "appName": "elastalert-server",
+  
+  // The port to bind to
+  "port": 3030,
+  
+  // The path to the root ElastAlert folder. It's the folder that contains the `setup.py` script and the `config.yaml.example` file.
+  "elastalertPath": "/opt/elastalert",
+  
+  // The path to the rules folder containing all the rules. If the folder is empty a dummy file will be created to allow ElastAlert to start.
+  "rulesPath": {
+  
+    // Whether to use a path relative to the `elastalertPath` folder.
+    "relative": true,
+    
+    // The path to the rules folder. 
+    "path": "/rules"
+  },
+  
+  // The path to a folder that the server can use to store data and temporary files.
+  "dataPath": {
+  
+    // Whether to use a path relative to the `elastalertPath` folder.
+    "relative": true,
+    
+    // The path to the data folder.
+    "path": "/server_data"
+  }
+}
+
+```
  
 ## API
 This server exposes the following REST API's:
