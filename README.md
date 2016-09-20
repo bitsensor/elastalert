@@ -80,3 +80,6 @@ Want to contribute to this project? Great! Please read our [contributing guideli
  
 ## License
 This project is [MIT Licensed](https://git.bitsensor.io/back-end/elastalert/blob/master/LICENSE.md).
+
+## Disclaimer
+We [(BitSensor)](https://www.bitsensor.io) do not have any rights over the original [ElastAlert](https://github.com/Yelp/elastalert) project from [Yelp](https://www.yelp.com/).
