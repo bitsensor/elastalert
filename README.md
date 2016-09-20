@@ -40,6 +40,7 @@ This server exposes the following REST API's:
   Where `:id` is the id of the rule returned by **GET `/rules`**, which will return the file contents of that rule.
 - **POST `/rules/:id`**
   Where `:id` is the id of the rule returned by **GET `/rules`**, which will allow you to edit the rule. The body send should be:
+  
     ```json
     {
       "yaml": "[[ The full yaml rule config ]]"
@@ -49,6 +50,7 @@ This server exposes the following REST API's:
   Where `:id` is the id of the rule returned by **GET `/rules`**, which will delete the given rule.
 - **POST `/test`**
   This allows you to test a rule. The body send should be:
+  
     ```json
     {
       // Required
