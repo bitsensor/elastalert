@@ -36,23 +36,25 @@ You can use the following config options:
   // The path to the root ElastAlert folder. It's the folder that contains the `setup.py` script and the `config.yaml.example` file.
   "elastalertPath": "/opt/elastalert",
   
-  // The path to the rules folder containing all the rules. If the folder is empty a dummy file will be created to allow ElastAlert to start.
+  /* The path to the rules folder containing all the rules. If the folder is empty a dummy file will be created to allow ElastAlert to start.
+   * - relative:
+   *   Whether to use a path relative to the `elastalertPath` folder.
+   * - path:
+   *   The path to the rules folder.
+   */
   "rulesPath": {
-  
-    // Whether to use a path relative to the `elastalertPath` folder.
     "relative": true,
-    
-    // The path to the rules folder. 
     "path": "/rules"
   },
   
-  // The path to a folder that the server can use to store data and temporary files.
+  /* The path to a folder that the server can use to store data and temporary files.
+   * - relative:
+   *   Whether to use a path relative to the `elastalertPath` folder.
+   * - path:
+   *   The path to the data folder.
+   */
   "dataPath": {
-  
-    // Whether to use a path relative to the `elastalertPath` folder.
     "relative": true,
-    
-    // The path to the data folder.
     "path": "/server_data"
   }
 }
