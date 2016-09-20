@@ -1,7 +1,7 @@
 {
   "name": "@bitsensor/elastalert",
   "version": "0.0.5",
-  "description": "Server that manages an ElastAlert installation. Can be used standalone or as module in another application. Exposes REST API.",
+  "description": "A server that runs ElastAlert and exposes REST API's for manipulating rules and alerts.",
   "license": "MIT",
   "main": "index.js",
   "author": {
