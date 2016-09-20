@@ -42,7 +42,7 @@ This server exposes the following REST API's:
   Where `:id` is the id of the rule returned by **GET `/rules`**, which will allow you to edit the rule. The body send should be:
     ```json
     {
-      yaml: '[[ The full yaml rule config ]]'
+      "yaml": "[[ The full yaml rule config ]]"
     }
     ```
 - **DELETE `/rules/:id`**
@@ -52,19 +52,19 @@ This server exposes the following REST API's:
     ```json
     {
       // Required
-      rule: '[[ The full yaml rule config ]]',
+      "rule": "[[ The full yaml rule config ]]",
       
       // Optional
-      options: {
+      "options": {
       
-        // Can be either 'all', 'schemaOnly' or 'countOnly'. 'all' will give the full console output. 'schemaOnly' will only validate the yaml config. 'countOnly' will only find the number of matching documents and list available fields.
-        testType: 'all',
+        // Can be either "all", "schemaOnly" or "countOnly". "all" will give the full console output. "schemaOnly" will only validate the yaml config. "countOnly" will only find the number of matching documents and list available fields.
+        "testType": "all",
         
         // Can be any number larger than 0 and this tells ElastAlert over a period of how many days the test should be run
-        days: '1'
+        "days": "1"
         
         // Whether to send real alerts
-        alert: false
+        "alert": false
       }
     }
     ``` 
