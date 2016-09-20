@@ -77,9 +77,10 @@ This server exposes the following REST API's:
 - **POST `/rules/:id`**
   Where `:id` is the id of the rule returned by **GET `/rules`**, which will allow you to edit the rule. The body send should be:
   
-    ```json
+    ```javascript
     {
-      "yaml": "[[ The full yaml rule config ]]"
+      // Required - The full yaml rule config.
+      "yaml": "..."
     }
     ```
 - **DELETE `/rules/:id`**
