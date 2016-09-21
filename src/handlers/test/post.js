@@ -32,7 +32,7 @@ function analyzeRequest(request) {
   return body;
 }
 
-export default function testPostHandler(request, result) {
+export default function testPostHandler(request, response) {
   /**
    * @type {ElastalertServer}
    */
@@ -41,14 +41,14 @@ export default function testPostHandler(request, result) {
 
   if (body.error) {
     logger.sendFailed(body.error);
-    sendRequestError(result, body.error);
+    sendRequestError(response, body.error);
   }
 
   server.testController.testRule(body.rule, body.options)
     .then(function (consoleOutput) {
-      result.send(consoleOutput);
+      response.send(consoleOutput);
     })
     .catch(function (consoleOutput) {
-      result.status(500).send(consoleOutput);
+      response.status(500).send(consoleOutput);
     });
 }

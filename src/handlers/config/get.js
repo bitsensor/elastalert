@@ -2,8 +2,8 @@ import RouteLogger from '../../routes/route_logger';
 
 let logger = new RouteLogger('/config');
 
-export default function configGetHandler(request, result) {
-  result.send({
+export default function configGetHandler(request, response) {
+  response.send({
     path: '/config',
     method: 'GET',
     status: 'configGetHandler'

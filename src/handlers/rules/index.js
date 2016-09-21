@@ -3,7 +3,7 @@ import sendRequestError from '../../common/errors/utils';
 
 let logger = new RouteLogger('/rules');
 
-export default function rulesHandler(request, result) {
+export default function rulesHandler(request, response) {
   /**
    * @type {ElastalertServer}
    */
@@ -13,7 +13,7 @@ export default function rulesHandler(request, result) {
 
   server.rulesController.getRules(path)
     .then(function (rules) {
-      result.send(rules);
+      response.send(rules);
       logger.sendSuccessful();
     })
     .catch(function (error) {

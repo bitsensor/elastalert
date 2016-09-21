@@ -3,7 +3,7 @@ import {sendRequestError} from '../../../common/errors/utils';
 
 let logger = new RouteLogger('/rules/:id', 'POST');
 
-export default function rulePostHandler(request, result) {
+export default function rulePostHandler(request, response) {
   /**
    * @type {ElastalertServer}
    */
@@ -14,7 +14,7 @@ export default function rulePostHandler(request, result) {
     .then(function (rule) {
       rule.edit(body)
         .then(function () {
-          result.send({
+          response.send({
             created: true,
             id: request.params.id
           });
@@ -22,7 +22,7 @@ export default function rulePostHandler(request, result) {
         })
         .catch(function (error) {
           logger.sendFailed(error);
-          sendRequestError(result, error);
+          sendRequestError(response, error);
         });
     })
     .catch(function (error) {
@@ -30,18 +30,18 @@ export default function rulePostHandler(request, result) {
         server.rulesController.createRule(request.params.id, body)
           .then(function () {
             logger.sendSuccessful();
-            result.send({
+            response.send({
               created: true,
               id: request.params.id
             });
           })
           .catch(function (error) {
             logger.sendFailed(error);
-            sendRequestError(result, error);
+            sendRequestError(response, error);
           });
       } else {
         logger.sendFailed(error);
-        sendRequestError(result, error);
+        sendRequestError(response, error);
       }
     });
 }

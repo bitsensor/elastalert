@@ -2,11 +2,11 @@ import RouteLogger from '../../../routes/route_logger';
 
 let logger = new RouteLogger('/status/errors');
 
-export default function errorsHandler(request, result) {
-  result.send({
+export default function errorsHandler(request, response) {
+  response.send({
     path: '/status/errors',
     method: 'GET',
-    status: 'errorsHandler'
+    handler: 'errorsHandler'
   });
 
   logger.sendSuccessful();
