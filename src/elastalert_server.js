@@ -16,7 +16,7 @@ export default class ElastalertServer {
     this._express = express();
     this._runningTimeouts = [];
     this._processController = null;
-      this._rulesController = null;
+    this._rulesController = null;
 
     // Set listener on process exit (SIGINT == ^C)
     process.on('SIGINT', () => {
