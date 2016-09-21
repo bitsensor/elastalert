@@ -96,7 +96,8 @@ This server exposes the following REST API's:
       // Optional - The options to use for testing the rule.
       "options": {
       
-        // Can be either "all", "schemaOnly" or "countOnly". "all" will give the full console output. "schemaOnly" will only validate the yaml config. "countOnly" will only find the number of matching documents and list available fields.
+        // Can be either "all", "schemaOnly" or "countOnly". "all" will give the full console output. 
+        // "schemaOnly" will only validate the yaml config. "countOnly" will only find the number of matching documents and list available fields.
         "testType": "all",
         
         // Can be any number larger than 0 and this tells ElastAlert over a period of how many days the test should be run
@@ -118,7 +119,11 @@ Want to contribute to this project? Great! Please read our [contributing guideli
 **We only accept pull requests on our [GitHub repository](http://TODO)!**
  
 ## License
-This project is [MIT Licensed](https://git.bitsensor.io/back-end/elastalert/blob/master/LICENSE.md).
+This project is [BSD Licensed](https://git.bitsensor.io/back-end/elastalert/blob/master/LICENSE.md). Note that this only accounts for the ElastAlert Server, not ElastAlert itself ([ElastAlert License](https://github.com/Yelp/elastalert#license)).
 
 ## Disclaimer
-We [(BitSensor)](https://www.bitsensor.io) do not have any rights over the original [ElastAlert](https://github.com/Yelp/elastalert) project from [Yelp](https://www.yelp.com/).
+We [(BitSensor)](https://www.bitsensor.io) do not have any rights over the original [ElastAlert](https://github.com/Yelp/elastalert) project from [Yelp](https://www.yelp.com/). We do not own any trademarks or copyright to the name "ElastAlert" (ElastAlert, however, does because of their Apache 2 license). We do own copyright over the source code of this project, as stated in our BSD license, which means the copyright notice below and as stated in the BSD license should be included in (merged / changed) distributions of this project.
+
+## Copyright
+Copyright © 2016, BitSensor B.V.
+All rights reserved.
