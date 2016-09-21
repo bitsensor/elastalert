@@ -143,6 +143,9 @@ Want to contribute to this project? Great! Please read our [contributing guideli
 
 **We only accept pull requests on our [GitHub repository](https://github.com/bitsensor/elastalert)!**
  
+## Contact
+We'd love to help you if you have any questions. You can contact us by sending an e-mail to [dev@bitsensor.io](mailto:dev@bitsensor.io) or by using the [contact info on our website]().
+ 
 ## License
 This project is [BSD Licensed](../LICENSE.md) with some modifications. Note that this only accounts for the ElastAlert Server, not ElastAlert itself ([ElastAlert License](https://github.com/Yelp/elastalert#license)).
 
