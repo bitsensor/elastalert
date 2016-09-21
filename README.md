@@ -61,62 +61,82 @@ You can use the following config options:
     "path": "/server_data"
   }
 }
-
 ```
  
 ## API
 This server exposes the following REST API's:
 
 - **GET `/`**
-  Exposes the current version running
+
+    Exposes the current version running
+  
 - **GET `/status`**
-  Returns either 'SETUP', 'READY', 'ERROR', 'STARTING', 'CLOSING', 'FIRST_RUN' or 'IDLE' depending on the current ElastAlert process status. 
+
+    Returns either 'SETUP', 'READY', 'ERROR', 'STARTING', 'CLOSING', 'FIRST_RUN' or 'IDLE' depending on the current ElastAlert process status. 
+  
 - **GET `/status/control/:action`**
-  Where `:action` can be either 'start' or 'stop', which will respectively start or stop the current ElastAlert process.
+
+    Where `:action` can be either 'start' or 'stop', which will respectively start or stop the current ElastAlert process.
+  
 - **[WIP] GET `/status/errors`**
-  When `/status` returns 'ERROR' this returns a list of errors that were triggered.
+
+    When `/status` returns 'ERROR' this returns a list of errors that were triggered.
+  
 - **GET `/rules`**
-  Returns a list of directories and rules that exist in the `rulesPath` (from the config) and are being run by the ElastAlert process.
+
+    Returns a list of directories and rules that exist in the `rulesPath` (from the config) and are being run by the ElastAlert process.
+  
 - **GET `/rules/:id`**
-  Where `:id` is the id of the rule returned by **GET `/rules`**, which will return the file contents of that rule.
+
+    Where `:id` is the id of the rule returned by **GET `/rules`**, which will return the file contents of that rule.
+  
 - **POST `/rules/:id`**
-  Where `:id` is the id of the rule returned by **GET `/rules`**, which will allow you to edit the rule. The body send should be:
+
+    Where `:id` is the id of the rule returned by **GET `/rules`**, which will allow you to edit the rule. The body send should be:
   
-    ```javascript
-    {
-      // Required - The full yaml rule config.
-      "yaml": "..."
-    }
-    ```
-- **DELETE `/rules/:id`**
-  Where `:id` is the id of the rule returned by **GET `/rules`**, which will delete the given rule.
-- **POST `/test`**
-  This allows you to test a rule. The body send should be:
-  
-    ```javascript
-    {
-      // Required - The full yaml rule config.
-      "rule": "...",
-      
-      // Optional - The options to use for testing the rule.
-      "options": {
-      
-        // Can be either "all", "schemaOnly" or "countOnly". "all" will give the full console output. 
-        // "schemaOnly" will only validate the yaml config. "countOnly" will only find the number of matching documents and list available fields.
-        "testType": "all",
-        
-        // Can be any number larger than 0 and this tells ElastAlert over a period of how many days the test should be run
-        "days": "1"
-        
-        // Whether to send real alerts
-        "alert": false
+      ```javascript
+      {
+        // Required - The full yaml rule config.
+        "yaml": "..."
       }
-    }
-    ``` 
+      ```
+    
+- **DELETE `/rules/:id`**
+
+    Where `:id` is the id of the rule returned by **GET `/rules`**, which will delete the given rule.
+  
+- **POST `/test`**
+
+    This allows you to test a rule. The body send should be:
+  
+      ```javascript
+      {
+        // Required - The full yaml rule config.
+        "rule": "...",
+        
+        // Optional - The options to use for testing the rule.
+        "options": {
+        
+          // Can be either "all", "schemaOnly" or "countOnly". "all" will give the full console output. 
+          // "schemaOnly" will only validate the yaml config. "countOnly" will only find the number of matching documents and list available fields.
+          "testType": "all",
+          
+          // Can be any number larger than 0 and this tells ElastAlert over a period of how many days the test should be run
+          "days": "1"
+          
+          // Whether to send real alerts
+          "alert": false
+        }
+      }
+      ``` 
+    
 - **[WIP] GET `/config`**
-  Gets the ElastAlert configuration from `config.yaml` in `elastalertPath` (from the config).
+
+    Gets the ElastAlert configuration from `config.yaml` in `elastalertPath` (from the config).
+  
 - **[WIP] POST `/config`**
-  Allows you to edit the ElastAlert configuration from `config.yaml` in `elastalertPath` (from the config). The required body to be send will be edited when the work on this API is done.
+
+    Allows you to edit the ElastAlert configuration from `config.yaml` in `elastalertPath` (from the config). The required body to be send will be edited when the work on this API is done.
  
 ## Contributing
 Want to contribute to this project? Great! Please read our [contributing guidelines](../CONTRIBUTING.md) before submitting an issue or a pull request.
