@@ -1,7 +1,11 @@
 # Contributing to ElastAlert Server
-**Do you want to contribute to our ElastAlert server or issue an issue? Great! Since we hate rejecting pull requests or ask you to describe your issue more clearly, please read these guidelines carefully:**
+**Do you want to contribute to our ElastAlert Server or issue an issue? Great! Since we hate rejecting pull requests or ask you to describe your issue more clearly, please read these guidelines carefully:**
 
 ## Filing an issue
+- Describe your issue clearly. 
+- When issuing a bug, please provide steps on how to recreate the bug if possible. 
+- If you get an error, include the error in your issue
+
 We seriously appreciate thoughtful comments. If an issue is important to you, add a comment with a solid write up of your use case and explain why it's so important. Please avoid posting comments comprised solely of a thumbs up emoji :+1:.
 
 Granted that you share your thoughts, we might even be able to come up with creative solutions to your specific problem. If everything you'd like to say has already been brought up but you'd still like to add a token of support, feel free to add a :+1: [thumbs up reaction](https://github.com/blog/2119-add-reactions-to-pull-requests-issues-and-comments) on the issue itself and on the comment which best summarizes your thoughts.
