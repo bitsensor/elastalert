@@ -26,4 +26,27 @@ Then follow the default installation steps, so:
 3. Look at the `Config` section in [REAMDE.md](../README.md#config) to setup the path to your ElastAlert instance.
 
 ### Linting
-We use [ESLint](http://eslint.org/) to ensure the that the [Styleguide](../STYLEGUIDE.md) 
+We use [ESLint](http://eslint.org/) to ensure the that the [Styleguide](../STYLEGUIDE.md) is being followed so we suggest you integrate it in your code editor to get live feedback.
+
+Here are some hints for getting eslint setup in your favorite editor:
+
+Editor     | Plugin
+-----------|-------------------------------------------------------------------------------
+Sublime    | [SublimeLinter-eslint](https://github.com/roadhump/SublimeLinter-eslint#installation)
+Atom       | [linter-eslint](https://github.com/AtomLinter/linter-eslint#installation)
+IntelliJ   | Settings » Languages & Frameworks » JavaScript » Code Quality Tools » ESLint
+`vi`       | [scrooloose/syntastic](https://github.com/scrooloose/syntastic)
+
+Another tool we use for enforcing consistent coding style is EditorConfig, which can be set up by installing a plugin in your editor that dynamically updates its configuration. Take a look at the [EditorConfig](http://editorconfig.org/#download) site to find a plugin for your editor, and browse our [`.editorconfig`](https://github.com/elastic/kibana/blob/master/.editorconfig) file to see what config rules we set up.
+
+### Testing and Building
+
+To ensure that your changes will not break other functionality, please run the test suite and build process before submitting your Pull Request.
+
+Before running the tests you will need to install the projects dependencies as described above.
+
+Once that's done, just run:
+
+```bash
+npm run test && npm run build
+```
