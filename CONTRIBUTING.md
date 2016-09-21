@@ -74,13 +74,53 @@ If you want to write a new REST API service, please be sure to follow these step
     
     > Take a look at the [example handler](../src/handlers/example_handler.js) for an example and more detailed documentation on how to write a handler.
     
-> Note that the code in a handler should be brief, in most cases it should only use api calls on an instance of a controller in the [controllers folder](../src/controllers) obtained through the server. Shared utilities / services used by multiple controllers or handlers (like error classes and abstract classes) should be added to the [common folder](../src/common).
+> Note that the code in a handler should be brief and readable, in most cases it should only use api calls on an instance of a controller in the [controllers folder](../src/controllers) obtained through the server. Shared utilities / services used by multiple controllers or handlers (like error classes and abstract classes) should be added to the [common folder](../src/common).
+
+### Writing a controller
+Controllers expose API that can be used by the handlers. There are a couple things to keep in mind when writing a controller. A controller should:
+
+- be a class named `[controllerName]Controller`
+- use a logger to log important stuff. You can create a new logger by:
+    ```javascript
+    import Logger from 'path/to/common/logger';
+    let logger = new Logger('[className]');
+    ```
+- have an instance of it accessible by the `ElastalertServer`. In the `start()` function in the [`ElastalertServer`](../src/elastalert_server.js) you see 
+    ```javascript
+    config.ready(function () {
+      try {
+        //...
+      } catch (error) {
+        logger.error('Starting server failed with error:', error);
+      }
+    });
+    ```
+    You should add an instance of your controller there:
+    ```javascript
+    self._controllerNameController = new controllerName();
+    ```
+    You should also provide a getter for the controller:
+    ```javascript
+    get controllerNameController() {
+      return this._controllerNameController;
+    }
+    ```
 
 ### Contributing checklist
-1. Did you [run the tests & builds as shown above](#testing-and-building) and [make sure it follows the styleguide](#linting)?
-2. If you made a new feature, did you think about making it configurable? Always make sure the feature can be ran on any environment by providing config options for environment specific settings. 
+1. **Did you [run the tests & builds as shown above](#testing-and-building) and [make sure it follows the styleguide](#linting)?**
+2. **If you made a new feature, did you think about making it configurable?**
+      
+      Always make sure the feature can be ran on any environment by providing config options for environment specific settings. 
     > If you add a config option, check that you add it in the [config schema](../src/common/config/schema.js), the [config example](../config/config.example.json) and the [config section in readme](../README.md#config).
-3. Did you make sure you saved all your dependencies with `npm install [packageName] --save`?
-4. Did you write tests for the code you wrote?
+3. **Did you make sure you saved all your dependencies with `npm install [packageName] --save`?**
+4. **Did you write tests for the code you wrote?**
     > If you have any questions about writing tests, let us know by sending an e-mail to [dev@bitsensor.io](mailto:dev@bitsensor.io).
-5. 
+5. **Did you document the code you wrote?**
+
+      Especially when writing a controller with an API, please provide a little documentation on the API functions using the [JSDoc](http://usejsdoc.org/) comment style.
+6. **Did you have fun writing your code?**
+      
+      We know that this list is quite long. If you want to contribute code but don't have the time to write tests or documentation, please mention that in the pull request. We'll still be happy with your contribution and we'll write the tests / documentation ourselves!
+      
+#### Thanks in advance,
+#### The BitSensor Team
