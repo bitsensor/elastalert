@@ -1,5 +1,5 @@
 # Elastalert Server 0.0.5
-
+Als we niet meer gaan, dan ga ik daar wel heen, anders
 **A server that runs [ElastAlert](https://github.com/Yelp/elastalert) and exposes REST API's for manipulating rules and alerts. It works great in combination with our [ElastAlert Kibana plugin](https://git.bitsensor.io/front-end/elastalert-kibana-plugin).**
 
 ## Requirements
@@ -119,10 +119,10 @@ Want to contribute to this project? Great! Please read our [contributing guideli
 **We only accept pull requests on our [GitHub repository](http://TODO)!**
  
 ## License
-This project is [BSD Licensed](https://git.bitsensor.io/back-end/elastalert/blob/master/LICENSE.md). Note that this only accounts for the ElastAlert Server, not ElastAlert itself ([ElastAlert License](https://github.com/Yelp/elastalert#license)).
+This project is [BSD Licensed](https://git.bitsensor.io/back-end/elastalert/blob/master/LICENSE.md) with some modifications. Note that this only accounts for the ElastAlert Server, not ElastAlert itself ([ElastAlert License](https://github.com/Yelp/elastalert#license)).
 
 ## Disclaimer
-We [(BitSensor)](https://www.bitsensor.io) do not have any rights over the original [ElastAlert](https://github.com/Yelp/elastalert) project from [Yelp](https://www.yelp.com/). We do not own any trademarks or copyright to the name "ElastAlert" (ElastAlert, however, does because of their Apache 2 license). We do own copyright over the source code of this project, as stated in our BSD license, which means the copyright notice below and as stated in the BSD license should be included in (merged / changed) distributions of this project.
+We [(BitSensor)](https://www.bitsensor.io) do not have any rights over the original [ElastAlert](https://github.com/Yelp/elastalert) project from [Yelp](https://www.yelp.com/). We do not own any trademarks or copyright to the name "ElastAlert" (ElastAlert, however, does because of their Apache 2 license). We do own copyright over the source code of this project, as stated in our BSD license, which means the copyright notice below and as stated in the BSD license should be included in (merged / changed) distributions of this project. The BSD license also states that making promotional content using 'BitSensor' is prohibited. However we hereby grant permission to anyone who wants to use the phrases 'BitSensor ElastAlert Plugin', 'BitSensor Software' or 'BitSensor Alerting' in promotional content. Phrases like 'We use BitSensor' or 'We use BitSensor security' when only using our ElastAlert Server are forbidden.
 
 ## Copyright
 Copyright © 2016, BitSensor B.V.
