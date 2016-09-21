@@ -1,4 +1,4 @@
-export default function controlHandler(request, result) {
+export default function controlHandler(request, response) {
   /**
    * @type {ElastalertServer}
    */
@@ -20,7 +20,7 @@ export default function controlHandler(request, result) {
       break;
   }
 
-  result.send({
+  response.send({
     success: success,
   });
 }
