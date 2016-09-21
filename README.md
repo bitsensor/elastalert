@@ -1,5 +1,4 @@
 # Elastalert Server 0.0.5
-Als we niet meer gaan, dan ga ik daar wel heen, anders
 **A server that runs [ElastAlert](https://github.com/Yelp/elastalert) and exposes REST API's for manipulating rules and alerts. It works great in combination with our [ElastAlert Kibana plugin](https://git.bitsensor.io/front-end/elastalert-kibana-plugin).**
 
 ## Requirements
