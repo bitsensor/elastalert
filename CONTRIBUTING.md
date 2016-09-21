@@ -26,4 +26,4 @@ Then follow the default installation steps, so:
 3. Look at the `Config` section in [REAMDE.md](../README.md#config) to setup the path to your ElastAlert instance.
 
 ### Linting
-We use [ESLint](http://eslint.org/) to ensure the that the [Styleguide](https://github.com/bitsensor/elastalert/blob/master/STYLEGUIDE.md) 
+We use [ESLint](http://eslint.org/) to ensure the that the [Styleguide](../STYLEGUIDE.md) 
