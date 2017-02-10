@@ -1,4 +1,4 @@
-FROM bitsensor/nvm
+FROM node
 MAINTAINER BitSensor <dev@bitsensor.io>
 EXPOSE 3030
 
@@ -17,4 +17,4 @@ COPY . /opt/elastalert-server
 COPY docker/config/elastalert.yaml /opt/elastalert/config.yaml
 COPY docker/rules /opt/elastalert/rules
 COPY docker/config/elastalert-server.json config/config.json
-ENTRYPOINT ["scripts/entrypoint.sh"]
+ENTRYPOINT ["npm", "start"]
