@@ -2,6 +2,7 @@ stages:
   - build
   - test
   - deploy
+  - mirror
 
 build:
   image: bitsensor/nvm
@@ -93,3 +94,14 @@ deploy:docker:snapshot:
       - node_modules/
   only:
     - develop
+
+mirror:github:
+  image: debian
+  stage: mirror
+  script:
+    - apt-get update && apt-get install -y git
+    - git clone --mirror https://git.bitsensor.io/back-end/elastalert.git mirror-github
+    - cd mirror-github
+    - git remote add github https://$MIRROR_GITHUB_USER:$MIRROR_GITHUB_PASSWORD@$MIRROR_GITHUB_URL
+    - git push -u github -q --mirror
+  when: always

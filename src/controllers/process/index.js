@@ -1,7 +1,7 @@
 import {spawn, spawnSync} from 'child_process';
-import config from 'src/common/config';
-import Logger from 'src/common/logger';
-import {Status} from 'src/common/status';
+import config from '../../common/config';
+import Logger from '../../common/logger';
+import {Status} from '../../common/status';
 
 let logger = new Logger('ProcessController');
 

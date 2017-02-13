@@ -1,16 +1,16 @@
 import {join as joinPath, normalize as normalizePath, extname as pathExtension} from 'path';
 import mkdirp from 'mkdirp';
-import FileSystemController from './file_system';
-import config from 'src/common/config';
-import Logger from 'src/common/logger';
+import FileSystem from '../../common/file_system';
+import config from '../../common/config';
+import Logger from '../../common/logger';
 import {RuleNotFoundError, RuleNotReadableError, RuleNotWritableError,
-  RulesFolderNotFoundError, RulesRootFolderNotCreatableError} from 'src/common/errors/rule_request_errors';
+  RulesFolderNotFoundError, RulesRootFolderNotCreatableError} from '../../common/errors/rule_request_errors';
 
 let logger = new Logger('RulesController');
 
 export default class RulesController {
   constructor() {
-    this._fileSystemController = new FileSystemController();
+    this._fileSystemController = new FileSystem();
     this.rulesFolder = this._getRulesFolder();
   }
 
@@ -41,7 +41,7 @@ export default class RulesController {
                 reject(new RulesRootFolderNotCreatableError());
                 logger.warn(`The rules root folder (${fullPath}) couldn't be found nor could it be created by the file system.`);
               } else {
-                resolve([]);
+                resolve(self._fileSystemController.getEmptyDirectoryIndex());
               }
             });
           } else {
@@ -57,6 +57,7 @@ export default class RulesController {
     return new Promise(function (resolve, reject) {
       self._findRule(id)
         .then(function (access) {
+          console.log('rule resolved');
           resolve({
             get: function () {
               if (access.read) {
@@ -76,6 +77,7 @@ export default class RulesController {
           });
         })
         .catch(function () {
+          console.log('catched');
           reject(new RuleNotFoundError(id));
         });
     });

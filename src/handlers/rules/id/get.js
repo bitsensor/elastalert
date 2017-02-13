@@ -1,9 +1,9 @@
-import RouteLogger from 'src/routes/route_logger';
-import {sendRequestError} from 'src/common/errors/utils';
+import RouteLogger from '../../../routes/route_logger';
+import {sendRequestError} from '../../../common/errors/utils';
 
 let logger = new RouteLogger('/rules/:id');
 
-export default function ruleGetHandler(request, result) {
+export default function ruleGetHandler(request, response) {
   /**
    * @type {ElastalertServer}
    */
@@ -13,15 +13,16 @@ export default function ruleGetHandler(request, result) {
     .then(function (rule) {
       rule.get()
         .then(function (rule) {
-          result.send(rule);
+          response.send(rule);
           logger.sendSuccessful();
         })
         .catch(function (error) {
-          sendRequestError(request, error);
           logger.sendFailed(error);
+          sendRequestError(response, error);
         });
     })
     .catch(function (error) {
-      sendRequestError(request, error);
+      logger.sendFailed(error);
+      sendRequestError(response, error);
     });
 }

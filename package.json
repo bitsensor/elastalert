@@ -1,7 +1,7 @@
 {
   "name": "@bitsensor/elastalert",
   "version": "0.0.5",
-  "description": "Server that manages an ElastAlert installation. Can be used standalone or as module in another application. Exposes REST API.",
+  "description": "A server that runs ElastAlert and exposes REST API's for manipulating rules and alerts.",
   "license": "MIT",
   "main": "index.js",
   "author": {
@@ -26,7 +26,8 @@
     "joi": "^9.0.4",
     "lodash": "^4.15.0",
     "mkdirp": "^0.5.1",
-    "object-resolve-path": "^1.1.1"
+    "object-resolve-path": "^1.1.1",
+    "randomstring": "^1.1.5"
   },
   "devDependencies": {
     "babel-cli": "^6.11.4",

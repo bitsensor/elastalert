@@ -1,9 +1,9 @@
-import RouteLogger from 'src/routes/route_logger';
-import {sendRequestError} from 'src/common/errors/utils';
+import RouteLogger from '../../../routes/route_logger';
+import {sendRequestError} from '../../../common/errors/utils';
 
 let logger = new RouteLogger('/rules/:id', 'DELETE');
 
-export default function ruleDeleteHandler(request, result) {
+export default function ruleDeleteHandler(request, response) {
   /**
    * @type {ElastalertServer}
    */
@@ -13,18 +13,19 @@ export default function ruleDeleteHandler(request, result) {
     .then(function (rule) {
       rule.delete()
         .then(function (rule) {
-          result.send(rule);
+          response.send(rule);
           logger.sendSuccessful({
             deleted: true,
             id: request.params.id
           });
         })
         .catch(function (error) {
-          sendRequestError(request, error);
           logger.sendFailed(error);
+          sendRequestError(response, error);
         });
     })
     .catch(function (error) {
-      sendRequestError(request, error);
+      logger.sendFailed(error);
+      sendRequestError(response, error);
     });
 }
