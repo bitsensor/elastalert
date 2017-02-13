@@ -63,10 +63,8 @@ export default class ElastalertServer {
         self._rulesController = new RulesController();
         self._testController = new TestController(self);
 
-        self._createDummyFile().then(function () {
-          self._processController = new ProcessController();
-          self._processController.start();
-        });
+        self._processController = new ProcessController();
+        self._processController.start();
 
         self._fileSystemController.createDirectoryIfNotExists(self.getDataFolder()).catch(function (error) {
           logger.error('Error creating data folder with error:', error);
@@ -101,28 +99,5 @@ export default class ElastalertServer {
 
   _serverController() {
     logger.info('Server started');
-  }
-
-  _createDummyFile() {
-    let self = this;
-    return new Promise(function (resolve, reject) {
-
-      //TODO: This is making sure a dummy rule is available to run elastalert with. Should be fixed in ElastAlert repository.
-      self._fileSystemController.readFile(path.join(__dirname, '../docker/rules/dummy.yaml'))
-        .then(function (content) {
-          self._fileSystemController.writeFile(path.join(self._rulesController.rulesFolder, 'dummy.yaml'), content)
-            .then(function () {
-              resolve();
-            })
-            .catch(function (error) {
-              logger.error('Writing to dummy.yaml failed with error', error);
-              reject(error);
-            });
-        })
-        .catch(function (error) {
-          logger.error('Reading dummy.yaml failed with error', error);
-          reject(error);
-        });
-    });
   }
 }
