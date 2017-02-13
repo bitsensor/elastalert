@@ -1,5 +1,4 @@
 import express from 'express';
-import path from 'path';
 import bodyParser from 'body-parser';
 import Logger from './common/logger';
 import config from './common/config';
@@ -58,7 +57,9 @@ export default class ElastalertServer {
         self._runningServer = self.express.listen(config.get('port'), self._serverController);
         self._express.set('server', self);
 
-        self._fileSystemController = new FileSystem();
+        self._processController = new ProcessController();
+        self._processController.start();
+
         self._rulesController = new RulesController();
         self._testController = new TestController(self);
 
