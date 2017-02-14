@@ -12,7 +12,7 @@ WORKDIR /opt/elastalert
 RUN pip install -r requirements.txt
 WORKDIR /opt/elastalert-server
 COPY . /opt/elastalert-server
-RUN npm install --production
+RUN npm install --production --quiet
 COPY config/elastalert.yaml /opt/elastalert/config.yaml
 COPY config/elastalert-server.json config/config.json
 ENTRYPOINT ["npm", "start"]
