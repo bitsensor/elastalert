@@ -5,15 +5,22 @@
 - [ElastAlert v0.0.96](https://github.com/Yelp/elastalert/tree/v0.0.96). We don't support other versions of ElastAlert, use them at your own risk.
 - [NodeJS 4.5.0](https://nodejs.org/en/download/) with NPM & NVM.
 
-## Docker installationo
-Docker might be the quickest way to get going. 
-    ```bash
-    docker build . -t elastalert
-    Fish:
-    docker run -d -p 3030:3030 -v (pwd)/config/elastalert.yaml:/opt/elastalert/config.yaml -v (pwd)/config/elastalert-server.json:/opt/elastalert-server/config/config.json --net="host" elastalert:latest
-    Bash:
-    docker run -d -p 3030:3030 -v `pwd`/config/elastalert.yaml:/opt/elastalert/config.yaml -v `pwd`/config/elastalert-server.json:/opt/elastalert-server/config/config.json --net="host" elastalert:latest
-    ```
+## Docker installation
+First, build the container locally:
+```bash
+docker build . -t elastalert
+```
+Then, run it, optionally with your custom ElastAlert configuration file. We've included a sensible default, with localhost as ES host.
+
+_Bash_
+```Bash
+docker run -d -p 3030:3030 -v `pwd`/config/elastalert.yaml:/opt/elastalert/config.yaml -v `pwd`/config/elastalert-server.json:/opt/elastalert-server/config/config.json --net="host" elastalert:latest
+```
+
+_Fish_
+```fish
+docker run -d -p 3030:3030 -v (pwd)/config/elastalert.yaml:/opt/elastalert/config.yaml -v (pwd)/config/elastalert-server.json:/opt/elastalert-server/config/config.json --net="host" elastalert:latest
+```
 
 ## Installation using npm and manual ElastAlert setup
 1. Clone the repository
