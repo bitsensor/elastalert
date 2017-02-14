@@ -7,7 +7,7 @@ RUN apt-get clean && apt-get update && apt-get install -y \
   python2.7 \
   python2.7-dev \
   python-pip
-RUN git clone https://github.com/Yelp/elastalert.git -b v0.0.95 --depth=1 /opt/elastalert
+RUN git clone https://github.com/Yelp/elastalert.git -b master --depth=1 /opt/elastalert
 WORKDIR /opt/elastalert
 RUN pip install -r requirements.txt
 WORKDIR /opt/elastalert-server
