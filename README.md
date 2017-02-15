@@ -14,12 +14,12 @@ Then, run it, optionally with your custom ElastAlert configuration file. We've i
 
 _Bash_
 ```Bash
-docker run -d -p 3030:3030 -v `pwd`/config/elastalert.yaml:/opt/elastalert/config.yaml -v `pwd`/config/elastalert-server.json:/opt/elastalert-server/config/config.json --net="host" elastalert:latest
+docker run -d -p 3030:3030 -v `pwd`/config/elastalert.yaml:/opt/elastalert/config.yaml -v `pwd`/config/elastalert-server.json:/opt/elastalert-server/config/config.json -v (pwd)/rules:/opt/elastalert/rules -v (pwd)/server-data:/opt/elastalert/server_dat --net="host" elastalert:latest
 ```
 
 _Fish_
 ```fish
-docker run -d -p 3030:3030 -v (pwd)/config/elastalert.yaml:/opt/elastalert/config.yaml -v (pwd)/config/elastalert-server.json:/opt/elastalert-server/config/config.json --net="host" elastalert:latest
+ docker run -ti -p 3030:3030 -v (pwd)/config/elastalert.yaml:/opt/elastalert/config.yaml -v (pwd)/config/elastalert-server.json:/opt/elastalert-server/config/config.json -v (pwd)/rules:/opt/elastalert/rules -v (pwd)/server-data:/opt/elastalert/server_data --net="host" elastalert:latest
 ```
 
 ## Installation using npm and manual ElastAlert setup
