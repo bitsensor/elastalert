@@ -5,11 +5,9 @@ stages:
   - mirror
 
 build:
-  image: bitsensor/nvm
+  image: node
   stage: build
   script:
-    - source ~/.bashrc
-    - nvm install "$(cat .node-version)"
     - npm config set //registry.npmjs.org/:_authToken=$NPM_TOKEN
     - npm install
     - npm run build
@@ -19,11 +17,9 @@ build:
       - node_modules/
 
 test:
-  image: bitsensor/nvm
+  image: node
   stage: test
   script:
-    - source ~/.bashrc
-    - nvm install "$(cat .node-version)"
     - npm config set //registry.npmjs.org/:_authToken=$NPM_TOKEN
     - npm install
     - npm test
@@ -33,22 +29,18 @@ test:
       - node_modules/
 
 lint:
-  image: bitsensor/nvm
+  image: node
   stage: test
   script:
-    - source ~/.bashrc
-    - nvm install "$(cat .node-version)"
     - npm config set //registry.npmjs.org/:_authToken=$NPM_TOKEN
     - npm install
     - ./node_modules/.bin/eslint .
   allow_failure: true
 
 deploy:npm:
-  image: bitsensor/nvm
+  image: node
   stage: deploy
   script:
-    - source ~/.bashrc
-    - nvm install "$(cat .node-version)"
     - npm config set //registry.npmjs.org/:_authToken=$NPM_TOKEN
     - npm install
     - scripts/update-authors.sh
