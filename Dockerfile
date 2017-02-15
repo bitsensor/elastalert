@@ -9,6 +9,7 @@ RUN apt-get clean && apt-get update && apt-get install -y \
   python-pip
 RUN git clone https://github.com/Yelp/elastalert.git -b master --depth=1 /opt/elastalert
 WORKDIR /opt/elastalert
+RUN mkdir server_data
 RUN pip install -r requirements.txt
 WORKDIR /opt/elastalert-server
 COPY . /opt/elastalert-server
