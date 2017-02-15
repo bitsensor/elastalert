@@ -1,6 +1,6 @@
 {
   "name": "@bitsensor/elastalert",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "A server that runs ElastAlert and exposes REST API's for manipulating rules and alerts.",
   "license": "MIT",
   "main": "index.js",
