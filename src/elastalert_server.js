@@ -65,9 +65,6 @@ export default class ElastalertServer {
         self._rulesController = new RulesController();
         self._testController = new TestController(self);
 
-        self._processController = new ProcessController();
-        self._processController.start();
-
         self._fileSystemController.createDirectoryIfNotExists(self.getDataFolder()).catch(function (error) {
           logger.error('Error creating data folder with error:', error);
         });
