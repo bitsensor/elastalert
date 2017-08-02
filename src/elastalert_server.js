@@ -72,6 +72,7 @@ export default class ElastalertServer {
         logger.info('Server listening on port ' + config.get('port'));
       } catch (error) {
         logger.error('Starting server failed with error:', error);
+        process.exit(1);
       }
     });
   }
