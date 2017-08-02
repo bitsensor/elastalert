@@ -1,0 +1,60 @@
+# Alert when there are 500 discovery detection events coming from the same ip, userAgent within 30 seconds.
+
+# Index to search, wildcard supported
+index: bitsensor
+timestamp_field: endpoint.localtime
+
+# Rule name, must be unique
+name: Alert on high frequency
+
+# Type of alert.
+type: frequency
+
+# Alert when this many documents matching the query occur within a timeframe
+num_events: 500
+
+# num_events must occur within this amount of time to trigger an alert
+timeframe:
+  seconds: 30
+
+query_key:
+  - context.ip
+  - context.http.userAgent
+
+# A list of elasticsearch filters used for find events
+# These filters are joined with AND and nested in a filtered query
+# For more info: http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/query-dsl.html
+filter: 
+- query:
+    query_string:
+      query: "detections.type:discovery"
+
+include:
+  - endpoint.location
+  - endpoint.name
+  - context.http.userAgent
+  - context.ip
+  - context.php.session.sessionId
+  - detections.type
+  - detections.name
+  - meta.user
+  - errors
+
+alert_subject: "Frequent attack on {}"
+alert_subject_args:
+  - endpoint.name
+
+alert_text_type: alert_text_only
+alert_text: "Time: {}\nIP: {} \nUser-Agent: {}\n\nID: {}\nUser: {}"
+alert_text_args:
+  - endpoint.localtime
+  - context.ip
+  - context.http.userAgent
+  - _id
+  - meta.user
+
+# The alert is use when a match is found
+alert:
+  - slack
+slack_webhook_url: "https://hooks.slack.com/services/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"
+slack_username_override: "ElastAlert"

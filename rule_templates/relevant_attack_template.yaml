@@ -1,0 +1,62 @@
+# Alert when a new combination of attacker ip, userAgent and detection type comes up during the period of 10 days.
+
+# Index to search, wildcard supported
+name: Relevant attack alert
+timestamp_field: endpoint.localtime
+
+# Type of alert.
+type: new_term
+
+# Index to search, wildcard supported
+index: bitsensor
+
+# (Required, new_term specific)
+# Monitor the fields. NOTE: include unique application name.
+fields:
+ - "context.ip"
+ - "context.http.userAgent"
+ - "detections.type"
+
+# (Optional, new_term specific)
+# This means that we will query 10 days worth of data when ElastAlert starts to find which values of ip_address already exist
+# If they existed in the last 10 days, no alerts will be triggered for them when they appear
+terms_window_size:
+  days: 10
+  
+alert_on_missing_field: true
+
+filter:
+- query:
+    query_string:
+      query: "_exists_:detections"
+
+include:
+  - endpoint.location
+  - endpoint.name
+  - context.http.userAgent
+  - context.ip
+  - context.php.session.sessionId
+  - detections.type
+  - detections.name
+
+alert_subject: "Relevant attack on {}"
+alert_subject_args:
+  - endpoint.name
+
+alert_text_type: alert_text_only
+alert_text: "New relevant attacker at {}\nIP: {} \nUser-Agent: {}\nDetection name: {}\nDetection type: {}\n\nID: {}\nUser: {}"
+alert_text_args:
+  - endpoint.localtime
+  - context.ip
+  - context.http.userAgent
+  - detections.name
+  - detections.type
+  - _id
+  - meta.user
+
+
+# The alert is use when a match is found
+alert:
+  - slack
+slack_webhook_url: "https://hooks.slack.com/services/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"
+slack_username_override: "ElastAlert"
