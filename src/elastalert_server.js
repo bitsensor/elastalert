@@ -7,6 +7,7 @@ import FileSystem from './common/file_system';
 import setupRouter from './routes/route_setup';
 import ProcessController from './controllers/process';
 import RulesController from './controllers/rules';
+import TemplatesController from './controllers/templates';
 import TestController from './controllers/test';
 
 let logger = new Logger('Server');
@@ -17,6 +18,7 @@ export default class ElastalertServer {
     this._runningTimeouts = [];
     this._processController = null;
     this._rulesController = null;
+    this._templatesController = null;
 
     // Set listener on process exit (SIGINT == ^C)
     process.on('SIGINT', () => {
@@ -42,6 +44,10 @@ export default class ElastalertServer {
     return this._rulesController;
   }
 
+  get templatesController() {
+    return this._templatesController;
+  }
+
   get testController() {
     return this._testController;
   }
@@ -63,6 +69,7 @@ export default class ElastalertServer {
         self._processController.start();
 
         self._rulesController = new RulesController();
+        self._templatesController = new TemplatesController();
         self._testController = new TestController(self);
 
         self._fileSystemController.createDirectoryIfNotExists(self.getDataFolder()).catch(function (error) {

@@ -9,6 +9,10 @@ const schema = Joi.object().keys({
     'relative': Joi.boolean().default(true),
     'path': Joi.string().default('/rules')
   }).default(),
+  'templatesPath': Joi.object().keys({
+    'relative': Joi.boolean().default(true),
+    'path': Joi.string().default('/rule_templates')
+  }).default(),
   'dataPath': Joi.object().keys({
     'relative': Joi.boolean().default(true),
     'path': Joi.string().default('/server_data')

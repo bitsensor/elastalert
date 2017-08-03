@@ -5,5 +5,9 @@
   "rulesPath": {
     "relative": true,
     "path": "/rules"
+  },
+  "templatesPath": {
+    "relative":true,
+    "path":"/rule_templates"
   }
 }

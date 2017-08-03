@@ -13,13 +13,25 @@ docker build . -t elastalert
 Then, run it, optionally with your custom ElastAlert configuration file. We've included a sensible default, with localhost as ES host.
 
 _Bash_
-```Bash
-docker run -d -p 3030:3030 -v `pwd`/config/elastalert.yaml:/opt/elastalert/config.yaml -v `pwd`/config/elastalert-server.json:/opt/elastalert-server/config/config.json -v (pwd)/rules:/opt/elastalert/rules -v (pwd)/server-data:/opt/elastalert/server_dat --net="host" elastalert:latest
+```bash
+docker run -d -p 3030:3030 \
+    -v `pwd`/config/elastalert.yaml:/opt/elastalert/config.yaml \
+    -v `pwd`/config/elastalert-server.json:/opt/elastalert-server/config/config.json \
+    -v `pwd`/rules:/opt/elastalert/rules \
+    -v `pwd`/rule_templates:/opt/elastalert/rule_templates \
+    -v `pwd`/server-data:/opt/elastalert/server_dat \
+    --net="host" elastalert:latest
 ```
 
 _Fish_
 ```fish
- docker run -ti -p 3030:3030 -v (pwd)/config/elastalert.yaml:/opt/elastalert/config.yaml -v (pwd)/config/elastalert-server.json:/opt/elastalert-server/config/config.json -v (pwd)/rules:/opt/elastalert/rules -v (pwd)/server-data:/opt/elastalert/server_data --net="host" elastalert:latest
+docker run -d -p 3030:3030 \
+    -v (pwd)/config/elastalert.yaml:/opt/elastalert/config.yaml \
+    -v (pwd)/config/elastalert-server.json:/opt/elastalert-server/config/config.json \
+    -v (pwd)/rules:/opt/elastalert/rules \
+    -v (pwd)/rule_templates:/opt/elastalert/rule_templates \
+    -v (pwd)/server-data:/opt/elastalert/server_data \
+    --net="host" elastalert:latest
 ```
 
 ## Installation using npm and manual ElastAlert setup
@@ -66,6 +78,16 @@ You can use the following config options:
     
     // The path to the rules folder. 
     "path": "/rules"
+  },
+
+  // The path to the rules folder containing all the rules. If the folder is empty a dummy file will be created to allow ElastAlert to start.
+  "templatesPath": {
+  
+    // Whether to use a path relative to the `elastalertPath` folder.
+    "relative": true,
+    
+    // The path to the rules folder. 
+    "path": "/rule_templates"
   },
   
   // The path to a folder that the server can use to store data and temporary files.
@@ -121,6 +143,29 @@ This server exposes the following REST API's:
 - **DELETE `/rules/:id`**
 
     Where `:id` is the id of the rule returned by **GET `/rules`**, which will delete the given rule.
+
+- **GET `/templates`**
+
+    Returns a list of directories and templates that exist in the `templatesPath` (from the config) and are being run by the ElastAlert process.
+  
+- **GET `/templates/:id`**
+
+    Where `:id` is the id of the template returned by **GET `/templates`**, which will return the file contents of that template.
+  
+- **POST `/templates/:id`**
+
+    Where `:id` is the id of the template returned by **GET `/templates`**, which will allow you to edit the template. The body send should be:
+  
+      ```javascript
+      {
+        // Required - The full yaml template config.
+        "yaml": "..."
+      }
+      ```
+    
+- **DELETE `/templates/:id`**
+
+    Where `:id` is the id of the template returned by **GET `/templates`**, which will delete the given template.
   
 - **POST `/test`**
 
