@@ -57,12 +57,12 @@ deploy:docker:
   stage: deploy
   script:
     - docker info
-    - docker login -u $BITSENSOR_USERNAME -p $BITSENSOR_PASSWORD docker.bitsensor.io
+    - docker login -u $BITSENSOR_USERNAME -p $BITSENSOR_PASSWORD artifacts.bitsensor.io:1443
     - docker build -t elastalert .
-    - docker tag elastalert docker.bitsensor.io/elastalert:latest
-    - docker tag elastalert docker.bitsensor.io/elastalert:$(git describe --abbrev=0)
-    - docker push docker.bitsensor.io/elastalert:latest
-    - docker push docker.bitsensor.io/elastalert:$(git describe --abbrev=0)
+    - docker tag elastalert artifacts.bitsensor.io:1443/elastalert:latest
+    - docker tag elastalert artifacts.bitsensor.io:1443/elastalert:$(git describe --abbrev=0)
+    - docker push artifacts.bitsensor.io:1443/elastalert:latest
+    - docker push artifacts.bitsensor.io:1443/elastalert:$(git describe --abbrev=0)
   artifacts:
     paths:
       - lib/
@@ -76,10 +76,10 @@ deploy:docker:snapshot:
   stage: deploy
   script:
     - docker info
-    - docker login -u $BITSENSOR_USERNAME -p $BITSENSOR_PASSWORD docker.bitsensor.io
+    - docker login -u $BITSENSOR_USERNAME -p $BITSENSOR_PASSWORD artifacts.bitsensor.io:1443
     - docker build -t elastalert .
-    - docker tag elastalert docker.bitsensor.io/elastalert:snapshot
-    - docker push docker.bitsensor.io/elastalert:snapshot
+    - docker tag elastalert artifacts.bitsensor.io:1443/elastalert:snapshot
+    - docker push artifacts.bitsensor.io:1443/elastalert:snapshot
   artifacts:
     paths:
       - lib/
