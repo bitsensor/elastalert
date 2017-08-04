@@ -12,8 +12,10 @@ WORKDIR /opt/elastalert
 RUN mkdir server_data
 RUN pip install -r requirements.txt
 WORKDIR /opt/elastalert-server
-COPY . /opt/elastalert-server
+ADD . /opt/elastalert-server
+ADD rule_templates/ /opt/elastalert/rule_templates/
+ADD rules/ /opt/elastalert/rules/
 RUN npm install --production --quiet
-COPY config/elastalert.yaml /opt/elastalert/config.yaml
-COPY config/elastalert-server.json config/config.json
+ADD config/elastalert.yaml /opt/elastalert/config.yaml
+ADD config/elastalert-server.json config/config.json
 ENTRYPOINT ["npm", "start"]
