@@ -1,4 +1,4 @@
-# Alert when there is new detection event in the last 5 seconds
+# Alert when there is a succesful attack
 
 # Index to search, wildcard supported
 index: bitsensor
