@@ -1,9 +1,9 @@
 import fs from 'fs';
-import {join as joinPath} from 'path';
+import { join as joinPath } from 'path';
 import mkdirp from 'mkdirp';
 
 export default class FileSystem {
-  constructor() {}
+  constructor() { }
 
   readDirectory(path) {
     const self = this;
@@ -15,6 +15,10 @@ export default class FileSystem {
           } else {
             let statCount = 0;
             let directoryIndex = self.getEmptyDirectoryIndex();
+
+            if (elements.length == 0) {
+              resolve(directoryIndex);
+            }
 
             elements.forEach(function (element) {
               fs.stat(joinPath(path, element), function (error, stats) {
