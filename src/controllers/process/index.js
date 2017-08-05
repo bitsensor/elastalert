@@ -58,7 +58,7 @@ export default class ProcessController {
       logger.warn('ElastAlert will start but might not be able to save its data!');
     }
 
-    this._process = spawn('python', ['elastalert/elastalert.py'], {
+    this._process = spawn('python', ['-m', 'elastalert.elastalert'], {
       cwd: this._elastalertPath
     });
 
