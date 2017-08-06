@@ -58,7 +58,16 @@ export default class ProcessController {
       logger.warn('ElastAlert will start but might not be able to save its data!');
     }
 
-    this._process = spawn('python', ['-m', 'elastalert.elastalert'], {
+    let startArguments = [];
+
+    if (config.get('start') !== undefined && config.get('start') !== '') {
+      logger.info('Setting ElastAlert query beginning to time ' + config.get('start'));
+      startArguments.push('--start', config.get('start'));
+    }
+
+    logger.info('Starting elastalert with arguments ' + (startArguments.join(' ') || '[none]'));
+
+    this._process = spawn('python', ['elastalert/elastalert.py'].concat(startArguments), {
       cwd: this._elastalertPath
     });
 
