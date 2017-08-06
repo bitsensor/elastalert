@@ -57,6 +57,9 @@ You can then start the build by running `node lib/index.js`.
 ## Config
 In `config/config.example.json` you'll find the default config. You can make a `config.json` file in the same folder that overrides the default config. When forking this repository it is recommended to remove `config.json` from the `.gitignore` file. For local testing purposes you can then use a `config.dev.json` file which overrides `config.json`.
 
+### Install ElastAlert to /opt/elastalert
+And run `pip install -r requirements.txt` or read the installation guide of ElastAlert.
+
 You can use the following config options:
 
 ```javascript
