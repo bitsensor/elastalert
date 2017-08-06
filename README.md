@@ -57,6 +57,9 @@ You can then start the build by running `node lib/index.js`.
 ## Config
 In `config/config.example.json` you'll find the default config. You can make a `config.json` file in the same folder that overrides the default config. When forking this repository it is recommended to remove `config.json` from the `.gitignore` file. For local testing purposes you can then use a `config.dev.json` file which overrides `config.json`.
 
+### ElastAlert parameters
+ElastAlert supports additional arguments, that can be passed in the `config.json` file. An example is given in `config/config-historic-data-example.json`. 
+
 ### Install ElastAlert to /opt/elastalert
 And run `pip install -r requirements.txt` or read the installation guide of ElastAlert.
 
@@ -64,43 +67,25 @@ You can use the following config options:
 
 ```javascript
 {
-  // The name of the app / server, used by the logging framework.
-  "appName": "elastalert-server",
-  
-  // The port to bind to
-  "port": 3030,
-  
-  // The path to the root ElastAlert folder. It's the folder that contains the `setup.py` script and the `config.yaml.example` file.
-  "elastalertPath": "/opt/elastalert",
-  
-  // The path to the rules folder containing all the rules. If the folder is empty a dummy file will be created to allow ElastAlert to start.
-  "rulesPath": {
-  
-    // Whether to use a path relative to the `elastalertPath` folder.
-    "relative": true,
-    
-    // The path to the rules folder. 
-    "path": "/rules"
+  "appName": "elastalert-server", // The name used by the logging framework.
+  "port": 3030, // The port to bind to
+  "elastalertPath": "/opt/elastalert",  // The path to the root ElastAlert folder. It's the folder that contains the `setup.py` script.
+  "start": "2014-01-01T00:00:00", // Optional date to start querying from
+  "end": "2016-01-01T00:00:00", // Optional date to stop querying at
+  "verbose": true, // Optional, will increase the logging verboseness, which allows you to see information about the state of queries.
+  "es_debug": true, // Optional, will enable logging for all queries made to Elasticsearch
+  "debug": false, // Will run ElastAlert in debug mode. This will increase the logging verboseness, change all alerts to DebugAlerter, which prints alerts and suppresses their normal action, and skips writing search and alert metadata back to Elasticsearch.
+  "rulesPath": { // The path to the rules folder containing all the rules. If the folder is empty a dummy file will be created to allow ElastAlert to start.
+    "relative": true, // Whether to use a path relative to the `elastalertPath` folder.
+    "path": "/rules" // The path to the rules folder. 
   },
-
-  // The path to the rules folder containing all the rules. If the folder is empty a dummy file will be created to allow ElastAlert to start.
-  "templatesPath": {
-  
-    // Whether to use a path relative to the `elastalertPath` folder.
-    "relative": true,
-    
-    // The path to the rules folder. 
-    "path": "/rule_templates"
+  "templatesPath": { // The path to the rules folder containing all the rule templates. If the folder is empty a dummy file will be created to allow ElastAlert to start.
+    "relative": true, // Whether to use a path relative to the `elastalertPath` folder.
+    "path": "/rule_templates" // The path to the rule templates folder.
   },
-  
-  // The path to a folder that the server can use to store data and temporary files.
-  "dataPath": {
-  
-    // Whether to use a path relative to the `elastalertPath` folder.
-    "relative": true,
-    
-    // The path to the data folder.
-    "path": "/server_data"
+  "dataPath": { // The path to a folder that the server can use to store data and temporary files.
+    "relative": true, // Whether to use a path relative to the `elastalertPath` folder.
+    "path": "/server_data" // The path to the data folder.
   }
 }
 ```
