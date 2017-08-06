@@ -16,7 +16,7 @@ _Bash_
 ```bash
 docker run -d -p 3030:3030 \
     -v `pwd`/config/elastalert.yaml:/opt/elastalert/config.yaml \
-    -v `pwd`/config/elastalert-server.json:/opt/elastalert-server/config/config.json \
+    -v `pwd`/config/config.json:/opt/elastalert-server/config/config.json \
     -v `pwd`/rules:/opt/elastalert/rules \
     -v `pwd`/rule_templates:/opt/elastalert/rule_templates \
     -v `pwd`/server-data:/opt/elastalert/server_dat \
@@ -27,7 +27,7 @@ _Fish_
 ```fish
 docker run -d -p 3030:3030 \
     -v (pwd)/config/elastalert.yaml:/opt/elastalert/config.yaml \
-    -v (pwd)/config/elastalert-server.json:/opt/elastalert-server/config/config.json \
+    -v (pwd)/config/config.json:/opt/elastalert-server/config/config.json \
     -v (pwd)/rules:/opt/elastalert/rules \
     -v (pwd)/rule_templates:/opt/elastalert/rule_templates \
     -v (pwd)/server-data:/opt/elastalert/server_data \
