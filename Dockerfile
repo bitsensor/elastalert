@@ -15,5 +15,5 @@ COPY . /opt/elastalert-server
  
 RUN npm install --production --quiet 
 COPY config/elastalert.yaml /opt/elastalert/config.yaml 
-COPY config/elastalert-server.json config/config.json 
+COPY config/config.json config/config.json 
 ENTRYPOINT ["npm", "start"]
