@@ -65,6 +65,26 @@ export default class ProcessController {
       startArguments.push('--start', config.get('start'));
     }
 
+    if (config.get('end') !== undefined && config.get('end') !== '') {
+      logger.info('Setting ElastAlert query ending to time ' + config.get('end'));
+      startArguments.push('--end', config.get('end'));
+    }
+
+    if (config.get('debug') === true) {
+      logger.info('Setting ElastAlert debug mode. This will increase the logging verboseness, change all alerts to DebugAlerter, which prints alerts and suppresses their normal action, and skips writing search and alert metadata back to Elasticsearch.');
+      startArguments.push('--debug');
+    }
+
+    if (config.get('verbose') === true) {
+      logger.info('Setting ElastAlert verbose mode. This will increase the logging verboseness, which allows you to see information about the state of queries.');
+      startArguments.push('--verbose');
+    }
+
+    if (config.get('es_debug') === true) {
+      logger.info('Setting ElastAlert es_debug mode. This will enable logging for all queries made to Elasticsearch.');
+      startArguments.push('--es_debug');
+    }
+
     logger.info('Starting elastalert with arguments ' + (startArguments.join(' ') || '[none]'));
 
     this._process = spawn('python', ['elastalert/elastalert.py'].concat(startArguments), {
