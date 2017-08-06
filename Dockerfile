@@ -7,7 +7,7 @@ RUN apt-get clean && apt-get update && apt-get install -y \
   python2.7 \
   python2.7-dev \
   python-pip
-RUN git clone https://github.com/Yelp/elastalert.git -b master --depth=1 /opt/elastalert
+RUN git clone https://github.com/bitsensor/yelp-elastalert.git -b master --depth=1 /opt/elastalert
 WORKDIR /opt/elastalert
 RUN mkdir server_data
 
