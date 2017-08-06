@@ -4,5 +4,3 @@
 *.iml
 .idea/
 .git/
-node_modules/
-lib/
