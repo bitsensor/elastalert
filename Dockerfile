@@ -1,4 +1,6 @@
 FROM ivankrizsan/elastalert AS py-ea
+# Uses BitSensor's elastalert 
+ENV ELASTALERT_URL https://github.com/bitsensor/yelp-elastalert/archive/master.zip 
 
 FROM node:alpine
 MAINTAINER BitSensor <dev@bitsensor.io>
