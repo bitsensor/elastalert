@@ -71,3 +71,4 @@ jspm_packages
 .node_repl_history
 
 lib/
+config/config.json
