@@ -1,11 +1,9 @@
-# Alert when there is new detection event in the last 5 seconds
+# Rule name, must be unique
+name: Alert on any detection
 
 # Index to search, wildcard supported
 index: bitsensor
 timestamp_field: endpoint.localtime
-
-# Rule name, must be unique
-name: Alert on All detection
 
 # Type of alert.
 type: any

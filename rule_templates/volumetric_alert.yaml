@@ -1,21 +1,21 @@
 # Alert when there are 500 discovery detection events coming from the same ip, userAgent within 30 seconds.
 
-# Index to search, wildcard supported
-index: bitsensor
-timestamp_field: endpoint.localtime
-
 # Rule name, must be unique
-name: Alert on high frequency
+name: Behaviour is suspicious
 
 # Type of alert.
 type: frequency
 
 # Alert when this many documents matching the query occur within a timeframe
-num_events: 500
+num_events: 100
 
 # num_events must occur within this amount of time to trigger an alert
 timeframe:
-  seconds: 30
+  seconds: 60
+
+# Index to search, wildcard supported
+index: bitsensor
+timestamp_field: endpoint.localtime
 
 query_key:
   - context.ip
@@ -27,7 +27,7 @@ query_key:
 filter: 
 - query:
     query_string:
-      query: "detections.type:discovery"
+      query: "_exists_:detections AND detections.reason:BEHAVIOUR"
 
 include:
   - endpoint.location

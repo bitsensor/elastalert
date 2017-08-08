@@ -1,21 +1,15 @@
-# Alert when a new combination of attacker ip, userAgent and detection type comes up during the period of 10 days.
-
 # Index to search, wildcard supported
-name: Relevant attack alert
-timestamp_field: endpoint.localtime
+name: New attacker
 
 # Type of alert.
-type: new_term
+type: any
 
-# Index to search, wildcard supported
-index: bitsensor
-
-# (Required, new_term specific)
-# Monitor the fields. NOTE: include unique application name.
-fields:
+query_key:
  - "context.ip"
  - "context.http.userAgent"
- - "detections.type"
+
+realert:
+  hours: 1
 
 # (Optional, new_term specific)
 # This means that we will query 10 days worth of data when ElastAlert starts to find which values of ip_address already exist
@@ -25,10 +19,14 @@ terms_window_size:
   
 alert_on_missing_field: true
 
+# Index to search, wildcard supported
+index: bitsensor
+timestamp_field: endpoint.localtime
+
 filter:
 - query:
     query_string:
-      query: "_exists_:detections"
+      query: "_exists_:detections AND detections.relevant:true"
 
 include:
   - endpoint.location

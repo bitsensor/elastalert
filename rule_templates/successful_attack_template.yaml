@@ -1,16 +1,15 @@
-# Alert when there is a succesful attack
-
-# Index to search, wildcard supported
-index: bitsensor
-timestamp_field: endpoint.localtime
-
 # Rule name, must be unique
 name: Alert on Successful Attack
 
 # Type of alert.
 type: any
+
 realert: 
   seconds: 0
+
+# Index to search, wildcard supported
+index: bitsensor
+timestamp_field: endpoint.localtime
 
 # A list of elasticsearch filters used for find events
 # These filters are joined with AND and nested in a filtered query
