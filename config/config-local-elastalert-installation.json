@@ -1,0 +1,16 @@
+{
+  "appName": "elastalert-server",
+  "port": 3030,
+  "elastalertPath": "/opt/elastalert",
+  "verbose": false,
+  "es_debug": false,
+  "debug": false,
+  "rulesPath": {
+    "relative": false,
+    "path": "/opt/elastalert/rules"
+  },
+  "templatesPath": {
+    "relative": false,
+    "path": "/opt/elastalert/rule_templates"
+  }
+}
