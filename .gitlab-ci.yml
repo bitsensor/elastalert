@@ -4,56 +4,49 @@ stages:
   - deploy
   - mirror
 
+cache:
+  key: elastalert
+  paths:
+    - node_modules/
+  policy: pull
+
 build:
-  image: node
+  image: node:slim
   stage: build
-  script:
-    - npm config set //registry.npmjs.org/:_authToken=$NPM_TOKEN
-    - npm install
-    - npm run build
-  artifacts:
+  cache:
+    key: elastalert
     paths:
-      - lib/
       - node_modules/
+    policy: push
+  script:
+    - npm i -q
+    - npm run build
 
 test:
-  image: node
+  image: node:slim
   stage: test
   script:
-    - npm config set //registry.npmjs.org/:_authToken=$NPM_TOKEN
-    - npm install
+    - npm i -q
     - npm test
-  artifacts:
-    paths:
-      - lib/
-      - node_modules/
 
 lint:
-  image: node
+  image: node:slim
+  allow_failure: true
   stage: test
   script:
-    - npm config set //registry.npmjs.org/:_authToken=$NPM_TOKEN
-    - npm install
+    - npm i -q
     - ./node_modules/.bin/eslint .
-  allow_failure: true
 
 deploy:npm:
-  image: node
+  image: node:slim
   stage: deploy
   script:
-    - npm config set //registry.npmjs.org/:_authToken=$NPM_TOKEN
-    - npm install
     - scripts/update-authors.sh
     - npm publish --access public
   only:
     - tags
-  artifacts:
-      paths:
-        - lib/
 
 deploy:docker:
-  tags:
-    - docker
   stage: deploy
   script:
     - docker info
@@ -63,16 +56,12 @@ deploy:docker:
     - docker tag elastalert artifacts.bitsensor.io:1443/elastalert:$(git describe --abbrev=0)
     - docker push artifacts.bitsensor.io:1443/elastalert:latest
     - docker push artifacts.bitsensor.io:1443/elastalert:$(git describe --abbrev=0)
-  artifacts:
-    paths:
-      - lib/
-      - node_modules/
   only:
     - tags
-
-deploy:docker:snapshot:
   tags:
     - docker
+
+deploy:docker:snapshot:
   stage: deploy
   script:
     - docker info
@@ -80,18 +69,14 @@ deploy:docker:snapshot:
     - docker build -t elastalert .
     - docker tag elastalert artifacts.bitsensor.io:1443/elastalert:snapshot
     - docker push artifacts.bitsensor.io:1443/elastalert:snapshot
-  artifacts:
-    paths:
-      - lib/
-      - node_modules/
   only:
     - develop
+  tags:
+    - docker
 
 mirror:github:
-  image: debian
   stage: mirror
   script:
-    - apt-get update && apt-get install -y git
     - git clone --mirror https://git.bitsensor.io/back-end/elastalert.git mirror-github
     - cd mirror-github
     - git remote add github https://$MIRROR_GITHUB_USER:$MIRROR_GITHUB_PASSWORD@$MIRROR_GITHUB_URL
