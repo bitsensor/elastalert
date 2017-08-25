@@ -2,8 +2,7 @@
 **A server that runs [ElastAlert](https://github.com/Yelp/elastalert) and exposes REST API's for manipulating rules and alerts. It works great in combination with our [ElastAlert Kibana plugin](https://github.com/bitsensor/elastalert-kibana-plugin).**
 
 ## Requirements
-- [ElastAlert v0.0.96](https://github.com/Yelp/elastalert/tree/v0.0.96). We don't support other versions of ElastAlert, use them at your own risk.
-- [NodeJS 4.5.0](https://nodejs.org/en/download/) with NPM & NVM.
+- Docker
 
 ## Docker installation
 First, build the container locally:
@@ -19,7 +18,6 @@ docker run -d -p 3030:3030 \
     -v `pwd`/config/config.json:/opt/elastalert-server/config/config.json \
     -v `pwd`/rules:/opt/elastalert/rules \
     -v `pwd`/rule_templates:/opt/elastalert/rule_templates \
-    -v `pwd`/server-data:/opt/elastalert/server_dat \
     --net="host" elastalert:latest
 ```
 
@@ -30,11 +28,19 @@ docker run -d -p 3030:3030 \
     -v (pwd)/config/config.json:/opt/elastalert-server/config/config.json \
     -v (pwd)/rules:/opt/elastalert/rules \
     -v (pwd)/rule_templates:/opt/elastalert/rule_templates \
-    -v (pwd)/server-data:/opt/elastalert/server_data \
     --net="host" elastalert:latest
 ```
+### Configuration
+#### ElastAlert parameters
+ElastAlert supports additional arguments, that can be passed in the `config.json` file. An example is given in `config/config-historic-data-example.json`. 
 
 ## Installation using npm and manual ElastAlert setup
+
+### Requirements
+- [ElastAlert v0.0.96](https://github.com/Yelp/elastalert/tree/v0.0.96). We don't support other versions of ElastAlert, use them at your own risk.
+- [NodeJS 4.5.0](https://nodejs.org/en/download/) with NPM & NVM.
+
+## Building from source
 1. Clone the repository
     ```bash
     git clone https://github.com/bitsensor/elastalert.git elastalert
@@ -54,14 +60,11 @@ If you want to build the server and run the build version:
 
 You can then start the build by running `node lib/index.js`.
 
-## Config
-In `config/config.example.json` you'll find the default config. You can make a `config.json` file in the same folder that overrides the default config. When forking this repository it is recommended to remove `config.json` from the `.gitignore` file. For local testing purposes you can then use a `config.dev.json` file which overrides `config.json`.
-
-### ElastAlert parameters
-ElastAlert supports additional arguments, that can be passed in the `config.json` file. An example is given in `config/config-historic-data-example.json`. 
-
 ### Install ElastAlert to /opt/elastalert
 And run `pip install -r requirements.txt` or read the installation guide of ElastAlert.
+
+### Config
+In `config/config.example.json` you'll find the default config. You can make a `config.json` file in the same folder that overrides the default config. When forking this repository it is recommended to remove `config.json` from the `.gitignore` file. For local testing purposes you can then use a `config.dev.json` file which overrides `config.json`.
 
 You can use the following config options:
 
