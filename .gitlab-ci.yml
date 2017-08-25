@@ -1,3 +1,24 @@
+# Cache template
+.default-cache: &default-cache
+  key: elastalert
+  paths:
+    - node_modules
+
+.push-cache: &push-cache
+  cache:
+    <<: *default-cache
+    policy: push
+
+.pull-cache: &pull-cache
+  cache:
+    <<: *default-cache
+    policy: pull
+
+.node_test: &node-test
+  <<: *pull-cache
+  image: node:slim
+  stage: test
+
 stages:
   - build
   - test
@@ -11,36 +32,30 @@ cache:
   policy: pull
 
 build:
+  <<: *push-cache
   image: node:slim
   stage: build
-  cache:
-    key: elastalert
-    paths:
-      - node_modules/
-    policy: push
   script:
-    - npm i -q
+    - npm install --quiet
     - npm run build
 
 test:
-  image: node:slim
-  stage: test
+  <<: *node-test
   script:
-    - npm i -q
+    - npm install --quiet
     - npm test
 
 lint:
-  image: node:slim
-  allow_failure: true
-  stage: test
+  <<: *node-test
   script:
-    - npm i -q
+    - npm install --quiet
     - ./node_modules/.bin/eslint .
 
 deploy:npm:
   image: node:slim
   stage: deploy
   script:
+    - npm install --quiet
     - scripts/update-authors.sh
     - npm publish --access public
   only:
@@ -82,3 +97,6 @@ mirror:github:
     - git remote add github https://$MIRROR_GITHUB_USER:$MIRROR_GITHUB_PASSWORD@$MIRROR_GITHUB_URL
     - git push -u github -q --mirror
   when: always
+  only:
+    - tags
+    - develop
