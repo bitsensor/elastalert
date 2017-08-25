@@ -24,20 +24,28 @@ include:
   - context.http.userAgent
   - context.ip
   - context.php.session.sessionId
-  - detections.type
-  - detections.name
+  - detections
   - meta.user
 
-alert_subject: "Detection on {}"
+
+# Enhancement for converting 'detections' array into object, ex. get merged detection type by  
+# 'detections_parsed.type' or get first detection type by 'detection_parsed.0.type' 
+match_enhancements:   
+- "elastalert_modules.bitsensor_enhancement.AlertTextEnhancement"   
+run_enhancements_first: true 
+
+
+alert_subject: ":exclamation: Detection on {}"
 alert_subject_args:
   - endpoint.name
 
 alert_text_type: alert_text_only
-alert_text: "Detection triggered at {}\n\nAttacker:\nIP: {} \nUser-Agent: {}\n\n:Id: {}\nUser: {}"
+alert_text: "Triggered at _{}_\n\n*Attacker:*\nIP: {} \nUser-Agent: {}\nDetection: `{}`\n\n:Id: {}\nUser: {}"
 alert_text_args:
   - endpoint.localtime
   - context.ip
   - context.http.userAgent
+  - detections_parsed.type
   - _id
   - meta.user
 
