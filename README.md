@@ -18,7 +18,8 @@ docker run -d -p 3030:3030 \
     -v `pwd`/config/config.json:/opt/elastalert-server/config/config.json \
     -v `pwd`/rules:/opt/elastalert/rules \
     -v `pwd`/rule_templates:/opt/elastalert/rule_templates \
-    --net="host" elastalert:latest
+    --net="host" \
+    --name elastalert elastalert:latest
 ```
 
 _Fish_
@@ -28,7 +29,8 @@ docker run -d -p 3030:3030 \
     -v (pwd)/config/config.json:/opt/elastalert-server/config/config.json \
     -v (pwd)/rules:/opt/elastalert/rules \
     -v (pwd)/rule_templates:/opt/elastalert/rule_templates \
-    --net="host" elastalert:latest
+    --net="host" \
+    --name elastalert elastalert:latest
 ```
 ### Configuration
 #### ElastAlert parameters
