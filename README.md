@@ -9,7 +9,7 @@ First, build the container locally:
 ```bash
 docker build . -t elastalert
 ```
-Then, run it, optionally with your custom ElastAlert configuration file. We've included a sensible default, with localhost as ES host.
+The default configuration uses localhost as ES host.
 
 _Bash_
 ```bash
