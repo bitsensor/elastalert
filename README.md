@@ -18,6 +18,7 @@ docker run -d -p 3030:3030 \
     -v `pwd`/config/config.json:/opt/elastalert-server/config/config.json \
     -v `pwd`/rules:/opt/elastalert/rules \
     -v `pwd`/rule_templates:/opt/elastalert/rule_templates \
+    -v `pwd`/elastalert_modules:/opt/elastalert/elastalert_modules \
     --net="host" \
     --name elastalert elastalert:latest
 ```
@@ -29,12 +30,15 @@ docker run -d -p 3030:3030 \
     -v (pwd)/config/config.json:/opt/elastalert-server/config/config.json \
     -v (pwd)/rules:/opt/elastalert/rules \
     -v (pwd)/rule_templates:/opt/elastalert/rule_templates \
+    -v (pwd)/elastalert_modules:/opt/elastalert/elastalert_modules \
     --net="host" \
     --name elastalert elastalert:latest
 ```
 ### Configuration
 #### ElastAlert parameters
 ElastAlert supports additional arguments, that can be passed in the `config.json` file. An example is given in `config/config-historic-data-example.json`. 
+
+
 
 ## Installation using npm and manual ElastAlert setup
 

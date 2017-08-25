@@ -19,5 +19,6 @@ RUN npm install --production --quiet
 COPY config/elastalert.yaml /opt/elastalert/config.yaml 
 COPY config/config.json config/config.json 
 COPY rule_templates/ /opt/elastalert/rule_templates
+COPY elastalert_modules/ /opt/elastalert/elastalert_modules
 
 ENTRYPOINT ["npm", "start"]
