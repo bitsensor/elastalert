@@ -1,7 +1,7 @@
-import {spawn, spawnSync} from 'child_process';
+import { spawn, spawnSync } from 'child_process';
 import config from '../../common/config';
 import Logger from '../../common/logger';
-import {Status} from '../../common/status';
+import { Status } from '../../common/status';
 
 let logger = new Logger('ProcessController');
 
@@ -38,7 +38,7 @@ export default class ProcessController {
 
     // Create ElastAlert index if it doesn't exist yet
     logger.info('Creating index');
-    var indexCreate = spawnSync('python', ['elastalert/create_index.py', '--index', 'elastalert_status', '--old-index', ''], {
+    var indexCreate = spawnSync('python', ['-m', 'elastalert.create_index', '--index', 'elastalert_status', '--old-index', ''], {
       cwd: this._elastalertPath
     });
 
@@ -87,7 +87,7 @@ export default class ProcessController {
 
     logger.info('Starting elastalert with arguments ' + (startArguments.join(' ') || '[none]'));
 
-    this._process = spawn('python', ['elastalert/elastalert.py'].concat(startArguments), {
+    this._process = spawn('python', ['-m', 'elastalert.elastalert'].concat(startArguments), {
       cwd: this._elastalertPath
     });
 

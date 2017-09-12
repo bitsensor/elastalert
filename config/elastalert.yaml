@@ -12,12 +12,12 @@ rules_folder: rules
 # How often ElastAlert will query elasticsearch
 # The unit can be anything from weeks to seconds
 run_every:
-  seconds: 1
+  seconds: 5
 
 # ElastAlert will buffer results from the most recent
 # period of time, in case some log sources are not in real time
 buffer_time:
-  minutes: 15
+  minutes: 1
 
 # Optional URL prefix for elasticsearch
 #es_url_prefix: elasticsearch
