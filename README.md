@@ -1,6 +1,22 @@
 # Elastalert Server
 **A server that runs [ElastAlert](https://github.com/Yelp/elastalert) and exposes REST API's for manipulating rules and alerts. It works great in combination with our [ElastAlert Kibana plugin](https://github.com/bitsensor/elastalert-kibana-plugin).**
 
+## Installing Kibana plugin
+Kibana 4
+```bash
+./bin/kibana plugin -i elastalert -u https://git.bitsensor.io/front-end/elastalert-kibana-plugin/builds/artifacts/master/raw/build/elastalert-latest.zip?job=build
+```
+
+Kibana 5
+```bash
+./bin/kibana-plugin install https://git.bitsensor.io/front-end/elastalert-kibana-plugin/builds/artifacts/kibana5/raw/artifact/elastalert-`pwd | grep -Po '(?<=kibana-)[^-]*'`-latest.zip?job=build
+```
+
+Append to the `config/kibana.yml` file the host of ElastAlert server, if it is different than localhost. Typically the case if you are running on macOS. 
+```
+elastalert.serverHost: docker.for.mac.localhost
+```
+
 ## Docker installation
 The default configuration uses localhost as ES host. You will want to mount the volumes for configuration and rule files to keep them after container updates. In order to do that conviniently, please do a `git clone https://github.com/bitsensor/elastalert.git; cd elastalert`
 
