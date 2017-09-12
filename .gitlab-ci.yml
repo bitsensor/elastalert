@@ -89,6 +89,34 @@ deploy:docker:snapshot:
   tags:
     - docker
 
+deploy:docker-hub:
+  stage: deploy
+  script:
+    - docker info
+    - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+    - docker build -t elastalert .
+    - docker tag elastalert bitsensor/elastalert:latest
+    - docker tag elastalert bitsensor/elastalert:$(git describe --abbrev=0)
+    - docker push bitsensor/elastalert:latest
+    - docker push bitsensor/elastalert:$(git describe --abbrev=0)
+  only:
+    - tags
+  tags:
+    - docker
+
+deploy:docker-hub:snapshot:
+  stage: deploy
+  script:
+    - docker info
+    - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+    - docker build -t elastalert .
+    - docker tag elastalert bitsensor/elastalert:snapshot
+    - docker push bitsensor/elastalert:snapshot
+  only:
+    - develop
+  tags:
+    - docker
+
 mirror:github:
   stage: mirror
   script:
