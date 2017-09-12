@@ -1,44 +1,33 @@
 # Elastalert Server
 **A server that runs [ElastAlert](https://github.com/Yelp/elastalert) and exposes REST API's for manipulating rules and alerts. It works great in combination with our [ElastAlert Kibana plugin](https://github.com/bitsensor/elastalert-kibana-plugin).**
 
-## Requirements
-- Docker
-
 ## Docker installation
-First, build the container locally:
-```bash
-docker build . -t elastalert
-```
-The default configuration uses localhost as ES host.
+The default configuration uses localhost as ES host. You will want to mount the volumes for configuration and rule files to keep them after container updates. In order to do that conviniently, please do a `git clone https://github.com/bitsensor/elastalert.git; cd elastalert`
 
-_Bash_
+### Bash
 ```bash
 docker run -d -p 3030:3030 \
     -v `pwd`/config/elastalert.yaml:/opt/elastalert/config.yaml \
     -v `pwd`/config/config.json:/opt/elastalert-server/config/config.json \
     -v `pwd`/rules:/opt/elastalert/rules \
     -v `pwd`/rule_templates:/opt/elastalert/rule_templates \
-    -v `pwd`/elastalert_modules:/opt/elastalert/elastalert_modules \
     --net="host" \
-    --name elastalert elastalert:latest
+    --name elastalert bitsensor/elastalert:latest
 ```
 
-_Fish_
+### Fish
 ```bash
 docker run -d -p 3030:3030 \
     -v (pwd)/config/elastalert.yaml:/opt/elastalert/config.yaml \
     -v (pwd)/config/config.json:/opt/elastalert-server/config/config.json \
     -v (pwd)/rules:/opt/elastalert/rules \
     -v (pwd)/rule_templates:/opt/elastalert/rule_templates \
-    -v (pwd)/elastalert_modules:/opt/elastalert/elastalert_modules \
     --net="host" \
-    --name elastalert elastalert:latest
+    --name elastalert bitsensor/elastalert:latest
 ```
 ### Configuration
 #### ElastAlert parameters
 ElastAlert supports additional arguments, that can be passed in the `config.json` file. An example is given in `config/config-historic-data-example.json`. 
-
-
 
 ## Installation using npm and manual ElastAlert setup
 
