@@ -6,24 +6,24 @@ def convert_array_to_object(array):
         json[str(idx)] = array[idx]
     return json
 
-def parse_detections(match):
-    key = 'detections'
+def parse_array(match, key) :
+    o = match[key] if key in match else {}
     parsed = {key+'_parsed': {}}
 
-    if not isinstance(match[key], list):
+    if not isinstance(o, list):
         return parsed
-    if len(match[key]) == 0:
+    if len(o) == 0:
         return parsed
  
     # Converts array terms into objects 
-    # parsed[key + '_parsed'] = convert_array_to_object(match[key]) 
+    # parsed[key + '_parsed'] = convert_array_to_object(o) 
 
-    for sk, value in match[key][0].iteritems(): 
+    for sk, value in o[0].iteritems(): 
         value_array = [] 
         if isinstance(value, list):
-            value_array = list(chain.from_iterable(sv for sv in (v[sk] for v in match[key]) if sv))
+            value_array = list(chain.from_iterable(sv for sv in (v[sk] for v in o) if sv))
         else:
-            value_array = [v[sk] for v in match[key]] 
+            value_array = [v[sk] for v in o] 
         unique_values = set(value_array)
         parsed[key + '_parsed'][sk] = ", ".join(str(va) for va in unique_values)
  
