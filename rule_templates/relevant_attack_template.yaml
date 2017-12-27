@@ -1,60 +1,74 @@
 # Index to search, wildcard supported
-name: New attacker
+name: Known Attacks
 
-# Type of alert.
+# Alert on each event
 type: any
 
-query_key:
- - "context.ip"
- - "context.http.userAgent"
-
-realert:
-  hours: 1
-
-# (Optional, new_term specific)
-# This means that we will query 10 days worth of data when ElastAlert starts to find which values of ip_address already exist
-# If they existed in the last 10 days, no alerts will be triggered for them when they appear
-terms_window_size:
-  days: 10
-  
-alert_on_missing_field: true
-
-# Index to search, wildcard supported
-index: bitsensor
-timestamp_field: endpoint.localtime
-
+# A list of elasticsearch filters used for find events
+# These filters are joined with AND and nested in a filtered query
+# For more info: http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/query-dsl.html
 filter:
 - query:
     query_string:
-      query: "_exists_:detections AND detections.relevant:true"
+      query: "detections.reason:KNOWN_ATTACK"
 
+index: bitsensor-detections-*
+timestamp_field: endpoint.localtime
+
+# When the attacker continues, send a new alert after x minutes
+realert:
+  minutes: 10
+  
+# Index to search, wildcard supported
 include:
   - endpoint.location
   - endpoint.name
   - context.http.userAgent
   - context.ip
   - context.php.session.sessionId
-  - detections.type
-  - detections.name
+  - detections
 
-alert_subject: "Relevant attack on {}"
+alert_subject: "Attack on <{}> of type {} | <{}|Show Dashboard>"
 alert_subject_args:
   - endpoint.name
+  - detections_parsed.type
+  - kibana_link
 
-alert_text_type: alert_text_only
-alert_text: "New relevant attacker at {}\nIP: {} \nUser-Agent: {}\nDetection name: {}\nDetection type: {}\n\nID: {}\nUser: {}"
+alert_text: |-
+  An attack on {} is detected.
+  Detection name: {}
+  Detection type: {}
+
+  The attacker looks like:
+  IP: {}
+  User-Agent: {}
+
 alert_text_args:
-  - endpoint.localtime
+  - endpoint.name
+  - detections_parsed.name
+  - detections_parsed.type
   - context.ip
   - context.http.userAgent
-  - detections.name
-  - detections.type
-  - _id
-  - meta.user
 
-
-# The alert is use when a match is found
+# Specify your services here
 alert:
   - slack
+
+# How To Generate your API:
+# Click on your Workspace name (upper left corner)
+# Go to "Manage Apps", then "Custom Integrations", "Incoming Webhooks"
+# Press "Add Configuration", and choose your channel. Now paste it here:
 slack_webhook_url: "https://hooks.slack.com/services/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"
-slack_username_override: "ElastAlert"
+slack_username_override: "BitSensor Alerting"
+
+# Alert body only cointains a title and text
+alert_text_type: alert_text_only
+
+# Link to BitSensor Kibana Dashboard
+use_kibana4_dashboard: "https://dev.bitsensor.io/app/kibana#/dashboard/Live-Hacking"
+
+# Enhancement for converting 'detections' array into object, ex. get merged detection type by  
+# 'detections_parsed.type' or get first detection type by 'detection_parsed.0.type' 
+match_enhancements:   
+- "elastalert_modules.bitsensor_enhancement.AlertTextEnhancement"   
+run_enhancements_first: true

@@ -1,25 +1,15 @@
-# Alert when there are 500 discovery detection events coming from the same ip, userAgent within 30 seconds.
-
 # Rule name, must be unique
-name: Behaviour is suspicious
+name: Bad/Bot Behaviour
 
-# Type of alert.
+# Alert on x events in y seconds
 type: frequency
 
 # Alert when this many documents matching the query occur within a timeframe
-num_events: 100
+num_events: 20
 
 # num_events must occur within this amount of time to trigger an alert
 timeframe:
-  seconds: 60
-
-# Index to search, wildcard supported
-index: bitsensor
-timestamp_field: endpoint.localtime
-
-query_key:
-  - context.ip
-  - context.http.userAgent
+  seconds: 30
 
 # A list of elasticsearch filters used for find events
 # These filters are joined with AND and nested in a filtered query
@@ -27,34 +17,54 @@ query_key:
 filter: 
 - query:
     query_string:
-      query: "_exists_:detections AND detections.reason:BEHAVIOUR"
+      query: "detections.reason:BEHAVIOUR"
 
+# Index to search, wildcard supported
+index: bitsensor-detections-*
+timestamp_field: endpoint.localtime
+doc_type: datapoint
+
+# When the attacker continues, send a new alert after x minutes
+realert:
+  minutes: 1
+
+query_key:
+  - context.ip
+  - context.http.userAgent
+  
 include:
   - endpoint.location
   - endpoint.name
   - context.http.userAgent
   - context.ip
   - context.php.session.sessionId
-  - detections.type
-  - detections.name
-  - meta.user
-  - errors
 
-alert_subject: "Frequent attack on {}"
+alert_subject: "Bad/Bot behaviour on <{}> | <{}|Show Dashboard>"
 alert_subject_args:
   - endpoint.name
+  - kibana_link
 
-alert_text_type: alert_text_only
-alert_text: "Time: {}\nIP: {} \nUser-Agent: {}\n\nID: {}\nUser: {}"
+alert_text: |-
+  An attack on {} is detected.
+
+  The attacker looks like:
+  IP: {}
+  Tool: {}
+
 alert_text_args:
-  - endpoint.localtime
+  - endpoint.name
   - context.ip
   - context.http.userAgent
-  - _id
-  - meta.user
 
 # The alert is use when a match is found
 alert:
   - slack
+
 slack_webhook_url: "https://hooks.slack.com/services/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"
 slack_username_override: "ElastAlert"
+
+# Alert body only cointains a title and text
+alert_text_type: alert_text_only
+
+# Link to BitSensor Kibana Dashboard
+use_kibana4_dashboard: "https://dev.bitsensor.io/app/kibana#/dashboard/Live-Hacking"
