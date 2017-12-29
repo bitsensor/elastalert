@@ -15,6 +15,11 @@ filter:
 index: bitsensor-detections-*
 timestamp_field: endpoint.localtime
 
+# Key per profile
+query_key:
+  - context.ip
+  - context.http.userAgent
+
 # When the attacker continues, send a new alert after x minutes
 realert:
   minutes: 10
