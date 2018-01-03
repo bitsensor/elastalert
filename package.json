@@ -28,7 +28,8 @@
     "lodash": "^4.15.0",
     "mkdirp": "^0.5.1",
     "object-resolve-path": "^1.1.1",
-    "randomstring": "^1.1.5"
+    "randomstring": "^1.1.5",
+    "raven": "^2.3.0"
   },
   "devDependencies": {
     "eslint": "^3.4.0",
