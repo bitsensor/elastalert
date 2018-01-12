@@ -8,6 +8,7 @@ type: flatline
 
 # Alert when this many documents matching the query occur within a timeframe
 threshold: 1
+use_terms: true
 
 # num_events must occur within this amount of time to trigger an alert
 timeframe:
