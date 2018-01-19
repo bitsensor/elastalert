@@ -3,7 +3,6 @@ name: Integration Started
 
 # Alert on x events in y seconds
 type: frequency
-use_terms_query: true
 
 # Alert when this many documents matching the query occur within a timeframe
 num_events: 1
