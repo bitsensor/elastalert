@@ -33,7 +33,7 @@
   },
   "devDependencies": {
     "eslint": "^4.17.0",
-    "husky": "^0.11.7",
+    "husky": "^0.14.3",
     "istanbul": "^0.4.4",
     "mocha": "~3.0.2"
   },
