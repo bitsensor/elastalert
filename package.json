@@ -24,7 +24,7 @@
     "body-parser": "^1.15.2",
     "bunyan": "^1.8.1",
     "express": "^4.14.0",
-    "joi": "^9.0.4",
+    "joi": "^13.1.2",
     "lodash": "^4.15.0",
     "mkdirp": "^0.5.1",
     "object-resolve-path": "^1.1.1",
@@ -34,7 +34,7 @@
   "devDependencies": {
     "eslint": "^4.17.0",
     "husky": "^0.11.7",
-    "istanbul": "~0.4.4",
+    "istanbul": "^0.4.4",
     "mocha": "~3.0.2"
   },
   "scripts": {
