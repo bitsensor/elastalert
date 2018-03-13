@@ -3,7 +3,7 @@ FROM ivankrizsan/elastalert AS py-ea
 # ENV ELASTALERT_URL https://github.com/bitsensor/yelp-elastalert/archive/master.zip
 
 FROM node:alpine
-MAINTAINER BitSensor <dev@bitsensor.io>
+LABEL maintainer="dev@bitsensor.io"
 EXPOSE 3030
 
 RUN apk update && apk upgrade && apk add --no-cache python2 curl
