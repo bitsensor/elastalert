@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 git log --reverse --format='%aN <%aE>' | perl -wnE '
 print $seen{$_} = $_ unless $seen{$_}

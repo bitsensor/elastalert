@@ -63,14 +63,14 @@ alert:
 # Click on your Workspace name (upper left corner)
 # Go to "Manage Apps", then "Custom Integrations", "Incoming Webhooks"
 # Press "Add Configuration", and choose your channel. Now paste it here:
-slack_webhook_url: "https://hooks.slack.com/services/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"
+slack_webhook_url: "https://hooks.slack.com/services/"
 slack_username_override: "BitSensor Alerting"
 
 # Alert body only cointains a title and text
 alert_text_type: alert_text_only
 
 # Link to BitSensor Kibana Dashboard
-use_kibana4_dashboard: "https://dev.bitsensor.io/app/kibana#/dashboard/Live-Hacking"
+use_kibana4_dashboard: "https://kibana.dashboard.io/app/kibana#/dashboard"
 
 # Enhancement for converting 'detections' array into object, ex. get merged detection type by  
 # 'detections_parsed.type' or get first detection type by 'detection_parsed.0.type' 

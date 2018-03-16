@@ -46,5 +46,5 @@ alert_text_args:
 # The alert is use when a match is found
 alert:
   - slack
-slack_webhook_url: "https://hooks.slack.com/services/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"
+slack_webhook_url: "https://hooks.slack.com/services/"
 slack_username_override: "ElastAlert"

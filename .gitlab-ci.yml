@@ -22,8 +22,8 @@
 stages:
   - build
   - test
-  - deploy
   - mirror
+  - deploy
 
 cache:
   key: elastalert
@@ -45,11 +45,18 @@ test:
     - npm install --quiet
     - npm test
 
-lint:
-  <<: *node-test
+mirror:github:
+  stage: mirror
   script:
-    - npm install --quiet
-    - ./node_modules/.bin/eslint .
+    - git clone --mirror https://git.bitsensor.io/back-end/elastalert.git mirror-github
+    - cd mirror-github
+    - git remote add github https://$MIRROR_GITHUB_USER:$MIRROR_GITHUB_PASSWORD@$MIRROR_GITHUB_URL
+    - git push -u github -q --mirror
+    - rm -rf mirror-github
+  when: always
+  only:
+    - tags
+    - develop
 
 deploy:npm:
   image: node:slim
@@ -63,6 +70,8 @@ deploy:npm:
 
 deploy:docker:
   stage: deploy
+  before_script:
+    - sh scripts/replace_templates.sh
   script:
     - docker info
     - docker login -u $BITSENSOR_USERNAME -p $BITSENSOR_PASSWORD artifacts.bitsensor.io:1443
@@ -78,6 +87,8 @@ deploy:docker:
 
 deploy:docker:snapshot:
   stage: deploy
+  before_script:
+    - sh scripts/replace_templates.sh
   script:
     - docker info
     - docker login -u $BITSENSOR_USERNAME -p $BITSENSOR_PASSWORD artifacts.bitsensor.io:1443
@@ -116,15 +127,3 @@ deploy:docker-hub:snapshot:
     - develop
   tags:
     - docker
-
-mirror:github:
-  stage: mirror
-  script:
-    - git clone --mirror https://git.bitsensor.io/back-end/elastalert.git mirror-github
-    - cd mirror-github
-    - git remote add github https://$MIRROR_GITHUB_USER:$MIRROR_GITHUB_PASSWORD@$MIRROR_GITHUB_URL
-    - git push -u github -q --mirror
-  when: always
-  only:
-    - tags
-    - develop

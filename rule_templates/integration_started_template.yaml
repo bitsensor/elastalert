@@ -39,14 +39,14 @@ alert_text_args:
 alert:
   - slack
 
-slack_webhook_url: "https://hooks.slack.com/services/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"
+slack_webhook_url: "https://hooks.slack.com/services/"
 slack_username_override: "ElastAlert"
 
 # Alert body only cointains a title and text
 alert_text_type: alert_text_only
 
 # Link to BitSensor Kibana Dashboard
-use_kibana4_dashboard: "https://dev.bitsensor.io/app/kibana#/dashboard/Pre-Integration"
+use_kibana4_dashboard: "https://kibana.dashboard.io/app/kibana#/dashboard"
 
 # Index to search, wildcard supported
 index: bitsensor
