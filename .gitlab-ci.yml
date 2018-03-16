@@ -73,7 +73,7 @@ deploy:docker:
   script:
     - sh scripts/replace_templates.sh ${CI_JOB_TOKEN}
     - docker info
-    - docker login -u $BITSENSOR_USERNAME -p $BITSENSOR_PASSWORD artifacts.bitsensor.io:1443
+    - echo $BITSENSOR_PASSWORD | docker login -u $BITSENSOR_USERNAME --password-stdin artifacts.bitsensor.io:1443
     - docker build -t elastalert .
     - docker tag elastalert artifacts.bitsensor.io:1443/elastalert:latest
     - docker tag elastalert artifacts.bitsensor.io:1443/elastalert:$(git describe --abbrev=0)
@@ -89,7 +89,7 @@ deploy:docker:snapshot:
   script:
     - sh scripts/replace_templates.sh ${CI_JOB_TOKEN}
     - docker info
-    - docker login -u $BITSENSOR_USERNAME -p $BITSENSOR_PASSWORD artifacts.bitsensor.io:1443
+    - echo $BITSENSOR_PASSWORD | docker login -u $BITSENSOR_USERNAME --password-stdin artifacts.bitsensor.io:1443
     - docker build -t elastalert .
     - docker tag elastalert artifacts.bitsensor.io:1443/elastalert:snapshot
     - docker push artifacts.bitsensor.io:1443/elastalert:snapshot
@@ -102,7 +102,7 @@ deploy:docker-hub:
   stage: deploy
   script:
     - docker info
-    - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+    - echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
     - docker build -t elastalert .
     - docker tag elastalert bitsensor/elastalert:latest
     - docker tag elastalert bitsensor/elastalert:$(git describe --abbrev=0)
@@ -117,7 +117,7 @@ deploy:docker-hub:snapshot:
   stage: deploy
   script:
     - docker info
-    - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+    - echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
     - docker build -t elastalert .
     - docker tag elastalert bitsensor/elastalert:snapshot
     - docker push bitsensor/elastalert:snapshot
