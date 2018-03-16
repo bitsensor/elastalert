@@ -71,7 +71,7 @@ deploy:npm:
 deploy:docker:
   stage: deploy
   script:
-    - sh scripts/replace_templates.sh
+    - sh scripts/replace_templates.sh ${CI_JOB_TOKEN}
     - docker info
     - docker login -u $BITSENSOR_USERNAME -p $BITSENSOR_PASSWORD artifacts.bitsensor.io:1443
     - docker build -t elastalert .
@@ -87,7 +87,7 @@ deploy:docker:
 deploy:docker:snapshot:
   stage: deploy
   script:
-    - sh scripts/replace_templates.sh
+    - sh scripts/replace_templates.sh ${CI_JOB_TOKEN}
     - docker info
     - docker login -u $BITSENSOR_USERNAME -p $BITSENSOR_PASSWORD artifacts.bitsensor.io:1443
     - docker build -t elastalert .
