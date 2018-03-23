@@ -1,44 +1,56 @@
 # Elastalert Server
 **A server that runs [ElastAlert](https://github.com/Yelp/elastalert) and exposes REST API's for manipulating rules and alerts. It works great in combination with our [ElastAlert Kibana plugin](https://github.com/bitsensor/elastalert-kibana-plugin).**
 
-## Requirements
-- Docker
+![img](https://www.bitsensor.io/assets/img/screenshots/template.gif)
+
+## Installing Kibana plugin
+Kibana 4
+```bash
+./bin/kibana plugin -i elastalert -u https://git.bitsensor.io/front-end/elastalert-kibana-plugin/builds/artifacts/master/raw/build/elastalert-latest.zip?job=build
+```
+
+Kibana 5
+```bash
+./bin/kibana-plugin install https://git.bitsensor.io/front-end/elastalert-kibana-plugin/builds/artifacts/kibana5/raw/artifact/elastalert-`pwd | grep -Po '(?<=kibana-)[^-]*'`-latest.zip?job=build
+```
+
+Kibana 5 (if you have renamed the `kibana-5.x.x` folder
+```bash
+./bin/kibana-plugin install https://git.bitsensor.io/front-end/elastalert-kibana-plugin/builds/artifacts/kibana5/raw/artifact/elastalert-5.x.x-latest.zip?job=build
+```
+
+Append to the `config/kibana.yml` file the host of ElastAlert server, if it is different than localhost. Typically the case if you are running on macOS. 
+```
+elastalert.serverHost: docker.for.mac.localhost
+```
 
 ## Docker installation
-First, build the container locally:
-```bash
-docker build . -t elastalert
-```
-The default configuration uses localhost as ES host.
+The default configuration uses localhost as ES host. You will want to mount the volumes for configuration and rule files to keep them after container updates. In order to do that conviniently, please do a `git clone https://github.com/bitsensor/elastalert.git; cd elastalert`
 
-_Bash_
+### Bash
 ```bash
 docker run -d -p 3030:3030 \
     -v `pwd`/config/elastalert.yaml:/opt/elastalert/config.yaml \
     -v `pwd`/config/config.json:/opt/elastalert-server/config/config.json \
     -v `pwd`/rules:/opt/elastalert/rules \
     -v `pwd`/rule_templates:/opt/elastalert/rule_templates \
-    -v `pwd`/elastalert_modules:/opt/elastalert/elastalert_modules \
     --net="host" \
-    --name elastalert elastalert:latest
+    --name elastalert bitsensor/elastalert:latest
 ```
 
-_Fish_
+### Fish
 ```bash
 docker run -d -p 3030:3030 \
     -v (pwd)/config/elastalert.yaml:/opt/elastalert/config.yaml \
     -v (pwd)/config/config.json:/opt/elastalert-server/config/config.json \
     -v (pwd)/rules:/opt/elastalert/rules \
     -v (pwd)/rule_templates:/opt/elastalert/rule_templates \
-    -v (pwd)/elastalert_modules:/opt/elastalert/elastalert_modules \
     --net="host" \
-    --name elastalert elastalert:latest
+    --name elastalert bitsensor/elastalert:latest
 ```
 ### Configuration
 #### ElastAlert parameters
 ElastAlert supports additional arguments, that can be passed in the `config.json` file. An example is given in `config/config-historic-data-example.json`. 
-
-
 
 ## Installation using npm and manual ElastAlert setup
 
@@ -52,7 +64,7 @@ ElastAlert supports additional arguments, that can be passed in the `config.json
     git clone https://github.com/bitsensor/elastalert.git elastalert
     cd elastalert
     ```
-2. Run `nvm install "$(cat .node-version)"` to install & use the required NodeJS version.
+2. Run `nvm install "$(cat .nvmrc)"` to install & use the required NodeJS version.
 3. Run `npm install` to install all the dependencies.
 4. Look at the `Config` section to setup the path to your ElastAlert instance.
 
@@ -212,5 +224,5 @@ This project is [BSD Licensed](../LICENSE.md) with some modifications. Note that
 We [(BitSensor)](https://www.bitsensor.io) do not have any rights over the original [ElastAlert](https://github.com/Yelp/elastalert) project from [Yelp](https://www.yelp.com/). We do not own any trademarks or copyright to the name "ElastAlert" (ElastAlert, however, does because of their Apache 2 license). We do own copyright over the source code of this project, as stated in our BSD license, which means the copyright notice below and as stated in the BSD license should be included in (merged / changed) distributions of this project. The BSD license also states that making promotional content using 'BitSensor' is prohibited. However we hereby grant permission to anyone who wants to use the phrases 'BitSensor ElastAlert Plugin', 'BitSensor Software' or 'BitSensor Alerting' in promotional content. Phrases like 'We use BitSensor' or 'We use BitSensor security' when only using our ElastAlert Server are forbidden.
 
 ## Copyright
-Copyright © 2016, BitSensor B.V.
+Copyright © 2018, BitSensor B.V.
 All rights reserved.

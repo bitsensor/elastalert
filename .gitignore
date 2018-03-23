@@ -73,3 +73,4 @@ jspm_packages
 lib/
 *.pyc
 config/config.json
+package-lock.json

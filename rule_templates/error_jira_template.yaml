@@ -1,5 +1,5 @@
 # Rule name, must be unique
-name: Alert on any detection
+name: Alert on any error
 
 # Index to search, wildcard supported
 index: bitsensor
@@ -16,15 +16,14 @@ realert:
 filter: 
 - query:
     query_string:
-      query: "_exists_:detections"
+      query: "_exists_:errors"
 
 include:
   - endpoint.location
   - endpoint.name
   - context.http.userAgent
   - context.ip
-  - context.php.session.sessionId
-  - detections
+  - errors
   - meta.user
 
 
@@ -35,22 +34,29 @@ match_enhancements:
 run_enhancements_first: true 
 
 
-alert_subject: ":exclamation: Detection on {}"
+alert_subject: "Error on {}"
 alert_subject_args:
   - endpoint.name
 
 alert_text_type: alert_text_only
-alert_text: "Triggered at _{}_\n\n*Attacker:*\nIP: {} \nUser-Agent: {}\nDetection: `{}`\n\n:Id: {}\nUser: {}"
+alert_text: "Triggered at _{}_\n\n*Attacker:*\nIP: {} \nUser-Agent: {}\nError: *{}*\n\nId: {}\nUser: {}"
 alert_text_args:
   - endpoint.localtime
   - context.ip
   - context.http.userAgent
-  - detections_parsed.type
+  - errors_parsed.type
   - _id
   - meta.user
 
 # The alert is use when a match is found
 alert:
-  - slack
-slack_webhook_url: "https://hooks.slack.com/services/"
-slack_username_override: "ElastAlert"
+  - jira
+
+jira_server: https://bitsensor.atlassian.net
+jira_project: SA
+jira_issuetype: Story
+jira_labels: error
+
+# Add jira_acct.txt to rules folder
+# The file is yaml formatted and must contain fields: 'user', 'password'
+jira_account_file: "rules/jira_acct.txt"

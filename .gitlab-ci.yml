@@ -22,8 +22,8 @@
 stages:
   - build
   - test
-  - deploy
   - mirror
+  - deploy
 
 cache:
   key: elastalert
@@ -45,11 +45,18 @@ test:
     - npm install --quiet
     - npm test
 
-lint:
-  <<: *node-test
+mirror:github:
+  stage: mirror
   script:
-    - npm install --quiet
-    - ./node_modules/.bin/eslint .
+    - git clone --mirror https://git.bitsensor.io/back-end/elastalert.git mirror-github
+    - cd mirror-github
+    - git remote add github https://$MIRROR_GITHUB_USER:$MIRROR_GITHUB_PASSWORD@$MIRROR_GITHUB_URL
+    - git push -u github -q --mirror
+    - rm -rf mirror-github
+  when: always
+  only:
+    - tags
+    - develop
 
 deploy:npm:
   image: node:slim
@@ -64,8 +71,9 @@ deploy:npm:
 deploy:docker:
   stage: deploy
   script:
+    - sh scripts/replace_templates.sh ${CI_JOB_TOKEN}
     - docker info
-    - docker login -u $BITSENSOR_USERNAME -p $BITSENSOR_PASSWORD artifacts.bitsensor.io:1443
+    - echo $BITSENSOR_PASSWORD | docker login -u $BITSENSOR_USERNAME --password-stdin artifacts.bitsensor.io:1443
     - docker build -t elastalert .
     - docker tag elastalert artifacts.bitsensor.io:1443/elastalert:latest
     - docker tag elastalert artifacts.bitsensor.io:1443/elastalert:$(git describe --abbrev=0)
@@ -79,8 +87,9 @@ deploy:docker:
 deploy:docker:snapshot:
   stage: deploy
   script:
+    - sh scripts/replace_templates.sh ${CI_JOB_TOKEN}
     - docker info
-    - docker login -u $BITSENSOR_USERNAME -p $BITSENSOR_PASSWORD artifacts.bitsensor.io:1443
+    - echo $BITSENSOR_PASSWORD | docker login -u $BITSENSOR_USERNAME --password-stdin artifacts.bitsensor.io:1443
     - docker build -t elastalert .
     - docker tag elastalert artifacts.bitsensor.io:1443/elastalert:snapshot
     - docker push artifacts.bitsensor.io:1443/elastalert:snapshot
@@ -89,14 +98,30 @@ deploy:docker:snapshot:
   tags:
     - docker
 
-mirror:github:
-  stage: mirror
+deploy:docker-hub:
+  stage: deploy
   script:
-    - git clone --mirror https://git.bitsensor.io/back-end/elastalert.git mirror-github
-    - cd mirror-github
-    - git remote add github https://$MIRROR_GITHUB_USER:$MIRROR_GITHUB_PASSWORD@$MIRROR_GITHUB_URL
-    - git push -u github -q --mirror
-  when: always
+    - docker info
+    - echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
+    - docker build -t elastalert .
+    - docker tag elastalert bitsensor/elastalert:latest
+    - docker tag elastalert bitsensor/elastalert:$(git describe --abbrev=0)
+    - docker push bitsensor/elastalert:latest
+    - docker push bitsensor/elastalert:$(git describe --abbrev=0)
   only:
     - tags
+  tags:
+    - docker
+
+deploy:docker-hub:snapshot:
+  stage: deploy
+  script:
+    - docker info
+    - echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
+    - docker build -t elastalert .
+    - docker tag elastalert bitsensor/elastalert:snapshot
+    - docker push bitsensor/elastalert:snapshot
+  only:
     - develop
+  tags:
+    - docker

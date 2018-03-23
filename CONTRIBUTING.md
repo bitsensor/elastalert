@@ -25,7 +25,7 @@ cd elastalert
 
 Then follow the default installation steps, so:
 
-1. Run `nvm install "$(cat .node-version)"` to install & use the required NodeJS version.
+1. Run `nvm install "$(cat .nvmrc)"` to install & use the required NodeJS version.
 2. Run `npm install` to install all the dependencies.
 3. Look at the `Config` section in [REAMDE.md](../README.md#config) to setup the path to your ElastAlert instance.
 

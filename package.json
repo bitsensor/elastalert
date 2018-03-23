@@ -1,6 +1,6 @@
 {
   "name": "@bitsensor/elastalert",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "A server that runs ElastAlert and exposes REST API's for manipulating rules and alerts.",
   "license": "MIT",
   "main": "index.js",
@@ -24,16 +24,17 @@
     "body-parser": "^1.15.2",
     "bunyan": "^1.8.1",
     "express": "^4.14.0",
-    "joi": "^9.0.4",
+    "joi": "^13.1.2",
     "lodash": "^4.15.0",
     "mkdirp": "^0.5.1",
     "object-resolve-path": "^1.1.1",
-    "randomstring": "^1.1.5"
+    "randomstring": "^1.1.5",
+    "raven": "^2.3.0"
   },
   "devDependencies": {
-    "eslint": "^3.4.0",
-    "husky": "^0.11.7",
-    "istanbul": "~0.4.4",
+    "eslint": "^4.17.0",
+    "husky": "^0.14.3",
+    "istanbul": "^0.4.4",
     "mocha": "~3.0.2"
   },
   "scripts": {

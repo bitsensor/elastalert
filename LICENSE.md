@@ -1,7 +1,7 @@
 The 3-clause BSD license (Modified)
 ===================================
 
-Copyright © 2016, BitSensor B.V.
+Copyright © 2018, BitSensor B.V.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are met:
