@@ -59,9 +59,10 @@ mirror:github:
     - develop
 
 deploy:npm:
-  image: node:slim
+  image: node:alpine
   stage: deploy
   script:
+    - apk add --no-cache git
     - npm install --quiet
     - scripts/update-authors.sh
     - npm publish --access public
