@@ -65,6 +65,7 @@ deploy:npm:
     - apk add --no-cache git
     - npm install --quiet
     - scripts/update-authors.sh
+    - echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}'>.npmrc
     - npm publish --access public
   only:
     - tags
