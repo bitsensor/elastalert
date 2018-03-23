@@ -64,7 +64,7 @@ ElastAlert supports additional arguments, that can be passed in the `config.json
     git clone https://github.com/bitsensor/elastalert.git elastalert
     cd elastalert
     ```
-2. Run `nvm install "$(cat .node-version)"` to install & use the required NodeJS version.
+2. Run `nvm install "$(cat .nvmrc)"` to install & use the required NodeJS version.
 3. Run `npm install` to install all the dependencies.
 4. Look at the `Config` section to setup the path to your ElastAlert instance.
 
@@ -224,5 +224,5 @@ This project is [BSD Licensed](../LICENSE.md) with some modifications. Note that
 We [(BitSensor)](https://www.bitsensor.io) do not have any rights over the original [ElastAlert](https://github.com/Yelp/elastalert) project from [Yelp](https://www.yelp.com/). We do not own any trademarks or copyright to the name "ElastAlert" (ElastAlert, however, does because of their Apache 2 license). We do own copyright over the source code of this project, as stated in our BSD license, which means the copyright notice below and as stated in the BSD license should be included in (merged / changed) distributions of this project. The BSD license also states that making promotional content using 'BitSensor' is prohibited. However we hereby grant permission to anyone who wants to use the phrases 'BitSensor ElastAlert Plugin', 'BitSensor Software' or 'BitSensor Alerting' in promotional content. Phrases like 'We use BitSensor' or 'We use BitSensor security' when only using our ElastAlert Server are forbidden.
 
 ## Copyright
-Copyright © 2016, BitSensor B.V.
+Copyright © 2018, BitSensor B.V.
 All rights reserved.
