@@ -85,11 +85,14 @@ Controllers expose API that can be used by the handlers. There are a couple thin
 
 - be a class named `[controllerName]Controller`
 - use a logger to log important stuff. You can create a new logger by:
+
     ```javascript
     import Logger from 'path/to/common/logger';
     let logger = new Logger('[className]');
     ```
+    
 - have an instance of it accessible by the `ElastalertServer`. In the `start()` function in the [`ElastalertServer`](../src/elastalert_server.js) you see 
+
     ```javascript
     config.ready(function () {
       try {
@@ -100,10 +103,13 @@ Controllers expose API that can be used by the handlers. There are a couple thin
     });
     ```
     You should add an instance of your controller there:
+    
     ```javascript
     self._controllerNameController = new controllerName();
     ```
+    
     You should also provide a getter for the controller:
+    
     ```javascript
     get controllerNameController() {
       return this._controllerNameController;

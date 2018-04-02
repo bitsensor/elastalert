@@ -187,7 +187,7 @@ This server exposes the following REST API's:
     Allows you to edit the ElastAlert configuration from `config.yaml` in `elastalertPath` (from the config). The required body to be send will be edited when the work on this API is done.
  
 ## Contributing
-Want to contribute to this project? Great! Please read our [contributing guidelines](../CONTRIBUTING.md) before submitting an issue or a pull request.
+Want to contribute to this project? Great! Please read our [contributing guidelines](CONTRIBUTING.md) before submitting an issue or a pull request.
 
 **We only accept pull requests on our [GitHub repository](https://github.com/bitsensor/elastalert)!**
  
