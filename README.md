@@ -185,7 +185,17 @@ This server exposes the following REST API's:
 - **[WIP] POST `/config`**
 
     Allows you to edit the ElastAlert configuration from `config.yaml` in `elastalertPath` (from the config). The required body to be send will be edited when the work on this API is done.
- 
+
+- **[WIP] POST `/download`**
+  
+    Allows you to download .tar archive with rules from HTTP endpoint. Archive will be downloaded,extracted and removed.
+    Please note, body should contain URL pointing to tar archive, with tar extension.	
+   
+    Usage example:
+	
+        ```curl -X POST localhost:3030/download -d "url=https://artifactory.com:443/artifactory/raw/rules/rules.tar"```
+ 	
+        
 ## Contributing
 Want to contribute to this project? Great! Please read our [contributing guidelines](CONTRIBUTING.md) before submitting an issue or a pull request.
 

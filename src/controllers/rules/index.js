@@ -1,8 +1,12 @@
 import {join as joinPath, normalize as normalizePath, extname as pathExtension} from 'path';
 import mkdirp from 'mkdirp';
+import tar from 'tar';
+import fs from 'fs-extra';
+import rq from 'request-promise-native';
 import FileSystem from '../../common/file_system';
 import config from '../../common/config';
 import Logger from '../../common/logger';
+import path from 'path';
 import {RuleNotFoundError, RuleNotReadableError, RuleNotWritableError,
   RulesFolderNotFoundError, RulesRootFolderNotCreatableError} from '../../common/errors/rule_request_errors';
 
@@ -87,6 +91,10 @@ export default class RulesController {
     return this._editRule(id, content);
   }
 
+  downloadRules(URL) {
+    return this._downloadRules(URL);
+  }
+
   _findRule(id) {
     let fileName = id + '.yaml';
     const self = this;
@@ -125,6 +133,19 @@ export default class RulesController {
     return this._fileSystemController.deleteFile(path);
   }
 
+  _downloadRules(URL){
+    const options = {
+      uri: URL,
+      strictSSL: false
+    };
+    const filename = path.basename(URL);
+    
+    return rq.get(options)
+      .then(buffer => fs.outputFile(filename, buffer)
+        .then(() => this._untarFile(this.rulesFolder,filename))
+        .then(() => fs.remove(filename)));
+  }
+
   _getErrorPromise(error) {
     return new Promise(function (resolve, reject) {
       reject(error);
@@ -139,5 +160,14 @@ export default class RulesController {
     } else {
       return ruleFolderSettings.path;
     }
+  }
+
+  _untarFile(path_to_extract,archive){
+    return tar.extract(
+      {
+        cwd: path_to_extract,
+        file: archive
+      }
+    );
   }
 }
