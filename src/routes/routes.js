@@ -4,6 +4,7 @@ import controlHandler from '../handlers/status/control';
 import errorsHandler from '../handlers/status/errors';
 import rulesHandler from '../handlers/rules';
 import ruleGetHandler from '../handlers/rules/id/get';
+import downloadRulesHandler from '../handlers/rules/id/download';
 import rulePostHandler from '../handlers/rules/id/post';
 import ruleDeleteHandler from '../handlers/rules/id/delete';
 import templatesHandler from '../handlers/templates';
@@ -68,6 +69,11 @@ let routes = [
     path: 'config',
     method: ['GET', 'POST'],
     handler: [configGetHandler, configPostHandler]
+  },
+  {
+    path: 'download',
+    method: ['POST'],
+    handler: [downloadRulesHandler]
   }
 ];
 
