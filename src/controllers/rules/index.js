@@ -1,4 +1,4 @@
-import {join as joinPath, normalize as normalizePath, extname as pathExtension} from 'path';
+import { join as joinPath, normalize as normalizePath, extname as pathExtension } from 'path';
 import mkdirp from 'mkdirp';
 import tar from 'tar';
 import fs from 'fs-extra';
@@ -7,8 +7,10 @@ import FileSystem from '../../common/file_system';
 import config from '../../common/config';
 import Logger from '../../common/logger';
 import path from 'path';
-import {RuleNotFoundError, RuleNotReadableError, RuleNotWritableError,
-  RulesFolderNotFoundError, RulesRootFolderNotCreatableError} from '../../common/errors/rule_request_errors';
+import {
+  RuleNotFoundError, RuleNotReadableError, RuleNotWritableError,
+  RulesFolderNotFoundError, RulesRootFolderNotCreatableError
+} from '../../common/errors/rule_request_errors';
 
 let logger = new Logger('RulesController');
 
@@ -21,26 +23,26 @@ export default class RulesController {
   getRules(path) {
     const self = this;
     const fullPath = joinPath(self.rulesFolder, path);
-    return new Promise(function (resolve, reject) {
+    return new Promise(function(resolve, reject) {
       self._fileSystemController.readDirectory(fullPath)
-        .then(function (directoryIndex) {
+        .then(function(directoryIndex) {
 
-          directoryIndex.rules = directoryIndex.files.filter(function (fileName) {
+          directoryIndex.rules = directoryIndex.files.filter(function(fileName) {
             return pathExtension(fileName).toLowerCase() === '.yaml';
-          }).map(function (fileName) {
+          }).map(function(fileName) {
             return fileName.slice(0, -5);
           });
 
           delete directoryIndex.files;
           resolve(directoryIndex);
         })
-        .catch(function (error) {
+        .catch(function(error) {
 
           // Check if the requested folder is the rules root folder
           if (normalizePath(self.rulesFolder) === fullPath) {
 
             // Try to create the root folder
-            mkdirp(fullPath, function (error) {
+            mkdirp(fullPath, function(error) {
               if (error) {
                 reject(new RulesRootFolderNotCreatableError());
                 logger.warn(`The rules root folder (${fullPath}) couldn't be found nor could it be created by the file system.`);
@@ -58,29 +60,29 @@ export default class RulesController {
 
   rule(id) {
     const self = this;
-    return new Promise(function (resolve, reject) {
+    return new Promise(function(resolve, reject) {
       self._findRule(id)
-        .then(function (access) {
+        .then(function(access) {
           console.log('rule resolved');
           resolve({
-            get: function () {
+            get: function() {
               if (access.read) {
                 return self._getRule(id);
               }
               return self._getErrorPromise(new RuleNotReadableError(id));
             },
-            edit: function (body) {
+            edit: function(body) {
               if (access.write) {
                 return self._editRule(id, body);
               }
               return self._getErrorPromise(new RuleNotWritableError(id));
             },
-            delete: function () {
+            delete: function() {
               return self._deleteRule(id);
             }
           });
         })
-        .catch(function () {
+        .catch(function() {
           console.log('catched');
           reject(new RuleNotFoundError(id));
         });
@@ -98,9 +100,9 @@ export default class RulesController {
   _findRule(id) {
     let fileName = id + '.yaml';
     const self = this;
-    return new Promise(function (resolve, reject) {
+    return new Promise(function(resolve, reject) {
       self._fileSystemController.fileExists(joinPath(self.rulesFolder, fileName))
-        .then(function (exists) {
+        .then(function(exists) {
           if (!exists) {
             reject();
           } else {
@@ -112,7 +114,7 @@ export default class RulesController {
             });
           }
         })
-        .catch(function (error) {
+        .catch(function(error) {
           reject(error);
         });
     });
@@ -133,21 +135,21 @@ export default class RulesController {
     return this._fileSystemController.deleteFile(path);
   }
 
-  _downloadRules(URL){
+  _downloadRules(URL) {
     const options = {
       uri: URL,
       strictSSL: false
     };
     const filename = path.basename(URL);
-    
+
     return rq.get(options)
       .then(buffer => fs.outputFile(filename, buffer)
-        .then(() => this._untarFile(this.rulesFolder,filename))
+        .then(() => this._untarFile(this.rulesFolder, filename))
         .then(() => fs.remove(filename)));
   }
 
   _getErrorPromise(error) {
-    return new Promise(function (resolve, reject) {
+    return new Promise(function(resolve, reject) {
       reject(error);
     });
   }
@@ -162,7 +164,7 @@ export default class RulesController {
     }
   }
 
-  _untarFile(path_to_extract,archive){
+  _untarFile(path_to_extract, archive) {
     return tar.extract(
       {
         cwd: path_to_extract,

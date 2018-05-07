@@ -44,7 +44,7 @@ export class RulesRootFolderNotCreatableError extends RequestError {
 export class URLNotSentError extends RequestError {
   constructor() {
     super('URLNotSentError', 'URL is missing in the body', 400);
-  }  
+  }
 }
 export class URLNotPointingTar extends RequestError {
   constructor() {

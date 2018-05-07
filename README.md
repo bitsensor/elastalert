@@ -188,13 +188,14 @@ This server exposes the following REST API's:
 
 - **[WIP] POST `/download`**
   
-    Allows you to download .tar archive with rules from HTTP endpoint. Archive will be downloaded,extracted and removed.
+    Allows you to download a .tar archive with rules from a given HTTP endpoint. The archive will be downloaded, extracted and removed.
     Please note, body should contain URL pointing to tar archive, with tar extension.	
    
     Usage example:
 	
-        ```curl -X POST localhost:3030/download -d "url=https://artifactory.com:443/artifactory/raw/rules/rules.tar"```
- 	
+    ```bash
+    curl -X POST localhost:3030/download -d "url=https://artifactory.com:443/artifactory/raw/rules/rules.tar"
+    ```
         
 ## Contributing
 Want to contribute to this project? Great! Please read our [contributing guidelines](CONTRIBUTING.md) before submitting an issue or a pull request.
