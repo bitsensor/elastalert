@@ -1,12 +1,9 @@
 FROM ivankrizsan/elastalert AS py-ea
-# Uses BitSensor's elastalert, or yelp master if commented out
-# ENV ELASTALERT_URL https://github.com/bitsensor/yelp-elastalert/archive/master.zip
-
 FROM node:alpine
-LABEL maintainer="dev@bitsensor.io"
+LABEL maintainer="BitSensor <dev@bitsensor.io>"
 EXPOSE 3030
 
-RUN apk update && apk add --no-cache python2 curl
+RUN apk add --update --no-cache python2 curl make
 
 COPY --from=py-ea /usr/lib/python2.7/site-packages /usr/lib/python2.7/site-packages
 COPY --from=py-ea /opt/elastalert /opt/elastalert
