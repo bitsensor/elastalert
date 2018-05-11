@@ -1,13 +1,13 @@
 import ElastalertServer from './elastalert_server';
 
-if (process.env.BITSENSOR_SENTRY_ENABLED !== 'false' && process.env.BITSENSOR_SENTRY_DSN !== undefined) {
+if (process.env.SENTRY_ELASTALERT !== undefined) {
   var Raven = require('raven');
-  Raven.config(process.env.BITSENSOR_SENTRY_DSN, {
+  Raven.config(process.env.SENTRY_ELASTALERT, {
     captureUnhandledRejections: true
   }).install();
   console.log('Sentry logging enabled for Elastalert');
 
-  Raven.context(function () {
+  Raven.context(function() {
     let server = new ElastalertServer();
     server.start();
   });
