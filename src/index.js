@@ -1,8 +1,8 @@
 import ElastalertServer from './elastalert_server';
 
-if (process.env.SENTRY_ELASTALERT !== undefined) {
+if (process.env.SENTRY_DSN !== undefined) {
   var Raven = require('raven');
-  Raven.config(process.env.SENTRY_ELASTALERT, {
+  Raven.config(process.env.SENTRY_DSN, {
     captureUnhandledRejections: true
   }).install();
   console.log('Sentry logging enabled for Elastalert');
