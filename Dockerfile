@@ -9,8 +9,7 @@ ENV ELASTALERT_HOME /opt/elastalert
 
 WORKDIR /opt
 
-RUN apk update && apk upgrade && \
-    apk add ca-certificates openssl-dev openssl python2-dev python2 py2-pip py2-yaml libffi-dev gcc musl-dev wget && \
+RUN apk add --update --no-cache ca-certificates openssl-dev openssl python2-dev python2 py2-pip py2-yaml libffi-dev gcc musl-dev wget && \
 # Download and unpack Elastalert.
     wget -O elastalert.zip "${ELASTALERT_URL}" && \
     unzip elastalert.zip && \
@@ -20,7 +19,9 @@ RUN apk update && apk upgrade && \
 WORKDIR "${ELASTALERT_HOME}"
 
 # Install Elastalert.
-RUN python setup.py install && \
+# see: https://github.com/Yelp/elastalert/issues/1654
+RUN sed -i 's/jira>=1.0.10/jira>=1.0.10,<1.0.15/g' setup.py && \
+    python setup.py install && \
     pip install -r requirements.txt
 
 FROM node:alpine
@@ -30,7 +31,7 @@ ENV SET_CONTAINER_TIMEZONE False
 # Default container timezone as found under the directory /usr/share/zoneinfo/.
 ENV CONTAINER_TIMEZONE Etc/UTC
 
-RUN apk update && apk upgrade && apk add --no-cache curl tzdata python2
+RUN apk add --update --no-cache curl tzdata python2 make
 
 COPY --from=py-ea /usr/lib/python2.7/site-packages /usr/lib/python2.7/site-packages
 COPY --from=py-ea /opt/elastalert /opt/elastalert
