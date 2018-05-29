@@ -55,6 +55,33 @@ If you want to build the server and run the build version:
 
 You can then start the build by running `node lib/index.js`.
 
+
+
+## Building Docker image
+
+1. Clone the repository
+   ```bash
+   git clone https://github.com/bitsensor/elastalert.git && cd elastalert
+   ```
+2. Build the image using
+   ```
+   make build
+   ```
+   which is equivalent of:
+   ```
+   docker pull alpine:latest && docker pull node:latest
+   docker build -t elastalert .
+   ```
+
+Custom Yelp's Elastalert version (a [release from github](https://github.com/Yelp/elastalert/releases)) e.g. `master` or `v0.1.28`:
+```bash
+make build v=v0.1.28
+```
+Custom mirror:
+```bash
+docker build --build-arg ELASTALERT_URL=http://example.mirror.com/master.zip -t elastalert .
+```
+
 ### Install ElastAlert to /opt/elastalert
 And run `pip install -r requirements.txt` or read the installation guide of ElastAlert.
 
