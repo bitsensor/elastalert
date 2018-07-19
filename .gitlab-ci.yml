@@ -22,7 +22,6 @@
 stages:
   - build
   - test
-  - mirror
   - deploy
 
 cache:
@@ -44,19 +43,6 @@ test:
   script:
     - npm install --quiet
     - npm test
-
-mirror:github:
-  stage: mirror
-  script:
-    - git clone --mirror https://git.bitsensor.io/back-end/elastalert.git mirror-github
-    - cd mirror-github
-    - git remote add github https://$MIRROR_GITHUB_USER:$MIRROR_GITHUB_PASSWORD@$MIRROR_GITHUB_URL
-    - git push -u github -q --mirror
-    - rm -rf mirror-github
-  when: always
-  only:
-    - tags
-    - develop
 
 deploy:npm:
   image: node:latest
