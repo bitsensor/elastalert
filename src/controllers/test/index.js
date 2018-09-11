@@ -33,6 +33,10 @@ export default class TestController {
 
           processOptions.push('-m', 'elastalert.test_rule', '--config', 'config.yaml', tempFilePath, '--days', options.days);
 
+          if (options.format === 'json') {
+            processOptions.push('--formatted-output');
+          }
+
           if (options.alert) {
             processOptions.push('--alert');
           }
