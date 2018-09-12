@@ -70,7 +70,12 @@ export default class TestController {
 
             testProcess.on('exit', function (statusCode) {
               if (statusCode === 0) {
-                resolve(stdoutLines.join('\n'));
+                if (options.format === 'json') {
+                  resolve(stdoutLines.join());
+                }
+                else {
+                  resolve(stdoutLines.join('\n'));
+                }
               } else {
                 reject(stderrLines.join('\n'));
                 logger.error(stderrLines.join('\n'));
