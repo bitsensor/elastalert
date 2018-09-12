@@ -37,6 +37,11 @@ export default class TestController {
             processOptions.push('--formatted-output');
           }
 
+          if (options.maxResults > 0) {
+            processOptions.push('--max-query-size');
+            processOptions.push(options.maxResults);
+          }
+
           if (options.alert) {
             processOptions.push('--alert');
           }

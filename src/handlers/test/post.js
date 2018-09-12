@@ -9,7 +9,8 @@ const optionsSchema = Joi.object().keys({
   testType: Joi.string().valid('all', 'schemaOnly', 'countOnly').default('all'),
   days: Joi.number().min(1).default(1),
   alert: Joi.boolean().default(false),
-  format: Joi.string().default('')
+  format: Joi.string().default(''),
+  maxResults: Joi.number().default(0)
 }).default();
 
 function analyzeRequest(request) {
