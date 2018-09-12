@@ -200,7 +200,13 @@ This server exposes the following REST API's:
           "days": "1"
           
           // Whether to send real alerts
-          "alert": false
+          "alert": false,
+
+          // Return results in structured JSON
+          "format": "json",
+
+          // Limit returned results to this amount
+          "maxResults": 1000
         }
       }
       ``` 
