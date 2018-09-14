@@ -71,7 +71,7 @@ export default class TestController {
             testProcess.on('exit', function (statusCode) {
               if (statusCode === 0) {
                 if (options.format === 'json') {
-                  resolve(stdoutLines.join());
+                  resolve(stdoutLines.join(''));
                 }
                 else {
                   resolve(stdoutLines.join('\n'));
