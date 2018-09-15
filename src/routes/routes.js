@@ -14,6 +14,7 @@ import templateDeleteHandler from '../handlers/templates/id/delete';
 import testPostHandler from '../handlers/test/post';
 import configGetHandler from '../handlers/config/get';
 import configPostHandler from '../handlers/config/post';
+import metadataHandler from '../handlers/metadata/get';
 
 /**
  * A server route.
@@ -74,6 +75,11 @@ let routes = [
     path: 'download',
     method: ['POST'],
     handler: [downloadRulesHandler]
+  },
+  {
+    path: 'metadata/:type',
+    method: ['GET'],
+    handler: [metadataHandler]
   }
 ];
 

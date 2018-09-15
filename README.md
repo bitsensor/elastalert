@@ -211,6 +211,10 @@ This server exposes the following REST API's:
       }
       ``` 
     
+- **GET `/metadata/:type`**
+
+    Returns metadata from elasticsearch related to elasalert's state. `:type` should be one of: elastalert_status, elastalert, elastalert_error, or silence. See [docs about the elastalert metadata index](https://elastalert.readthedocs.io/en/latest/elastalert_status.html).
+
 - **[WIP] GET `/config`**
 
     Gets the ElastAlert configuration from `config.yaml` in `elastalertPath` (from the config).
