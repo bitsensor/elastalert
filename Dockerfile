@@ -26,10 +26,8 @@ RUN sed -i 's/jira>=1.0.10/jira>=1.0.10,<1.0.15/g' setup.py && \
 
 FROM node:alpine
 LABEL maintainer="BitSensor <dev@bitsensor.io>"
-# Set this environment variable to True to set timezone on container start.
-ENV SET_CONTAINER_TIMEZONE False
-# Default container timezone as found under the directory /usr/share/zoneinfo/.
-ENV CONTAINER_TIMEZONE Etc/UTC
+# Set timezone for this container
+ENV TZ Etc/UTC
 
 RUN apk add --update --no-cache curl tzdata python2 make
 
