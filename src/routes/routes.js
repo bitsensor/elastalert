@@ -15,6 +15,7 @@ import testPostHandler from '../handlers/test/post';
 import configGetHandler from '../handlers/config/get';
 import configPostHandler from '../handlers/config/post';
 import metadataHandler from '../handlers/metadata/get';
+import mappingHandler from '../handlers/mapping/get';
 
 /**
  * A server route.
@@ -80,6 +81,11 @@ let routes = [
     path: 'metadata/:type',
     method: ['GET'],
     handler: [metadataHandler]
+  },
+  {
+    path: 'mapping/:index',
+    method: ['GET'],
+    handler: [mappingHandler]
   }
 ];
 
