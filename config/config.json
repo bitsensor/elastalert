@@ -12,5 +12,8 @@
   "templatesPath": {
     "relative": true,
     "path": "/rule_templates"
-  }
+  },
+  "es_host": "elastalert",
+  "es_port": 9200,
+  "writeback_index": "elastalert_status"
 }
