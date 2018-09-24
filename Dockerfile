@@ -29,7 +29,7 @@ LABEL maintainer="BitSensor <dev@bitsensor.io>"
 # Set timezone for this container
 ENV TZ Etc/UTC
 
-RUN apk add --update --no-cache curl tzdata python2 make
+RUN apk add --update --no-cache curl tzdata python2 make libmagic
 
 COPY --from=py-ea /usr/lib/python2.7/site-packages /usr/lib/python2.7/site-packages
 COPY --from=py-ea /opt/elastalert /opt/elastalert
