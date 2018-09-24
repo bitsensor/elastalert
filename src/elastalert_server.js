@@ -9,6 +9,7 @@ import ProcessController from './controllers/process';
 import RulesController from './controllers/rules';
 import TemplatesController from './controllers/templates';
 import TestController from './controllers/test';
+import cors from 'cors';
 
 let logger = new Logger('Server');
 
@@ -58,6 +59,7 @@ export default class ElastalertServer {
     // Start the server when the config is loaded
     config.ready(function () {
       try {
+        self._express.use(cors());
         self._express.use(bodyParser.json());
         self._express.use(bodyParser.urlencoded({ extended: true }));
         self._setupRouter();

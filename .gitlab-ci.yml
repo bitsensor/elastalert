@@ -60,12 +60,12 @@ deploy:docker:
   script:
     - sh scripts/replace_templates.sh ${CI_JOB_TOKEN}
     - docker info
-    - echo $BITSENSOR_PASSWORD | docker login -u $BITSENSOR_USERNAME --password-stdin artifacts.bitsensor.io:1443
+    - echo $BITSENSOR_PASSWORD | docker login -u $BITSENSOR_USERNAME --password-stdin docker.bitsensor.io
     - docker build -t elastalert .
-    - docker tag elastalert artifacts.bitsensor.io:1443/elastalert:latest
-    - docker tag elastalert artifacts.bitsensor.io:1443/elastalert:$(git describe --abbrev=0)
-    - docker push artifacts.bitsensor.io:1443/elastalert:latest
-    - docker push artifacts.bitsensor.io:1443/elastalert:$(git describe --abbrev=0)
+    - docker tag elastalert docker.bitsensor.io/elastalert:latest
+    - docker tag elastalert docker.bitsensor.io/elastalert:$(git describe --abbrev=0)
+    - docker push docker.bitsensor.io/elastalert:latest
+    - docker push docker.bitsensor.io/elastalert:$(git describe --abbrev=0)
   only:
     - tags
   tags:
@@ -76,10 +76,10 @@ deploy:docker:snapshot:
   script:
     - sh scripts/replace_templates.sh ${CI_JOB_TOKEN}
     - docker info
-    - echo $BITSENSOR_PASSWORD | docker login -u $BITSENSOR_USERNAME --password-stdin artifacts.bitsensor.io:1443
+    - echo $BITSENSOR_PASSWORD | docker login -u $BITSENSOR_USERNAME --password-stdin docker.bitsensor.io
     - docker build -t elastalert .
-    - docker tag elastalert artifacts.bitsensor.io:1443/elastalert:snapshot
-    - docker push artifacts.bitsensor.io:1443/elastalert:snapshot
+    - docker tag elastalert docker.bitsensor.io/elastalert:snapshot
+    - docker push docker.bitsensor.io/elastalert:snapshot
   only:
     - develop
   tags:

@@ -1,5 +1,5 @@
 FROM alpine:latest as py-ea
-ARG ELASTALERT_VERSION=v0.1.33
+ARG ELASTALERT_VERSION=v0.1.36
 ENV ELASTALERT_VERSION=${ELASTALERT_VERSION}
 # URL from which to download Elastalert.
 ARG ELASTALERT_URL=https://github.com/Yelp/elastalert/archive/$ELASTALERT_VERSION.zip
@@ -26,12 +26,10 @@ RUN sed -i 's/jira>=1.0.10/jira>=1.0.10,<1.0.15/g' setup.py && \
 
 FROM node:alpine
 LABEL maintainer="BitSensor <dev@bitsensor.io>"
-# Set this environment variable to True to set timezone on container start.
-ENV SET_CONTAINER_TIMEZONE False
-# Default container timezone as found under the directory /usr/share/zoneinfo/.
-ENV CONTAINER_TIMEZONE Etc/UTC
+# Set timezone for this container
+ENV TZ Etc/UTC
 
-RUN apk add --update --no-cache curl tzdata python2 make
+RUN apk add --update --no-cache curl tzdata python2 make libmagic
 
 COPY --from=py-ea /usr/lib/python2.7/site-packages /usr/lib/python2.7/site-packages
 COPY --from=py-ea /opt/elastalert /opt/elastalert

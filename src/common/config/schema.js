@@ -3,6 +3,9 @@ import Joi from 'joi';
 
 const schema = Joi.object().keys({
   'appName': Joi.string().default('elastalert-server'),
+  'es_host': Joi.string().default('elastalert'),
+  'es_port': Joi.number().default(9200),
+  'writeback_index': Joi.string().default('elastalert_status'),
   'port': Joi.number().default(3030),
   'elastalertPath': Joi.string().default('/opt/elastalert'),
   'rulesPath': Joi.object().keys({

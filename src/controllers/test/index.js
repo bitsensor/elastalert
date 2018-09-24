@@ -33,6 +33,15 @@ export default class TestController {
 
           processOptions.push('-m', 'elastalert.test_rule', '--config', 'config.yaml', tempFilePath, '--days', options.days);
 
+          if (options.format === 'json') {
+            processOptions.push('--formatted-output');
+          }
+
+          if (options.maxResults > 0) {
+            processOptions.push('--max-query-size');
+            processOptions.push(options.maxResults);
+          }
+
           if (options.alert) {
             processOptions.push('--alert');
           }
@@ -61,7 +70,12 @@ export default class TestController {
 
             testProcess.on('exit', function (statusCode) {
               if (statusCode === 0) {
-                resolve(stdoutLines.join('\n'));
+                if (options.format === 'json') {
+                  resolve(stdoutLines.join(''));
+                }
+                else {
+                  resolve(stdoutLines.join('\n'));
+                }
               } else {
                 reject(stderrLines.join('\n'));
                 logger.error(stderrLines.join('\n'));

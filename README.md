@@ -111,7 +111,10 @@ You can use the following config options:
   "dataPath": { // The path to a folder that the server can use to store data and temporary files.
     "relative": true, // Whether to use a path relative to the `elastalertPath` folder.
     "path": "/server_data" // The path to the data folder.
-  }
+  },
+  "es_host": "elastalert", // For getting metadata and field mappings, connect to this ES server
+  "es_port": 9200, // Port for above
+  "writeback_index": "elastalert_status" // Writeback index to examine for /metadata endpoint
 }
 ```
  
@@ -200,11 +203,25 @@ This server exposes the following REST API's:
           "days": "1"
           
           // Whether to send real alerts
-          "alert": false
+          "alert": false,
+
+          // Return results in structured JSON
+          "format": "json",
+
+          // Limit returned results to this amount
+          "maxResults": 1000
         }
       }
       ``` 
     
+- **GET `/metadata/:type`**
+
+    Returns metadata from elasticsearch related to elasalert's state. `:type` should be one of: elastalert_status, elastalert, elastalert_error, or silence. See [docs about the elastalert metadata index](https://elastalert.readthedocs.io/en/latest/elastalert_status.html).
+
+- **GET `/mapping/:index`**
+
+    Returns field mapping from elasticsearch for a given index. 
+
 - **[WIP] GET `/config`**
 
     Gets the ElastAlert configuration from `config.yaml` in `elastalertPath` (from the config).

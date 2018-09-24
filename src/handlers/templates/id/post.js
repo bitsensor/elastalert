@@ -26,8 +26,8 @@ export default function templatePostHandler(request, response) {
         });
     })
     .catch(function (error) {
-      if (error.error === 'ruleNotFound') {
-        server.templatesController.createRule(request.params.id, body)
+      if (error.error === 'templateNotFound') {
+        server.templatesController.createTemplate(request.params.id, body)
           .then(function () {
             logger.sendSuccessful();
             response.send({
