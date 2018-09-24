@@ -19,7 +19,7 @@ export default class TestController {
     });
   }
 
-  testRule(rule, options) {
+  testRule(rule, options, stream, response) {
     const self = this;
     let tempFileName = '~' + randomstring.generate() + '.temp';
     let tempFilePath = path.join(self.testFolder, tempFileName);
@@ -61,14 +61,25 @@ export default class TestController {
             });
 
             testProcess.stdout.on('data', function (data) {
+              if (stream) {
+                response.write('event: result\ndata: ' + data.toString() + '\n\n');
+              }
               stdoutLines.push(data.toString());
             });
 
             testProcess.stderr.on('data', function (data) {
+              if (stream) {
+                response.write('event: progress\ndata: ' + data.toString() + '\n\n');
+              }
               stderrLines.push(data.toString());
             });
 
             testProcess.on('exit', function (statusCode) {
+              if (stream) {
+                response.write('event: done\ndata: DONE\n\n');
+                response.end();
+              }
+
               if (statusCode === 0) {
                 if (options.format === 'json') {
                   resolve(stdoutLines.join(''));

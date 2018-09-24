@@ -209,6 +209,10 @@ This server exposes the following REST API's:
       }
       ``` 
     
+- **GET `/test_stream`**
+
+    This allows you to test a rule and get a [Server Sent Events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events) event stream back. Pass params `rule` (yaml string) and `options` (JSON string) to start receiving events.
+
 - **GET `/metadata/:type`**
 
     Returns metadata from elasticsearch related to elasalert's state. `:type` should be one of: elastalert_status, elastalert, elastalert_error, or silence. See [docs about the elastalert metadata index](https://elastalert.readthedocs.io/en/latest/elastalert_status.html).
@@ -216,6 +220,10 @@ This server exposes the following REST API's:
 - **GET `/mapping/:index`**
 
     Returns field mapping from elasticsearch for a given index. 
+
+- **GET `/search/:index`**
+
+    Performs elasticsearch query on behalf of the API. JSON body to this endpoint will become body of an ES search. 
 
 - **[WIP] GET `/config`**
 

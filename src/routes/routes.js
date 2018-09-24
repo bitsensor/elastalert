@@ -12,6 +12,7 @@ import templateGetHandler from '../handlers/templates/id/get';
 import templatePostHandler from '../handlers/templates/id/post';
 import templateDeleteHandler from '../handlers/templates/id/delete';
 import testPostHandler from '../handlers/test/post';
+import testStreamGetHandler from '../handlers/test/stream';
 import configGetHandler from '../handlers/config/get';
 import configPostHandler from '../handlers/config/post';
 import metadataHandler from '../handlers/metadata/get';
@@ -68,7 +69,13 @@ let routes = [
     path: 'test',
     method: 'POST',
     handler: testPostHandler
-  }, {
+  }, 
+  {
+    path: 'test_stream',
+    method: 'GET',
+    handler: testStreamGetHandler
+  },
+  {
     path: 'config',
     method: ['GET', 'POST'],
     handler: [configGetHandler, configPostHandler]
