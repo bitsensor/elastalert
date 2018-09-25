@@ -1,10 +1,11 @@
 # Elastalert Server
 **A server that runs [ElastAlert](https://github.com/Yelp/elastalert) and exposes REST API's for manipulating rules and alerts. It works great in combination with our [ElastAlert Kibana plugin](https://github.com/bitsensor/elastalert-kibana-plugin).**
 
-## Docker installation
-The default configuration uses localhost as ES host. You will want to mount the volumes for configuration and rule files to keep them after container updates. In order to do that conviniently, please do a `git clone https://github.com/bitsensor/elastalert.git; cd elastalert`
+## Installation
+The most convenient way to run the ElastAlert server is by using our Docker container image. The default configuration uses `localhost:9200` as ElasticSearch host, if this is not the case in your setup please edit `es_host` and `es_port` in both the `config.yaml` and `config.json` configuration files.
 
-### Bash
+To run the Docker image you will want to mount the volumes for configuration and rule files to keep them after container updates. In order to do that conveniently, please do: `git clone https://github.com/bitsensor/elastalert.git; cd elastalert`
+
 ```bash
 docker run -d -p 3030:3030 \
     -v `pwd`/config/elastalert.yaml:/opt/elastalert/config.yaml \
@@ -15,77 +16,35 @@ docker run -d -p 3030:3030 \
     --name elastalert bitsensor/elastalert:latest
 ```
 
-### Fish
-```bash
-docker run -d -p 3030:3030 \
-    -v (pwd)/config/elastalert.yaml:/opt/elastalert/config.yaml \
-    -v (pwd)/config/config.json:/opt/elastalert-server/config/config.json \
-    -v (pwd)/rules:/opt/elastalert/rules \
-    -v (pwd)/rule_templates:/opt/elastalert/rule_templates \
-    --net="host" \
-    --name elastalert bitsensor/elastalert:latest
-```
-### Configuration
-#### ElastAlert parameters
-ElastAlert supports additional arguments, that can be passed in the `config.json` file. An example is given in `config/config-historic-data-example.json`. 
-
-## Installation using npm and manual ElastAlert setup
-
-### Requirements
-- [ElastAlert v0.0.96](https://github.com/Yelp/elastalert/tree/v0.0.96). We don't support other versions of ElastAlert, use them at your own risk.
-- [NodeJS 4.5.0](https://nodejs.org/en/download/) with NPM & NVM.
-
-## Building from source
-1. Clone the repository
-    ```bash
-    git clone https://github.com/bitsensor/elastalert.git elastalert
-    cd elastalert
-    ```
-2. Run `nvm install "$(cat .nvmrc)"` to install & use the required NodeJS version.
-3. Run `npm install` to install all the dependencies.
-4. Look at the `Config` section to setup the path to your ElastAlert instance.
-
-Now, you can run  the server with `npm start`. By default the server runs on http://localhost:3030.
-
-## Building
-If you want to build the server and run the build version:
-
-1. Run the installation guide shown above
-2. Run `npm run build`
-
-You can then start the build by running `node lib/index.js`.
-
-
-
 ## Building Docker image
 
-1. Clone the repository
-   ```bash
-   git clone https://github.com/bitsensor/elastalert.git && cd elastalert
-   ```
-2. Build the image using
-   ```
-   make build
-   ```
-   which is equivalent of:
-   ```
-   docker pull alpine:latest && docker pull node:latest
-   docker build -t elastalert .
-   ```
+Clone the repository
+```bash
+git clone https://github.com/bitsensor/elastalert.git && cd elastalert
+```
 
-Custom Yelp's Elastalert version (a [release from github](https://github.com/Yelp/elastalert/releases)) e.g. `master` or `v0.1.28`:
+Build the image
+```
+make build
+```
+which is equivalent of
+```
+docker pull alpine:latest && docker pull node:latest
+docker build -t elastalert .
+```
+
+### Options
+
+Using a custom ElastAlert version (a [release from github](https://github.com/Yelp/elastalert/releases)) e.g. `master` or `v0.1.28`
 ```bash
 make build v=v0.1.28
 ```
-Custom mirror:
+Using a custom mirror
 ```bash
 docker build --build-arg ELASTALERT_URL=http://example.mirror.com/master.zip -t elastalert .
 ```
 
-### Install ElastAlert to /opt/elastalert
-And run `pip install -r requirements.txt` or read the installation guide of ElastAlert.
-
-### Config
+## Configuration
 In `config/config.example.json` you'll find the default config. You can make a `config.json` file in the same folder that overrides the default config. When forking this repository it is recommended to remove `config.json` from the `.gitignore` file. For local testing purposes you can then use a `config.dev.json` file which overrides `config.json`.
 
 You can use the following config options:
@@ -116,6 +75,35 @@ You can use the following config options:
   "es_port": 9200, // Port for above
   "writeback_index": "elastalert_status" // Writeback index to examine for /metadata endpoint
 }
+```
+
+ElastAlert also expects a `config.yaml` with at least the following options.
+```yaml
+# The elasticsearch hostname for metadata writeback
+# Note that every rule can have its own elasticsearch host
+es_host: localhost
+
+# The elasticsearch port
+es_port: 9200
+
+# The index on es_host which is used for metadata storage
+# This can be a unmapped index, but it is recommended that you run
+# elastalert-create-index to set a mapping
+writeback_index: elastalert_status
+
+# This is the folder that contains the rule yaml files
+# Any .yaml file will be loaded as a rule
+rules_folder: rules
+
+# How often ElastAlert will query elasticsearch
+# The unit can be anything from weeks to seconds
+run_every:
+  seconds: 5
+
+# ElastAlert will buffer results from the most recent
+# period of time, in case some log sources are not in real time
+buffer_time:
+  minutes: 1
 ```
  
 ## API
