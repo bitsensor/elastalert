@@ -66,6 +66,11 @@ export default class TestController {
             if (socket) {
               socket.on('close', () => {
                 testProcess.kill();
+
+                fileSystem.deleteFile(tempFilePath)
+                  .catch(function (error) {
+                    logger.error(`Failed to delete temporary test file ${tempFilePath} with error:`, error);
+                  });
               });
             }
               
