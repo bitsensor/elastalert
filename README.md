@@ -2,7 +2,7 @@
 **A server that runs [ElastAlert](https://github.com/Yelp/elastalert) and exposes REST API's for manipulating rules and alerts. It works great in combination with our [ElastAlert Kibana plugin](https://github.com/bitsensor/elastalert-kibana-plugin).**
 
 ## Installation
-The most convenient way to run the ElastAlert server is by using our Docker container image. The default configuration uses `localhost:9200` as ElasticSearch host, if this is not the case in your setup please edit `es_host` and `es_port` in both the `config.yaml` and `config.json` configuration files.
+The most convenient way to run the ElastAlert server is by using our Docker container image. The default configuration uses `localhost:9200` as ElasticSearch host, if this is not the case in your setup please edit `es_host` and `es_port` in both the `elastalert.yaml` and `config.json` configuration files.
 
 To run the Docker image you will want to mount the volumes for configuration and rule files to keep them after container updates. In order to do that conveniently, please do: `git clone https://github.com/bitsensor/elastalert.git; cd elastalert`
 
@@ -77,7 +77,7 @@ You can use the following config options:
 }
 ```
 
-ElastAlert also expects a `config.yaml` with at least the following options.
+ElastAlert also expects a `elastalert.yaml` with at least the following options.
 ```yaml
 # The elasticsearch hostname for metadata writeback
 # Note that every rule can have its own elasticsearch host
