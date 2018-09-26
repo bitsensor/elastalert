@@ -1,5 +1,12 @@
-# Elastalert Server
-**A server that runs [ElastAlert](https://github.com/Yelp/elastalert) and exposes REST API's for manipulating rules and alerts. It works great in combination with our [ElastAlert Kibana plugin](https://github.com/bitsensor/elastalert-kibana-plugin).**
+# ElastAlert Server
+
+> A server that runs [ElastAlert](https://github.com/Yelp/elastalert) and exposes REST API's for manipulating rules and alerts. It works great in combination with our [ElastAlert Kibana plugin](https://github.com/bitsensor/elastalert-kibana-plugin).
+
+![GitHub release](https://img.shields.io/github/release/bitsensor/elastalert.svg)
+![Docker Pulls](https://img.shields.io/docker/pulls/bitsensor/elastalert.svg)
+![GitHub stars](https://img.shields.io/github/stars/bitsensor/elastalert.svg?style=social&label=Stars)
+
+---
 
 ## Installation
 The most convenient way to run the ElastAlert server is by using our Docker container image. The default configuration uses `localhost:9200` as ElasticSearch host, if this is not the case in your setup please edit `es_host` and `es_port` in both the `elastalert.yaml` and `config.json` configuration files.
