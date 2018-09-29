@@ -2,6 +2,7 @@
   "appName": "elastalert-server",
   "port": 3030,
   "elastalertPath": "/opt/elastalert",
+  "wsport": 3333,
   "verbose": false,
   "es_debug": false,
   "debug": false,

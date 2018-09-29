@@ -19,7 +19,7 @@ export default class TestController {
     });
   }
 
-  testRule(rule, options, stream, response) {
+  testRule(rule, options, socket) {
     const self = this;
     let tempFileName = '~' + randomstring.generate() + '.temp';
     let tempFilePath = path.join(self.testFolder, tempFileName);
@@ -55,31 +55,41 @@ export default class TestController {
               break;
           }
 
+
           try {
             let testProcess = spawn('python', processOptions, {
               cwd: self._elastalertPath
             });
 
+            // When the websocket closes we kill the test process
+            // so it doesn't keep running detached
+            if (socket) {
+              socket.on('close', () => {
+                testProcess.kill();
+              });
+            }
+              
             testProcess.stdout.on('data', function (data) {
-              if (stream) {
-                response.write('event: result\ndata: ' + data.toString() + '\n\n');
+              if (socket) {
+                socket.send(JSON.stringify({ 
+                  event: 'result',
+                  data: data.toString() 
+                }));
               }
               stdoutLines.push(data.toString());
             });
 
             testProcess.stderr.on('data', function (data) {
-              if (stream) {
-                response.write('event: progress\ndata: ' + data.toString() + '\n\n');
+              if (socket) {
+                socket.send(JSON.stringify({ 
+                  event: 'progress',
+                  data: data.toString() 
+                }));
               }
               stderrLines.push(data.toString());
             });
 
             testProcess.on('exit', function (statusCode) {
-              if (stream) {
-                response.write('event: done\ndata: DONE\n\n');
-                response.end();
-              }
-
               if (statusCode === 0) {
                 if (options.format === 'json') {
                   resolve(stdoutLines.join(''));
@@ -88,8 +98,10 @@ export default class TestController {
                   resolve(stdoutLines.join('\n'));
                 }
               } else {
-                reject(stderrLines.join('\n'));
-                logger.error(stderrLines.join('\n'));
+                if (!socket) {
+                  reject(stderrLines.join('\n'));
+                  logger.error(stderrLines.join('\n'));  
+                }
               }
 
               fileSystem.deleteFile(tempFilePath)
@@ -106,6 +118,8 @@ export default class TestController {
           logger.error(`Failed to write file ${tempFileName} to ${self.testFolder} with error:`, error);
           reject(error);
         });
+    }).catch((error) => {
+      logger.error('Failed to test rule with error:', error);
     });
   }
 
