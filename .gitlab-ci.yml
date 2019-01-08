@@ -44,17 +44,6 @@ test:
     - npm install --quiet
     - npm test
 
-deploy:npm:
-  image: node:latest
-  stage: deploy
-  script:
-    - npm install --quiet
-    - sh scripts/update-authors.sh
-    - echo '//registry.npmjs.org/:_authToken=${NPM_TOKEN}'>.npmrc
-    - npm publish --access public
-  only:
-    - tags
-
 deploy:docker:
   stage: deploy
   script:

@@ -16,6 +16,7 @@ To run the Docker image you will want to mount the volumes for configuration and
 ```bash
 docker run -d -p 3030:3030 \
     -v `pwd`/config/elastalert.yaml:/opt/elastalert/config.yaml \
+    -v `pwd`/config/elastalert-test.yaml:/opt/elastalert/config-test.yaml \
     -v `pwd`/config/config.json:/opt/elastalert-server/config/config.json \
     -v `pwd`/rules:/opt/elastalert/rules \
     -v `pwd`/rule_templates:/opt/elastalert/rule_templates \
@@ -112,6 +113,8 @@ run_every:
 buffer_time:
   minutes: 1
 ```
+
+There is also a `elastalert-test.yaml` file which is only used when you use the API to test a rule. This allows you to write to a different `writeback_index` for example when testing rules.
  
 ## API
 This server exposes the following REST API's:
