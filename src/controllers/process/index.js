@@ -38,7 +38,7 @@ export default class ProcessController {
 
     // Create ElastAlert index if it doesn't exist yet
     logger.info('Creating index');
-    var indexCreate = spawnSync('python', ['-m', config.get('writeback_index'), '--index', 'elastalert_status', '--old-index', ''], {
+    var indexCreate = spawnSync('python', ['-m', 'elastalert.create_index', '--index', config.get('writeback_index'), '--old-index', ''], {
       cwd: this._elastalertPath
     });
 
