@@ -9,6 +9,7 @@ export default class ProcessController {
 
   constructor() {
     this._elastalertPath = config.get('elastalertPath');
+    this._onExitCallbacks = [];
     this._status = Status.IDLE;
 
     /**
@@ -16,6 +17,10 @@ export default class ProcessController {
      * @private
      */
     this._process = null;
+  }
+
+  onExit(onExitCallback) {
+    this._onExitCallbacks.push(onExitCallback);
   }
 
   get status() {
@@ -112,6 +117,12 @@ export default class ProcessController {
         this._status = Status.ERROR;
       }
       this._process = null;
+
+      this._onExitCallbacks.map(function(onExitCallback) {
+        if (onExitCallback !== null) {
+          onExitCallback();
+        }
+      });
     });
 
     // Set listener for ElastAlert error
