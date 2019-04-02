@@ -1,6 +1,6 @@
 {
   "name": "@bitsensor/elastalert",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "A server that runs ElastAlert and exposes REST API's for manipulating rules and alerts.",
   "license": "MIT",
   "main": "index.js",
@@ -35,7 +35,8 @@
     "raven": "^2.6.1",
     "request": "^2.85.0",
     "request-promise-native": "^1.0.5",
-    "tar": "^4.4.1"
+    "tar": "^4.4.1",
+    "ws": "^6.0.0"
   },
   "devDependencies": {
     "eslint": "^4.17.0",

@@ -4,6 +4,7 @@ import Logger from './common/logger';
 import config from './common/config';
 import path from 'path';
 import FileSystem from './common/file_system';
+import { listen } from './common/websocket';
 import setupRouter from './routes/route_setup';
 import ProcessController from './controllers/process';
 import RulesController from './controllers/rules';
@@ -69,6 +70,10 @@ export default class ElastalertServer {
         self._fileSystemController = new FileSystem();
         self._processController = new ProcessController();
         self._processController.start();
+        self._processController.onExit(function() {
+          // If the elastalert process exits, we should stop the server.
+          process.exit(0);
+        });
 
         self._rulesController = new RulesController();
         self._templatesController = new TemplatesController();
@@ -77,8 +82,27 @@ export default class ElastalertServer {
         self._fileSystemController.createDirectoryIfNotExists(self.getDataFolder()).catch(function (error) {
           logger.error('Error creating data folder with error:', error);
         });
-
+        
         logger.info('Server listening on port ' + config.get('port'));
+
+        let wss = listen(config.get('wsport'));
+
+        wss.on('connection', ws => {
+          ws.on('message', (data) => {
+            try {
+              data = JSON.parse(data);
+              if (data.rule) {
+                let rule = data.rule;
+                let options = data.options;
+                self._testController.testRule(rule, options, ws);
+              }
+            } catch (error) {
+              console.log(error);
+            }
+          });
+        });
+
+        logger.info('Websocket listening on port 3333');
       } catch (error) {
         logger.error('Starting server failed with error:', error);
         process.exit(1);

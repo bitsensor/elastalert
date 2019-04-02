@@ -2,12 +2,43 @@ import config from '../../common/config';
 import { getClient } from '../../common/elasticsearch_client';
 
 
+function escapeLuceneSyntax(str) {
+  return [].map
+    .call(str, char => {
+      if (
+        char === '/' ||
+        char === '+' ||
+        char === '-' ||
+        char === '&' ||
+        char === '|' ||
+        char === '!' ||
+        char === '(' ||
+        char === ')' ||
+        char === '{' ||
+        char === '}' ||
+        char === '[' ||
+        char === ']' ||
+        char === '^' ||
+        char === '"' ||
+        char === '~' ||
+        char === '*' ||
+        char === '?' ||
+        char === ':' ||
+        char === '\\'
+      ) {
+        return `\\${char}`;
+      }
+      return char;
+    })
+    .join('');
+}
+
 function getQueryString(request) {
   if (request.params.type === 'elastalert_error') {
     return '*:*';
   }
   else {
-    return `rule_name:${request.query.rule_name || '*'}`;
+    return `rule_name:"${escapeLuceneSyntax(request.query.rule_name) || '*'}"`;
   }
 }
 

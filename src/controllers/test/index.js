@@ -19,7 +19,7 @@ export default class TestController {
     });
   }
 
-  testRule(rule, options) {
+  testRule(rule, options, socket) {
     const self = this;
     let tempFileName = '~' + randomstring.generate() + '.temp';
     let tempFilePath = path.join(self.testFolder, tempFileName);
@@ -55,16 +55,42 @@ export default class TestController {
               break;
           }
 
+
           try {
             let testProcess = spawn('python', processOptions, {
               cwd: self._elastalertPath
             });
 
+            // When the websocket closes we kill the test process
+            // so it doesn't keep running detached
+            if (socket) {
+              socket.on('close', () => {
+                testProcess.kill();
+
+                fileSystem.deleteFile(tempFilePath)
+                  .catch(function (error) {
+                    logger.error(`Failed to delete temporary test file ${tempFilePath} with error:`, error);
+                  });
+              });
+            }
+              
             testProcess.stdout.on('data', function (data) {
+              if (socket) {
+                socket.send(JSON.stringify({ 
+                  event: 'result',
+                  data: data.toString() 
+                }));
+              }
               stdoutLines.push(data.toString());
             });
 
             testProcess.stderr.on('data', function (data) {
+              if (socket) {
+                socket.send(JSON.stringify({ 
+                  event: 'progress',
+                  data: data.toString() 
+                }));
+              }
               stderrLines.push(data.toString());
             });
 
@@ -77,8 +103,10 @@ export default class TestController {
                   resolve(stdoutLines.join('\n'));
                 }
               } else {
-                reject(stderrLines.join('\n'));
-                logger.error(stderrLines.join('\n'));
+                if (!socket) {
+                  reject(stderrLines.join('\n'));
+                  logger.error(stderrLines.join('\n'));  
+                }
               }
 
               fileSystem.deleteFile(tempFilePath)
@@ -95,6 +123,8 @@ export default class TestController {
           logger.error(`Failed to write file ${tempFileName} to ${self.testFolder} with error:`, error);
           reject(error);
         });
+    }).catch((error) => {
+      logger.error('Failed to test rule with error:', error);
     });
   }
 

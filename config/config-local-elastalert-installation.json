@@ -1,6 +1,7 @@
 {
   "appName": "elastalert-server",
   "port": 3030,
+  "wsport": 3333,
   "elastalertPath": "/opt/elastalert",
   "verbose": false,
   "es_debug": false,
@@ -12,5 +13,9 @@
   "templatesPath": {
     "relative": false,
     "path": "/opt/elastalert/rule_templates"
-  }
+  },
+  "es_host": "elasticsearch",
+  "es_port": 9200,
+  "writeback_index": "elastalert_status"
+
 }
