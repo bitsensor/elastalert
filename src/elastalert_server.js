@@ -69,6 +69,10 @@ export default class ElastalertServer {
         self._fileSystemController = new FileSystem();
         self._processController = new ProcessController();
         self._processController.start();
+        self._processController.onExit(function() {
+          // If the elastalert process exits, we should stop the server.
+          process.exit(0);
+        });
 
         self._rulesController = new RulesController();
         self._templatesController = new TemplatesController();
