@@ -7,6 +7,7 @@ const schema = Joi.object().keys({
   'es_port': Joi.number().default(9200),
   'writeback_index': Joi.string().default('elastalert_status'),
   'port': Joi.number().default(3030),
+  'wsport': Joi.number().default(3333),
   'elastalertPath': Joi.string().default('/opt/elastalert'),
   'rulesPath': Joi.object().keys({
     'relative': Joi.boolean().default(true),
