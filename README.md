@@ -14,7 +14,7 @@ The most convenient way to run the ElastAlert server is by using our Docker cont
 To run the Docker image you will want to mount the volumes for configuration and rule files to keep them after container updates. In order to do that conveniently, please do: `git clone https://github.com/bitsensor/elastalert.git; cd elastalert`
 
 ```bash
-docker run -d -p 3030:3030 \
+docker run -d -p 3030:3030 -p 3333:3333 \
     -v `pwd`/config/elastalert.yaml:/opt/elastalert/config.yaml \
     -v `pwd`/config/elastalert-test.yaml:/opt/elastalert/config-test.yaml \
     -v `pwd`/config/config.json:/opt/elastalert-server/config/config.json \
@@ -61,6 +61,7 @@ You can use the following config options:
 {
   "appName": "elastalert-server", // The name used by the logging framework.
   "port": 3030, // The port to bind to
+  "wsport": 3333, // The port to bind to for websockets
   "elastalertPath": "/opt/elastalert",  // The path to the root ElastAlert folder. It's the folder that contains the `setup.py` script.
   "start": "2014-01-01T00:00:00", // Optional date to start querying from
   "end": "2016-01-01T00:00:00", // Optional date to stop querying at
@@ -211,7 +212,11 @@ This server exposes the following REST API's:
         }
       }
       ``` 
+
+- **WEBSOCKET `/test`**
     
+    This allows you to test a rule and receive progress over a websocket. Send a message as JSON object (stringified) with two keys: `rule` (yaml string) and `options` (JSON object). You will receive progress messages over the socket as the test runs.
+
 - **GET `/metadata/:type`**
 
     Returns metadata from elasticsearch related to elasalert's state. `:type` should be one of: elastalert_status, elastalert, elastalert_error, or silence. See [docs about the elastalert metadata index](https://elastalert.readthedocs.io/en/latest/elastalert_status.html).
@@ -219,6 +224,10 @@ This server exposes the following REST API's:
 - **GET `/mapping/:index`**
 
     Returns field mapping from elasticsearch for a given index. 
+
+- **GET `/search/:index`**
+
+    Performs elasticsearch query on behalf of the API. JSON body to this endpoint will become body of an ES search. 
 
 - **[WIP] GET `/config`**
 

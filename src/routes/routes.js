@@ -16,6 +16,7 @@ import configGetHandler from '../handlers/config/get';
 import configPostHandler from '../handlers/config/post';
 import metadataHandler from '../handlers/metadata/get';
 import mappingHandler from '../handlers/mapping/get';
+import searchHandler from '../handlers/search/get';
 
 /**
  * A server route.
@@ -67,7 +68,8 @@ let routes = [
     path: 'test',
     method: 'POST',
     handler: testPostHandler
-  }, {
+  }, 
+  {
     path: 'config',
     method: ['GET', 'POST'],
     handler: [configGetHandler, configPostHandler]
@@ -86,6 +88,11 @@ let routes = [
     path: 'mapping/:index',
     method: ['GET'],
     handler: [mappingHandler]
+  },
+  {
+    path: 'search/:index',
+    method: ['POST'],
+    handler: [searchHandler]
   }
 ];
 
