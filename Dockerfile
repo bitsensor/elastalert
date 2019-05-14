@@ -1,5 +1,5 @@
 FROM alpine:latest as py-ea
-ARG ELASTALERT_VERSION=v0.1.39
+ARG ELASTALERT_VERSION=v0.2.0b2
 ENV ELASTALERT_VERSION=${ELASTALERT_VERSION}
 # URL from which to download Elastalert.
 ARG ELASTALERT_URL=https://github.com/Yelp/elastalert/archive/$ELASTALERT_VERSION.zip
@@ -44,6 +44,13 @@ COPY config/elastalert-test.yaml /opt/elastalert/config-test.yaml
 COPY config/config.json config/config.json
 COPY rule_templates/ /opt/elastalert/rule_templates
 COPY elastalert_modules/ /opt/elastalert/elastalert_modules
+
+# Add default rules directory
+# Set permission as unpriviledged user (1000:1000), compatible with Kubernetes
+RUN mkdir -p /opt/elastalert/rules/ /opt/elastalert/server_data/tests/ \
+    && chown -R node:node /opt
+
+USER node
 
 EXPOSE 3030
 ENTRYPOINT ["npm", "start"]

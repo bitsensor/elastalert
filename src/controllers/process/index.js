@@ -48,10 +48,10 @@ export default class ProcessController {
     });
 
     // Redirect stdin/stderr to logger
-    if (indexCreate.stdout.toString() !== '') {
+    if (indexCreate.stdout && indexCreate.stdout.toString() !== '') {
       logger.info(indexCreate.stdout.toString());
     }
-    if (indexCreate.stderr.toString() !== '') {
+    if (indexCreate.stderr && indexCreate.stderr.toString() !== '') {
       logger.error(indexCreate.stderr.toString());
     }
 
