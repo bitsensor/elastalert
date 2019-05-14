@@ -45,5 +45,12 @@ COPY config/config.json config/config.json
 COPY rule_templates/ /opt/elastalert/rule_templates
 COPY elastalert_modules/ /opt/elastalert/elastalert_modules
 
+# Add default rules directory
+# Set permission as unpriviledged user (1000:1000), compatible with Kubernetes
+RUN mkdir -p /opt/elastalert/rules/ /opt/elastalert/server_data/tests/ \
+    && chown -R node:node /opt
+
+USER node
+
 EXPOSE 3030
 ENTRYPOINT ["npm", "start"]
